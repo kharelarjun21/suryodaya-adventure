@@ -257,6 +257,34 @@ p{margin:0 0 1em;}
 .hero-birds{position:absolute;top:16%;left:8%;opacity:.8;animation:drift 18s linear infinite;}
 @keyframes drift{0%{transform:translateX(0);}100%{transform:translateX(70vw);}}
 
+.hero-zipline{
+  position:absolute;
+  top:22%;
+  left:0;
+  width:100%;
+  height:100px;
+  pointer-events:none;
+  z-index:2;
+}
+.zipliner{
+  position:absolute;
+  top:0;
+  color:#fff;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.25));
+  animation: zip-fly 9s linear infinite;
+}
+.zipliner--2{
+  animation-delay:-4.5s;
+  top:34px;
+  opacity:.85;
+}
+.zipliner--2 svg{ width:60px; }
+
+@keyframes zip-fly{
+  0%   { left:-10%; transform: translateY(0) rotate(-6deg); }
+  50%  { left:48%;  transform: translateY(-22px) rotate(0deg); }
+  100% { left:110%; transform: translateY(0) rotate(6deg); }
+}
 .hero-content{
   position:relative;z-index:2;
   max-width:760px;

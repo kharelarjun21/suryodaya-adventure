@@ -13,6 +13,22 @@
 <meta name="theme-color" content="#173F35">
 <link rel="icon" type="image/jpeg" href="Logo.png">
 <link rel="stylesheet" href="style.css">
+<style>
+  /* Real photography inside the gallery tiles (kept local to this page) */
+  .gallery-item{background:#173F35;}
+  .gallery-item img{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    object-fit:cover;
+    z-index:1;
+    transition:transform .35s ease;
+  }
+  .gallery-item:hover img{transform:scale(1.06);}
+  .gallery-item .g-cat,
+  .gallery-item .g-label{z-index:3;}
+  .lightbox-img{position:relative;overflow:hidden;background:#173F35;}
+  .lightbox-img img{width:100%;height:100%;object-fit:cover;display:block;}
+</style>
 </head>
 <body>
 
@@ -43,7 +59,7 @@
       <a href="kanyam.html">Things to Do in Kanyam</a>
       <a href="shree-antu.html">Things to Do in Shree Antu</a>
       <a href="activities.html">Adventure Activities</a>
-      <a href="gallery.html">Gallery</a>
+      <a href="gallery.html" class="active">Gallery</a>
       <a href="contact.html">Contact Us</a>
     </nav>
     <div class="nav-cta">
@@ -68,7 +84,6 @@
 
 <section class="section">
   <div class="container">
-    <p class="small reveal" style="margin-bottom:8px;">Note: replace these placeholder tiles with real photography — see the <code>images/</code> folder README for guidance on filenames and sizes.</p>
     <div class="filter-bar reveal">
       <button class="filter-btn active" data-filter="all">All Photos</button>
       <button class="filter-btn" data-filter="activities">Adventure Activities</button>
@@ -79,53 +94,141 @@
     </div>
 
     <div class="gallery-grid reveal">
-      <div class="gallery-item tone-zip" data-category="activities" data-title="Zipline Launch Platform" data-desc="Guests preparing to launch across the valley zipline.">
+
+      <div class="gallery-item" data-category="activities" data-title="Zipline Launch" data-desc="Guests clipping in before launching across the valley on our signature zipline, with the tea-covered hills of Kanyam behind." data-img="Image/zipline.jpeg">
+        <img src="Image/zipline.jpeg" alt="Ziplining at Suryodaya Adventures" loading="lazy">
         <span class="g-cat">Ziplining</span><span class="g-label">Zipline Launch</span>
       </div>
-      <div class="gallery-item tone-sunrise" data-category="shreeantu" data-title="Shree Antu Sunrise" data-desc="Golden light breaking over the ridgelines at Shree Antu.">
-        <span class="g-cat">Sunrise</span><span class="g-label">Shree Antu Dawn</span>
-      </div>
-      <div class="gallery-item tone-tea" data-category="kanyam" data-title="Kanyam Tea Garden Rows" data-desc="Terraced tea rows stretching across the Kanyam hillside.">
-        <span class="g-cat">Tea Garden</span><span class="g-label">Kanyam Rows</span>
-      </div>
-      <div class="gallery-item tone-camp" data-category="camping" data-title="Hillside Camping" data-desc="Tents pitched on the hillside ahead of a bonfire evening.">
-        <span class="g-cat">Camping</span><span class="g-label">Hillside Camp</span>
-      </div>
-      <div class="gallery-item tone-sky" data-category="activities" data-title="Sky Cycling" data-desc="A guest pedalling the suspended sky cycle rail.">
+
+      <div class="gallery-item" data-category="activities" data-title="Sky Cycling" data-desc="A guest pedalling the single-rail sky cycle, balanced high above the ground by a secure overhead safety line." data-img="Image/skycycle.jpeg">
+        <img src="Image/skycycle.jpeg" alt="Sky Cycling at Suryodaya Adventures" loading="lazy">
         <span class="g-cat">Sky Cycling</span><span class="g-label">Sky Cycle Ride</span>
       </div>
-      <div class="gallery-item tone-jump" data-category="activities" data-title="Quick Jump Drop" data-desc="A harnessed guest mid free-fall on the quick jump.">
+
+      <div class="gallery-item" data-category="activities" data-title="Quick Jump Drop" data-desc="A harnessed guest mid free-fall on the Quick Jump — a short, sharp burst of adrenaline from a raised platform." data-img="Image/bungee.jpeg">
+        <img src="Image/bungee.jpeg" alt="Quick Jump at Suryodaya Adventures" loading="lazy">
         <span class="g-cat">Quick Jump</span><span class="g-label">Free-fall Moment</span>
       </div>
-      <div class="gallery-item tone-wall" data-category="activities" data-title="Wall Climbing" data-desc="A climber working the graded holds on our climbing wall.">
+
+      <div class="gallery-item" data-category="activities" data-title="Wall Climbing" data-desc="A climber working the graded holds on our climbing wall, belayed from the ground by a trained guide." data-img="Image/wallclimbing.jpeg">
+        <img src="Image/wallclimbing.jpeg" alt="Wall Climbing at Suryodaya Adventures" loading="lazy">
         <span class="g-cat">Wall Climbing</span><span class="g-label">On the Wall</span>
       </div>
-      <div class="gallery-item tone-archery" data-category="activities" data-title="Archery Range" data-desc="Guests taking aim at the target range.">
+
+      <div class="gallery-item" data-category="activities" data-title="Archery Range" data-desc="Guests taking aim at the target range, with beginner coaching on stance, draw and release." data-img="Image/archery.jpeg">
+        <img src="Image/archery.jpeg" alt="Archery at Suryodaya Adventures" loading="lazy">
         <span class="g-cat">Archery</span><span class="g-label">Target Practice</span>
       </div>
-      <div class="gallery-item tone-food" data-category="food" data-title="Nepali Thali" data-desc="A traditional thali served at our on-site restaurant.">
-        <span class="g-cat">Food</span><span class="g-label">Local Thali</span>
+
+      <div class="gallery-item" data-category="camping" data-title="Hillside Camping" data-desc="Tents pitched on the hillside ahead of a bonfire evening, with sunrise views over the ridges the next morning." data-img="Image/camping.jpeg">
+        <img src="Image/camping.jpeg" alt="Camping at Suryodaya Adventures" loading="lazy">
+        <span class="g-cat">Camping</span><span class="g-label">Hillside Camp</span>
       </div>
-      <div class="gallery-item tone-view" data-category="shreeantu" data-title="Sea of Clouds" data-desc="Clouds filling the valley below the Shree Antu ridge.">
+
+      <div class="gallery-item" data-category="activities" data-title="Suryodaya Adventures Park" data-desc="A look at the Suryodaya Adventures site near Kanyam, set against the clouds and hills of Ilam." data-img="Image/Homepage.jpeg">
+        <img src="Image/Homepage.jpeg" alt="Suryodaya Adventures adventure park near Kanyam" loading="lazy">
+        <span class="g-cat">Adventure Park</span><span class="g-label">Park Overview</span>
+      </div>
+
+      <div class="gallery-item" data-category="kanyam" data-title="Kanyam Tea Garden Rows" data-desc="Terraced tea rows stretching across the Kanyam hillside, one of the most photographed views in Ilam." data-img="Image/kanyam.jpg">
+        <img src="Image/kanyam.jpg" alt="Kanyam Tea Garden rows, Ilam" loading="lazy">
+        <span class="g-cat">Tea Garden</span><span class="g-label">Kanyam Rows</span>
+      </div>
+
+      <div class="gallery-item" data-category="kanyam" data-title="Walking the Tea Rows" data-desc="Rows close enough together that the leaves brush your arms as you walk between them, best seen early morning." data-img="Image/Kanyam_Walking.jpg">
+        <img src="Image/Kanyam_Walking.jpg" alt="Walking between the tea rows at Kanyam Tea Estate" loading="lazy">
+        <span class="g-cat">Tea Garden</span><span class="g-label">Among the Rows</span>
+      </div>
+
+      <div class="gallery-item" data-category="kanyam" data-title="Kanyam Tea Factory" data-desc="Inside the estate's tea factory, where freshly plucked leaves go through withering, rolling, oxidation and drying." data-img="Image/Kanyam_Factory.jpg">
+        <img src="Image/Kanyam_Factory.jpg" alt="Inside the Kanyam tea factory" loading="lazy">
+        <span class="g-cat">Tea Factory</span><span class="g-label">Behind the Scenes</span>
+      </div>
+
+      <div class="gallery-item" data-category="kanyam" data-title="Horse Riding at Kanyam" data-desc="Horseback rides through the working tea rows — one of Kanyam's signature experiences." data-img="Image/Kanyam_HorseRiding.jpg">
+        <img src="Image/Kanyam_HorseRiding.jpg" alt="Horse riding through the tea rows at Kanyam" loading="lazy">
+        <span class="g-cat">Horse Riding</span><span class="g-label">Through the Rows</span>
+      </div>
+
+      <div class="gallery-item" data-category="kanyam" data-title="Kanyam Cultural Photography" data-desc="Traditional Rai, Limbu and Gurung attire against the tea garden backdrop, one of Kanyam's most popular photo experiences." data-img="Image/Kanyam_Photography.jpeg">
+        <img src="Image/Kanyam_Photography.jpeg" alt="Cultural photography at Kanyam with traditional attire" loading="lazy">
+        <span class="g-cat">Photography</span><span class="g-label">Cultural Portraits</span>
+      </div>
+
+      <div class="gallery-item" data-category="shreeantu" data-title="Shree Antu Sunrise" data-desc="Golden light breaking over the ridgelines at Antu View Tower, Nepal's first hill touched by the morning sun." data-img="Image/Antu_sunrise.jpg">
+        <img src="Image/Antu_sunrise.jpg" alt="Sunrise over the hills at Shree Antu View Tower" loading="lazy">
+        <span class="g-cat">Sunrise</span><span class="g-label">Shree Antu Dawn</span>
+      </div>
+
+      <div class="gallery-item" data-category="shreeantu" data-title="Sea of Clouds" data-desc="Layered ridgelines and drifting cloud in the valley below Shree Antu, best caught in the twenty minutes around sunrise." data-img="Image/Antu_Photography.jpg">
+        <img src="Image/Antu_Photography.jpg" alt="Layered ridgelines and cloud sea photographed at Shree Antu" loading="lazy">
         <span class="g-cat">Sunrise</span><span class="g-label">Sea of Clouds</span>
       </div>
-      <div class="gallery-item tone-forest" data-category="kanyam" data-title="Tea Estate Viewpoint" data-desc="Panoramic view over the Kanyam tea estate.">
-        <span class="g-cat">Viewpoint</span><span class="g-label">Kanyam Overlook</span>
+
+      <div class="gallery-item" data-category="shreeantu" data-title="Shree Antu Tea Gardens" data-desc="Narrow paths through rows of tea bushes on the slopes below the sunrise viewpoint." data-img="Image/Antu_teagarden.jpg">
+        <img src="Image/Antu_teagarden.jpg" alt="Rows of tea bushes on the hillside near Shree Antu" loading="lazy">
+        <span class="g-cat">Tea Garden</span><span class="g-label">Antu Slopes</span>
       </div>
-      <div class="gallery-item tone-camp" data-category="camping" data-title="Bonfire Evening" data-desc="Guests gathered around the campfire after dark.">
-        <span class="g-cat">Camping</span><span class="g-label">Bonfire Night</span>
+
+      <div class="gallery-item" data-category="shreeantu" data-title="Antu Pokhari" data-desc="A quiet lake ringed by trees and cottages, a relaxed contrast to the early sunrise climb." data-img="Image/Antu_pokhari.jpg">
+        <img src="Image/Antu_pokhari.jpg" alt="Antu Pokhari lake surrounded by trees and cottages" loading="lazy">
+        <span class="g-cat">Antu Pokhari</span><span class="g-label">Lakeside</span>
       </div>
-      <div class="gallery-item tone-zip" data-category="activities" data-title="Zipline Over the Valley" data-desc="A rider mid-flight across the zipline course.">
-        <span class="g-cat">Ziplining</span><span class="g-label">Mid-flight</span>
+
+      <div class="gallery-item" data-category="shreeantu" data-title="Gufa Patal Hike" data-desc="A forest trail through a Tamang village and pine woods, on the roughly three-hour hike to the Gufa Patal viewpoint." data-img="Image/Antu_hikeGufapatal.jpg">
+        <img src="Image/Antu_hikeGufapatal.jpg" alt="Forest trail on the hike to Gufa Patal near Shree Antu" loading="lazy">
+        <span class="g-cat">Hiking</span><span class="g-label">Gufa Patal Trail</span>
       </div>
-      <div class="gallery-item tone-tea" data-category="kanyam" data-title="Tea Pickers at Work" data-desc="Local tea pickers working the Kanyam terraces.">
-        <span class="g-cat">Tea Garden</span><span class="g-label">Tea Pickers</span>
+
+      <div class="gallery-item" data-category="shreeantu" data-title="Antu View Tower" data-desc="The view tower where visitors gather before dawn, wrapped in blankets, waiting for the sky to turn gold." data-img="Image/shreeantu.jpg">
+        <img src="Image/shreeantu.jpg" alt="Antu View Tower at Shree Antu, Ilam" loading="lazy">
+        <span class="g-cat">Viewpoint</span><span class="g-label">View Tower</span>
       </div>
-      <div class="gallery-item tone-food" data-category="food" data-title="Kanyam Tea Service" data-desc="Freshly brewed Kanyam tea served with a valley view.">
-        <span class="g-cat">Food</span><span class="g-label">Kanyam Tea</span>
+
+      <div class="gallery-item" data-category="food" data-title="Local Restaurant" data-desc="Traditional Ilam cuisine served at our on-site restaurant, a good stop between activities." data-img="Image/restaurant.jpg">
+        <img src="Image/restaurant.jpg" alt="Restaurant at Suryodaya Adventures" loading="lazy">
+        <span class="g-cat">Food</span><span class="g-label">Local Thali</span>
       </div>
-      <div class="gallery-item tone-sunrise" data-category="shreeantu" data-title="Mountainious Skyline" data-desc="Distant Mountain peaks catching first light.">
-        <span class="g-cat">Sunrise</span><span class="g-label">Mountainious Skyline</span>
+
+      <div class="gallery-item" data-category="shreeantu" data-title="Mai Pokhari" data-desc="A nine-cornered forest lake near Ilam Bazaar, ringed by fir, pine, juniper and birch — worth the extra day trip." data-img="Image/Maipokhari-4.jpg">
+        <img src="Image/Maipokhari-4.jpg" alt="Mai Pokhari, a nine-cornered forest lake near Ilam" loading="lazy">
+        <span class="g-cat">Nearby</span><span class="g-label">Mai Pokhari</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Nearby Attractions -->
+<section class="section section--tea section--tight" id="nearby-attractions">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">While You're Here</span>
+      <h2>Nearby Attractions</h2>
+    </div>
+    <div class="grid grid-3 reveal">
+      <div class="card">
+        <div class="media tone-tea"><img src="Image/kanyam.jpg" alt="Kanyam Tea Garden, Ilam" loading="lazy"><span class="media-label">Kanyam Tea Garden</span></div>
+        <div class="card-body">
+          <h3>Kanyam</h3>
+          <p>Iconic tea garden and photo stop, roughly 45–60 minutes away by road.</p>
+          <a href="kanyam.html" class="card-link">Kanyam Guide <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media tone-zip"><img src="Image/Homepage.jpeg" alt="Suryodaya Adventures adventure park near Kanyam" loading="lazy"><span class="media-label">Suryodaya Adventures</span></div>
+        <div class="card-body">
+          <h3>Adventure Park</h3>
+          <p>Ziplining, camping and more, perfect after an early sunrise hike.</p>
+          <a href="activities.html" class="card-link">See Activities <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="media tone-sky"><img src="Image/Maipokhari-4.jpg" alt="Mai Pokhari, a nine-cornered forest lake near Ilam" loading="lazy"><span class="media-label">Mai Pokhari</span></div>
+        <div class="card-body">
+          <h3>Mai Pokhari</h3>
+          <p>Mai Pokhari is a forest lake with religious and environmental importance. Fir, pine, juniper, birch, and other plants surround its nine-cornered shape. It lies about 13 km north of Ilam Bazaar rather than beside Shree Antu — worth adding when you have an extra day for a wider Ilam trip, rather than trying to fit it into a rushed overnight visit.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -150,7 +253,7 @@
 <div class="lightbox">
   <div class="lightbox-box">
     <button class="lightbox-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
-    <div class="lightbox-img tone-zip"></div>
+    <div class="lightbox-img"><img src="" alt=""></div>
     <div class="lightbox-caption"></div>
   </div>
 </div>
@@ -215,5 +318,57 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+  // Self-contained gallery filter + lightbox logic (uses real images, safe alongside script.js)
+  (function () {
+    const items = document.querySelectorAll('.gallery-item');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        filterBtns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        items.forEach(function (it) {
+          if (f === 'all' || it.dataset.category === f) {
+            it.classList.remove('hide');
+          } else {
+            it.classList.add('hide');
+          }
+        });
+      });
+    });
+
+    const lightbox = document.querySelector('.lightbox');
+    if (!lightbox) return;
+    const lightboxImg = lightbox.querySelector('.lightbox-img img');
+    const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+
+    items.forEach(function (it) {
+      it.addEventListener('click', function () {
+        if (lightboxImg) {
+          lightboxImg.src = it.dataset.img || '';
+          lightboxImg.alt = it.dataset.title || '';
+        }
+        if (lightboxCaption) {
+          lightboxCaption.innerHTML =
+            '<strong>' + (it.dataset.title || '') + '</strong>' +
+            '<p style="margin:6px 0 0;">' + (it.dataset.desc || '') + '</p>';
+        }
+        lightbox.classList.add('open');
+      });
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () {
+        lightbox.classList.remove('open');
+      });
+    }
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) lightbox.classList.remove('open');
+    });
+  })();
+</script>
 </body>
 </html>

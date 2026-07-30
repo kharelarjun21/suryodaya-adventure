@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
           'Group size: ' + (form.querySelector('#guests') ? form.querySelector('#guests').value : '') + '%0A' +
           'Activity interest: ' + (form.querySelector('#activity') ? form.querySelector('#activity').value : '') + '%0A' +
           'Message: ' + (form.querySelector('#message') ? form.querySelector('#message').value.trim() : '');
-        wa.href = 'https://wa.me/97798XXXXXXXX?text=' + msg;
+        wa.href = 'https://wa.me/9779840823060?text=' + msg;
       }
       form.reset();
     });

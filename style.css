@@ -525,6 +525,7 @@ p{margin:0 0 1em;}
 .social-pill.ig:hover{color:#E1306C;border-color:#E1306C;}
 .social-pill.yt:hover{color:#FF0000;border-color:#FF0000;}
 .social-pill.gg:hover{color:#EA4335;border-color:#EA4335;}
+.social-pill.tiktok:hover{color:#000;border-color:#000;}
 
 /* ---- Contact page ---- */
 .contact-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:start;}

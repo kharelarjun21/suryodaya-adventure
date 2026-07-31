@@ -20,11 +20,14 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "TouristAttraction",
+  "@type": "AmusementPark",
   "name": "Suryodaya Adventures",
   "description": "Adventure park near Kanyam offering ziplining, sky cycling, quick jump, wall climbing, archery and camping, with an on-site restaurant serving local Ilam cuisine.",
   "url": "https://www.suryodayaadventures.com/",
   "image": "https://www.suryodayaadventures.com/images/og-cover.jpg",
+  "telephone": "+977-9840823060",
+  "email": "suryodaya.adventures@gmail.com",
+  "priceRange": "NPR 50–2500",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Kanyam - Fikkal Road",
@@ -33,14 +36,39 @@
     "postalCode": "57200",
     "addressCountry": "NP"
   },
-  "telephone": "+977-9840823060",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 26.8820503,
+    "longitude": 88.0331898
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "07:00",
+    "closes": "18:00"
+  },
   "sameAs": [
     "https://www.facebook.com/SZA.Ilam",
     "https://www.instagram.com/suryodaya_adventures/",
     "https://www.youtube.com/@suryodaya.adventures",
     "https://www.tiktok.com/@suryodayaadventure",
     "https://maps.app.goo.gl/yzUekhzRrkxqk5xPA"
-  ]
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Activities",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Classic Zipline" }, "price": "800", "priceCurrency": "NPR" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Couple Zipline" }, "price": "1500", "priceCurrency": "NPR" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Superman Zipline" }, "price": "1000", "priceCurrency": "NPR" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Flying Fox" }, "price": "500", "priceCurrency": "NPR" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sky Cycling" }, "price": "1000", "priceCurrency": "NPR" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mini Bungee" }, "price": "800", "priceCurrency": "NPR" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Recreational Archery" }, "price": "50", "priceCurrency": "NPR" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wall Climbing" }, "price": "200", "priceCurrency": "NPR" },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Adventure Camping (Tent)" }, "price": "1000", "priceCurrency": "NPR" }
+    ]
+  }
 }
 </script>
 </head>

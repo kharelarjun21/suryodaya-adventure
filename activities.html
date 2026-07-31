@@ -107,6 +107,176 @@
   </div>
 </section>
 
+<!-- Pricing -->
+<section class="section section--tea" id="pricing">
+  <style>
+    .price-wrap{max-width:980px;margin:0 auto;}
+    .price-note{
+      text-align:center;color:var(--ink-soft);font-size:.95rem;
+      margin:-6px 0 30px;
+    }
+    .price-table{
+      width:100%;border-collapse:separate;border-spacing:0;
+      background:#fff;border-radius:16px;overflow:hidden;
+      box-shadow:0 10px 30px rgba(23,63,53,0.08);
+    }
+    .price-table th{
+      background:var(--forest);color:#fff;
+      font-family:var(--font-display);font-weight:600;
+      text-align:left;padding:14px 16px;font-size:.95rem;
+    }
+    .price-table th:nth-child(2),
+    .price-table th:nth-child(3),
+    .price-table th:nth-child(4){text-align:center;}
+    .price-table td{
+      padding:14px 16px;border-bottom:1px solid #EAF0EC;
+      font-size:.95rem;color:#1f2d27;vertical-align:middle;
+    }
+    .price-table td:nth-child(2),
+    .price-table td:nth-child(3),
+    .price-table td:nth-child(4){text-align:center;white-space:nowrap;}
+    .price-table tbody tr:last-child td{border-bottom:none;}
+    .price-table tbody tr:hover{background:#F5FAF6;}
+    .price-table tbody tr.highlight{background:#FFF7EC;}
+    .price-table tbody tr.highlight:hover{background:#FFF1DE;}
+    .price-main{font-weight:700;color:var(--forest);}
+    .price-ic{display:block;font-size:.78rem;color:var(--ink-soft);font-weight:400;}
+    .price-total{font-weight:700;color:#B4530A;}
+    .price-activity-name{font-weight:600;}
+    .price-pkg-badge{
+      display:inline-block;background:var(--sunrise);color:#fff;
+      font-size:.68rem;font-weight:700;letter-spacing:.03em;
+      padding:2px 8px;border-radius:20px;margin-left:8px;
+      text-transform:uppercase;vertical-align:middle;
+    }
+    .price-self{color:var(--ink-soft);font-style:italic;font-size:.88rem;}
+    .price-restaurant-row td{
+      background:#F5FAF6;font-weight:600;color:var(--forest);
+      text-align:center !important;padding:16px;
+    }
+    @media (max-width:720px){
+      .price-table thead{display:none;}
+      .price-table, .price-table tbody, .price-table tr, .price-table td{display:block;width:100%;}
+      .price-table tbody tr{
+        margin-bottom:14px;border-radius:12px;overflow:hidden;
+        box-shadow:0 4px 14px rgba(23,63,53,0.08);border-bottom:none;
+      }
+      .price-table td{
+        text-align:right !important;padding:10px 16px;
+        border-bottom:1px solid #EAF0EC;position:relative;
+      }
+      .price-table td:last-child{border-bottom:none;}
+      .price-table td::before{
+        content:attr(data-label);float:left;font-weight:600;
+        color:var(--ink-soft);font-size:.82rem;
+      }
+      .price-table td:first-child{background:var(--forest);color:#fff;text-align:left !important;}
+      .price-table td:first-child::before{display:none;}
+      .price-table td:first-child .price-activity-name{color:#fff;}
+      .price-restaurant-row td{text-align:center !important;}
+      .price-restaurant-row td::before{display:none;}
+    }
+  </style>
+
+  <div class="container price-wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow" style="justify-content:center;">Plan Your Budget</span>
+      <h2>Activity Pricing</h2>
+      <p>Transparent rates for every activity — pay on arrival, no hidden fees. Videography add-ons are optional.</p>
+    </div>
+    <p class="price-note">All prices in Nepali Rupees (NPR). Indian Rupee equivalent shown in brackets for visitors from Siliguri, Darjeeling &amp; Sikkim.</p>
+
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Activity</th>
+            <th>Rate</th>
+            <th>Videography <span style="font-weight:400;">(Optional)</span></th>
+            <th>Activity + Video Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Activity"><span class="price-activity-name">Classic Zipline</span></td>
+            <td data-label="Rate"><span class="price-main">₨800</span><span class="price-ic">(₹500)</span></td>
+            <td data-label="Videography"><span class="price-main">₨250</span><span class="price-ic">(₹160)</span></td>
+            <td data-label="Total"><span class="price-total">₨1050</span><span class="price-ic">(₹660)</span></td>
+          </tr>
+          <tr>
+            <td data-label="Activity"><span class="price-activity-name">Couple Zipline</span></td>
+            <td data-label="Rate"><span class="price-main">₨1500</span><span class="price-ic">(₹940)</span></td>
+            <td data-label="Videography"><span class="price-main">₨250</span><span class="price-ic">(₹160)</span></td>
+            <td data-label="Total"><span class="price-total">₨1750</span><span class="price-ic">(₹1100)</span></td>
+          </tr>
+          <tr>
+            <td data-label="Activity"><span class="price-activity-name">Superman Zipline</span></td>
+            <td data-label="Rate"><span class="price-main">₨1000</span><span class="price-ic">(₹625)</span></td>
+            <td data-label="Videography"><span class="price-main">₨250</span><span class="price-ic">(₹160)</span></td>
+            <td data-label="Total"><span class="price-total">₨1250</span><span class="price-ic">(₹785)</span></td>
+          </tr>
+          <tr>
+            <td data-label="Activity"><span class="price-activity-name">Flying Fox</span></td>
+            <td data-label="Rate"><span class="price-main">₨500</span><span class="price-ic">(₹310)</span></td>
+            <td data-label="Videography"><span class="price-main">₨250</span><span class="price-ic">(₹160)</span></td>
+            <td data-label="Total"><span class="price-total">₨750</span><span class="price-ic">(₹470)</span></td>
+          </tr>
+          <tr>
+            <td data-label="Activity"><span class="price-activity-name">Sky Cycling</span></td>
+            <td data-label="Rate"><span class="price-main">₨1000</span><span class="price-ic">(₹625)</span></td>
+            <td data-label="Videography"><span class="price-main">₨250</span><span class="price-ic">(₹160)</span></td>
+            <td data-label="Total"><span class="price-total">₨1250</span><span class="price-ic">(₹785)</span></td>
+          </tr>
+          <tr>
+            <td data-label="Activity"><span class="price-activity-name">Mini Bungee</span></td>
+            <td data-label="Rate"><span class="price-main">₨800</span><span class="price-ic">(₹500)</span></td>
+            <td data-label="Videography"><span class="price-main">₨250</span><span class="price-ic">(₹160)</span></td>
+            <td data-label="Total"><span class="price-total">₨1050</span><span class="price-ic">(₹660)</span></td>
+          </tr>
+          <tr class="highlight">
+            <td data-label="Activity"><span class="price-activity-name">Individual Dual Package<span class="price-pkg-badge">2 Activities</span></span></td>
+            <td data-label="Rate"><span class="price-main">₨1500</span><span class="price-ic">(₹940)</span></td>
+            <td data-label="Videography"><span class="price-main">₨500</span><span class="price-ic">(₹310)</span></td>
+            <td data-label="Total"><span class="price-total">₨2000</span><span class="price-ic">(₹1250)</span></td>
+          </tr>
+          <tr class="highlight">
+            <td data-label="Activity"><span class="price-activity-name">Individual Full Package<span class="price-pkg-badge">Best Value</span></span></td>
+            <td data-label="Rate"><span class="price-main">₨2000</span><span class="price-ic">(₹1250)</span></td>
+            <td data-label="Videography"><span class="price-main">₨500</span><span class="price-ic">(₹310)</span></td>
+            <td data-label="Total"><span class="price-total">₨2500</span><span class="price-ic">(₹1560)</span></td>
+          </tr>
+          <tr>
+            <td data-label="Activity"><span class="price-activity-name">Recreational Archery</span></td>
+            <td data-label="Rate"><span class="price-main">₨50</span><span class="price-ic">(₹35)</span></td>
+            <td data-label="Videography"><span class="price-self">Self device</span></td>
+            <td data-label="Total"><span class="price-total">₨50</span><span class="price-ic">(₹35)</span></td>
+          </tr>
+          <tr>
+            <td data-label="Activity"><span class="price-activity-name">Wall Climbing</span></td>
+            <td data-label="Rate"><span class="price-main">₨200</span><span class="price-ic">(₹125)</span></td>
+            <td data-label="Videography"><span class="price-self">Self device</span></td>
+            <td data-label="Total"><span class="price-total">₨200</span><span class="price-ic">(₹125)</span></td>
+          </tr>
+          <tr>
+            <td data-label="Activity"><span class="price-activity-name">Adventure Camping (Tent)</span></td>
+            <td data-label="Rate"><span class="price-main">₨1000</span><span class="price-ic">(₹625)</span></td>
+            <td data-label="Videography">Firewood <span class="price-main">₨500</span><span class="price-ic">(₹315)</span></td>
+            <td data-label="Total"><span class="price-total">₨1500</span><span class="price-ic">(₹940)</span></td>
+          </tr>
+          <tr class="price-restaurant-row">
+            <td colspan="4">🍽️ Restaurant Service — as per order</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center" style="margin-top:30px;">
+      <a href="contact.html" class="btn btn-primary">Book a Package</a>
+      <a href="https://wa.me/9779840823060?text=Hi%20Suryodaya%20Adventures%2C%20I%27d%20like%20to%20ask%20about%20pricing." target="_blank" rel="noopener" class="btn btn-whatsapp" style="margin-left:12px;">Ask on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
 <!-- Ziplining -->
 <section class="section" id="ziplining">
   <div class="container">

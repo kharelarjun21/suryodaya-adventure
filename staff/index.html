@@ -712,42 +712,36 @@
        GET USER ROLE
        ======================================================= */
 
-    async function getUserRole(userId) {
+async function getUserRole(userId) {
 
-      const {
-        data,
-        error
-      } = await supabaseClient
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .maybeSingle();
+  console.log('Checking role for user:', userId);
 
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', userId)
+    .maybeSingle();
 
-      if (error) {
+  console.log('Role query result:', {
+    data,
+    error
+  });
 
-        console.error(
-          'Role lookup error:',
-          error
-        );
+  if (error) {
+    throw error;
+  }
 
-        throw error;
+  if (!data || !data.role) {
+    throw new Error(
+      'No role assigned to this account.'
+    );
+  }
 
-      }
-
-
-      if (!data || !data.role) {
-
-        throw new Error(
-          'No role assigned to this account.'
-        );
-
-      }
-
-
-      return data.role;
-
-    }
+  return data.role;
+}
 
 
     /* =======================================================
@@ -1077,10 +1071,11 @@
           }
 
 
-          showMessage(
-            'Access verification failed. Please contact management.',
-            'error'
-          );
+showMessage(
+  'Access verification failed: ' +
+  (error.message || 'Unknown error'),
+  'error'
+);
 
 
           loginButton.disabled = false;

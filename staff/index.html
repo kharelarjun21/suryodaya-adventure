@@ -501,20 +501,33 @@
 
       <div class="form-group">
 
-        <label for="email">
-          User ID
-        </label>
+<label for="email">
+  User ID
+</label>
+
+<input
+  type="text"
+  id="email"
+  name="email"
+  placeholder="Enter Staff or email address"
+  autocomplete="username"
+  autocapitalize="none"
+  spellcheck="false"
+  required
+>
 
         <div class="input-wrapper">
 
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your User ID"
-            autocomplete="username"
-            required
-          >
+<input
+  type="text"
+  id="email"
+  name="email"
+  placeholder="Enter Staff or email address"
+  autocomplete="username"
+  autocapitalize="none"
+  spellcheck="false"
+  required
+>
 
         </div>
 
@@ -908,7 +921,48 @@ async function getUserRole(userId) {
 
     checkExistingSession();
 
+/* =======================================================
+   NORMALIZE LOGIN INPUT
+   ======================================================= */
 
+function getSupabaseLoginEmail(loginInput) {
+
+  const value =
+    loginInput.trim().toLowerCase();
+
+  /*
+   * Staff username
+   *
+   * "staff" and the actual Supabase email
+   * authenticate the SAME Supabase account.
+   */
+
+  if (value === 'staff') {
+
+    return 'suryodaya.adventures@gmail.com';
+
+  }
+
+
+  /*
+   * If the user enters an email address,
+   * use it directly.
+   */
+
+  if (value.includes('@')) {
+
+    return value;
+
+  }
+
+
+  /*
+   * Anything else is invalid.
+   */
+
+  return null;
+
+}
     /* =======================================================
        LOGIN
        ======================================================= */
@@ -921,28 +975,48 @@ async function getUserRole(userId) {
 
         clearMessage();
 
+const loginInput =
+  emailInput.value.trim();
 
-        const email =
-          emailInput.value.trim();
-
-        const password =
-          passwordInput.value;
+const password =
+  passwordInput.value;
 
 
-        /* ---------------------------------------------------
-           BASIC VALIDATION
-           --------------------------------------------------- */
+/* ---------------------------------------------------
+   BASIC VALIDATION
+   --------------------------------------------------- */
 
-        if (!email || !password) {
+if (!loginInput || !password) {
 
-          showMessage(
-            'Please enter your User ID and password.',
-            'error'
-          );
+  showMessage(
+    'Please enter your User ID and password.',
+    'error'
+  );
 
-          return;
+  return;
 
-        }
+}
+
+
+/* ---------------------------------------------------
+   CONVERT USER ID TO SUPABASE EMAIL
+   --------------------------------------------------- */
+
+const email =
+  getSupabaseLoginEmail(loginInput);
+
+
+if (!email) {
+
+  showMessage(
+    'Please enter Staff or a valid email address.',
+    'error'
+  );
+
+  return;
+
+}
+
 
 
         /* ---------------------------------------------------

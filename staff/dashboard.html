@@ -784,7 +784,25 @@
 
       cursor: not-allowed;
     }
+.add-entry-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed var(--forest-light);
+  border-radius: 7px;
+  background: #F4F8F5;
+  color: var(--forest);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
 
+.add-entry-button:hover {
+  background: var(--soft-green);
+  border-color: var(--forest);
+}
     .entry-grid {
       display: grid;
 
@@ -1928,443 +1946,432 @@
     /* =======================================================
        RENDER GROUPED RECORDS
        ======================================================= */
-
-    function renderGroupedRecords() {
-
-      recordsBody.innerHTML =
-        '';
-
-      emptyState.style.display =
-        'none';
-
-
-      if (
-        records.length === 0
-      ) {
-
-        emptyState.style.display =
-          'block';
-
-        return;
-
-      }
-
-
-      /*
-       * Group records by business date.
-       */
-
-      const grouped =
-        {};
-
-
-      records.forEach(
-        function(record) {
-
-          const date =
-            record.business_date;
-
-          if (!grouped[date]) {
-
-            grouped[date] =
-              [];
-
-          }
-
-          grouped[date].push(
-            record
-          );
-
-        }
-      );
-
-
-      const dates =
-        Object.keys(grouped)
-          .sort()
-          .reverse();
-
-
-      dates.forEach(
-        function(date) {
-
-          const dayRecords =
-            grouped[date];
-
-
-          let dayAdventure = 0;
-
-          let dayVideography = 0;
-
-          let dayRestaurant = 0;
-
-          let dayFootfall = 0;
-
-
-          dayRecords.forEach(
-            function(record) {
-
-              dayAdventure +=
-                Number(
-                  record.adventure_sales
-                ) || 0;
-
-              dayVideography +=
-                Number(
-                  record.videography_sales
-                ) || 0;
-
-              dayRestaurant +=
-                Number(
-                  record.restaurant_camping_sales
-                ) || 0;
-
-              dayFootfall +=
-                Number(
-                  record.total_footfall
-                ) || 0;
-
-            }
-          );
-
-
-          const daySales =
-            dayAdventure +
-            dayVideography +
-            dayRestaurant;
-
-
-          const dayGroup =
-            document.createElement(
-              'div'
-            );
-
-          dayGroup.className =
-            'day-group';
-
-
-          /* DAY HEADER */
-
-          const dayHeader =
-            document.createElement(
-              'div'
-            );
-
-          dayHeader.className =
-            'day-header';
-
-
-          dayHeader.innerHTML = `
-
-            <div>
-
-              <div class="day-title">
-                ${formatDate(date)}
-              </div>
-
-              <div class="day-subtitle">
-                ${dayRecords.length}
-                ${dayRecords.length === 1 ? 'entry' : 'entries'}
-              </div>
-
-            </div>
-
-
-            <div class="day-total">
-
-              <div class="day-total-label">
-                Daily Sales
-              </div>
-
-              <div class="day-total-value">
-                ${formatMoney(daySales)}
-              </div>
-
-              <div class="day-footfall">
-                ${formatNumber(dayFootfall)}
-                visitors
-              </div>
-
-            </div>
-
-          `;
-
-
-          dayGroup.appendChild(
-            dayHeader
-          );
-
-
-          /* INDIVIDUAL ENTRIES */
-
-          dayRecords.forEach(
-            function(record, index) {
-
-              const adventure =
-                Number(
-                  record.adventure_sales
-                ) || 0;
-
-              const videography =
-                Number(
-                  record.videography_sales
-                ) || 0;
-
-              const restaurantCamping =
-                Number(
-                  record.restaurant_camping_sales
-                ) || 0;
-
-              const footfall =
-                Number(
-                  record.total_footfall
-                ) || 0;
-
-              const total =
-                adventure +
-                videography +
-                restaurantCamping;
-
-
-              const entryRow =
-                document.createElement(
-                  'div'
-                );
-
-              entryRow.className =
-                'entry-row';
-
-
-              const canEdit =
-                isWithinLastSevenDays(
-                  record.business_date
-                );
-
-
-              entryRow.innerHTML = `
-
-                <div class="entry-top">
-
-                  <div class="entry-number">
-                    Entry ${index + 1}
-                  </div>
-
-                  <button
-                    type="button"
-                    class="edit-button"
-                    data-id="${record.id}"
-                    ${canEdit ? '' : 'disabled'}
-                  >
-                    ${canEdit ? 'EDIT' : 'LOCKED'}
-                  </button>
-
-                </div>
-
-
-                <div class="entry-grid">
-
-                  <div class="entry-item">
-
-                    <div class="entry-label">
-                      Adventure
-                    </div>
-
-                    <div class="entry-value">
-                      ${formatMoney(adventure)}
-                    </div>
-
-                  </div>
-
-
-                  <div class="entry-item">
-
-                    <div class="entry-label">
-                      Videography
-                    </div>
-
-                    <div class="entry-value">
-                      ${formatMoney(videography)}
-                    </div>
-
-                  </div>
-
-
-                  <div class="entry-item">
-
-                    <div class="entry-label">
-                      Restaurant/Camping
-                    </div>
-
-                    <div class="entry-value">
-                      ${formatMoney(restaurantCamping)}
-                    </div>
-
-                  </div>
-
-
-                  <div class="entry-item">
-
-                    <div class="entry-label">
-                      Footfall
-                    </div>
-
-                    <div class="entry-value footfall-value">
-                      ${formatNumber(footfall)}
-                    </div>
-
-                  </div>
-
-
-                  <div class="entry-item">
-
-                    <div class="entry-label">
-                      Total Sales
-                    </div>
-
-                    <div class="entry-value sales-total">
-                      ${formatMoney(total)}
-                    </div>
-
-                  </div>
-
-                </div>
-
-              `;
-
-
-              dayGroup.appendChild(
-                entryRow
-              );
-
-
-              const editButton =
-                entryRow.querySelector(
-                  '.edit-button'
-                );
-
-
-              if (
-                editButton &&
-                canEdit
-              ) {
-
-                editButton.addEventListener(
-                  'click',
-                  function() {
-
-                    startEditing(
-                      record.id
-                    );
-
-                  }
-                );
-
-              }
-
-            }
-          );
-
-
-          recordsBody.appendChild(
-            dayGroup
-          );
-
-        }
-      );
-
+function renderGroupedRecords() {
+  recordsBody.innerHTML = '';
+  emptyState.style.display = 'none';
+
+  if (records.length === 0) {
+    emptyState.style.display = 'block';
+    return;
+  }
+
+  /*
+   * Group records by business date.
+   */
+  const grouped = {};
+
+  records.forEach(function(record) {
+    const date = record.business_date;
+
+    if (!grouped[date]) {
+      grouped[date] = [];
     }
 
+    grouped[date].push(record);
+  });
+
+  const dates = Object.keys(grouped)
+    .sort()
+    .reverse();
+
+  dates.forEach(function(date) {
+
+    const dayRecords = grouped[date];
+
+    let dayAdventure = 0;
+    let dayVideography = 0;
+    let dayRestaurant = 0;
+
+    /*
+     * IMPORTANT:
+     * Footfall is a DAILY figure.
+     *
+     * Multiple sales entries for the same date
+     * must NOT multiply the footfall.
+     *
+     * We use the highest recorded footfall value
+     * for that date.
+     */
+    let dayFootfall = 0;
+
+    dayRecords.forEach(function(record) {
+
+      dayAdventure +=
+        Number(record.adventure_sales) || 0;
+
+      dayVideography +=
+        Number(record.videography_sales) || 0;
+
+      dayRestaurant +=
+        Number(record.restaurant_camping_sales) || 0;
+
+      const recordFootfall =
+        Number(record.total_footfall) || 0;
+
+      if (recordFootfall > dayFootfall) {
+        dayFootfall = recordFootfall;
+      }
+    });
+
+    const daySales =
+      dayAdventure +
+      dayVideography +
+      dayRestaurant;
+
+    const dayGroup =
+      document.createElement('div');
+
+    dayGroup.className = 'day-group';
+
+    /* =====================================================
+       DAY HEADER
+       ===================================================== */
+
+    const dayHeader =
+      document.createElement('div');
+
+    dayHeader.className = 'day-header';
+
+    dayHeader.innerHTML = `
+      <div>
+        <div class="day-title">
+          ${formatDate(date)}
+        </div>
+
+        <div class="day-subtitle">
+          ${dayRecords.length}
+          ${dayRecords.length === 1 ? 'entry' : 'entries'}
+        </div>
+      </div>
+
+      <div class="day-total">
+        <div class="day-total-label">
+          Daily Sales
+        </div>
+
+        <div class="day-total-value">
+          ${formatMoney(daySales)}
+        </div>
+
+        <div class="day-footfall">
+          ${formatNumber(dayFootfall)}
+          visitors
+        </div>
+      </div>
+    `;
+
+    dayGroup.appendChild(dayHeader);
+
+    /* =====================================================
+       INDIVIDUAL ENTRIES
+       ===================================================== */
+
+    dayRecords.forEach(function(record, index) {
+
+      const adventure =
+        Number(record.adventure_sales) || 0;
+
+      const videography =
+        Number(record.videography_sales) || 0;
+
+      const restaurantCamping =
+        Number(record.restaurant_camping_sales) || 0;
+
+      const total =
+        adventure +
+        videography +
+        restaurantCamping;
+
+      const entryRow =
+        document.createElement('div');
+
+      entryRow.className = 'entry-row';
+
+      const canEdit =
+        isWithinLastSevenDays(
+          record.business_date
+        );
+
+      entryRow.innerHTML = `
+        <div class="entry-top">
+
+          <div class="entry-number">
+            Entry ${index + 1}
+          </div>
+
+          <button
+            type="button"
+            class="edit-button"
+            data-id="${record.id}"
+            ${canEdit ? '' : 'disabled'}
+          >
+            ${canEdit ? 'EDIT' : 'LOCKED'}
+          </button>
+
+        </div>
+
+        <div class="entry-grid">
+
+          <div class="entry-item">
+            <div class="entry-label">
+              Adventure
+            </div>
+
+            <div class="entry-value">
+              ${formatMoney(adventure)}
+            </div>
+          </div>
+
+          <div class="entry-item">
+            <div class="entry-label">
+              Videography
+            </div>
+
+            <div class="entry-value">
+              ${formatMoney(videography)}
+            </div>
+          </div>
+
+          <div class="entry-item">
+            <div class="entry-label">
+              Restaurant/Camping
+            </div>
+
+            <div class="entry-value">
+              ${formatMoney(restaurantCamping)}
+            </div>
+          </div>
+
+          <div class="entry-item">
+            <div class="entry-label">
+              Total Sales
+            </div>
+
+            <div class="entry-value sales-total">
+              ${formatMoney(total)}
+            </div>
+          </div>
+
+        </div>
+      `;
+
+      dayGroup.appendChild(entryRow);
+
+      const editButton =
+        entryRow.querySelector('.edit-button');
+
+      if (editButton && canEdit) {
+
+        editButton.addEventListener(
+          'click',
+          function() {
+            startEditing(record.id);
+          }
+        );
+      }
+    });
+
+    /* =====================================================
+       ADD ANOTHER ENTRY BUTTON
+       ===================================================== */
+
+    if (
+      isWithinLastSevenDays(date)
+    ) {
+
+      const addButton =
+        document.createElement('button');
+
+      addButton.type = 'button';
+
+      addButton.className =
+        'add-entry-button';
+
+      addButton.textContent =
+        '+ ADD ANOTHER ENTRY';
+
+      addButton.addEventListener(
+        'click',
+        function() {
+
+          startAddingAnotherEntry(
+            date,
+            dayFootfall
+          );
+
+        }
+      );
+
+      dayGroup.appendChild(addButton);
+    }
+
+    recordsBody.appendChild(dayGroup);
+  });
+}
+/* =======================================================
+   ADD ANOTHER ENTRY FOR EXISTING DATE
+   ======================================================= */
+
+function startAddingAnotherEntry(
+  date,
+  existingFootfall
+) {
+
+  /*
+   * Make sure we are not accidentally editing
+   * an existing record.
+   */
+  editingId = null;
+
+  dateInput.value = date;
+
+  /*
+   * Keep the existing daily footfall visible.
+   * It is stored again with the new row, but the
+   * dashboard uses the daily maximum rather than
+   * adding duplicate footfall values together.
+   */
+  footfallInput.value =
+    existingFootfall || 0;
+
+  /*
+   * Start the new sales entry at zero.
+   */
+  adventureInput.value = 0;
+
+  videographyInput.value = 0;
+
+  restaurantCampingInput.value = 0;
+
+  calculateTotal();
+
+  formTitle.textContent =
+    'Add Another Entry';
+
+  saveButton.textContent =
+    'SAVE ADDITIONAL ENTRY';
+
+  cancelButton.classList.add(
+    'show'
+  );
+
+  duplicateWarning.classList.add(
+    'show'
+  );
+
+  clearMessage();
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+
+  /*
+   * Put the cursor into Adventure Sales
+   * so staff can immediately start entering
+   * the new sales amount.
+   */
+  setTimeout(function() {
+    adventureInput.focus();
+  }, 400);
+} 
 
     /* =======================================================
        UPDATE STAT CARDS
        ======================================================= */
+function updateStats() {
 
-    function updateStats() {
+  const today =
+    getLocalDateString();
 
-      const today =
-        getLocalDateString();
+  let todaySalesTotal = 0;
 
+  let todayFootfallTotal = 0;
 
-      let todaySalesTotal =
-        0;
+  let sevenDaySalesTotal = 0;
 
-      let todayFootfallTotal =
-        0;
+  /*
+   * Group today's records so footfall is counted
+   * once for the day, even when there are
+   * multiple sales entries.
+   */
 
-      let sevenDaySalesTotal =
-        0;
+  const todayRecords =
+    records.filter(function(record) {
+      return record.business_date === today;
+    });
 
+  records.forEach(function(record) {
 
-      records.forEach(
-        function(record) {
+    const sales =
+      (
+        Number(record.adventure_sales) || 0
+      ) +
 
-          const sales =
-            (
-              Number(
-                record.adventure_sales
-              ) || 0
-            ) +
+      (
+        Number(record.videography_sales) || 0
+      ) +
 
-            (
-              Number(
-                record.videography_sales
-              ) || 0
-            ) +
-
-            (
-              Number(
-                record.restaurant_camping_sales
-              ) || 0
-            );
-
-
-          const footfall =
-            Number(
-              record.total_footfall
-            ) || 0;
-
-
-          sevenDaySalesTotal +=
-            sales;
-
-
-          if (
-            record.business_date ===
-            today
-          ) {
-
-            todaySalesTotal +=
-              sales;
-
-            todayFootfallTotal +=
-              footfall;
-
-          }
-
-        }
+      (
+        Number(record.restaurant_camping_sales) || 0
       );
 
+    sevenDaySalesTotal += sales;
+  });
 
-      todaySales.textContent =
-        formatMoney(
-          todaySalesTotal
-        );
+  /*
+   * Today's sales = all entries for today.
+   */
 
+  todayRecords.forEach(function(record) {
 
-      todayFootfall.textContent =
-        formatNumber(
-          todayFootfallTotal
-        );
+    const sales =
+      (
+        Number(record.adventure_sales) || 0
+      ) +
 
+      (
+        Number(record.videography_sales) || 0
+      ) +
 
-      sevenDaySales.textContent =
-        formatMoney(
-          sevenDaySalesTotal
-        );
+      (
+        Number(record.restaurant_camping_sales) || 0
+      );
 
+    todaySalesTotal += sales;
+
+    /*
+     * Footfall is a daily number.
+     * Use the highest value rather than
+     * adding duplicate entries.
+     */
+
+    const footfall =
+      Number(record.total_footfall) || 0;
+
+    if (
+      footfall > todayFootfallTotal
+    ) {
+      todayFootfallTotal =
+        footfall;
     }
+  });
 
+  todaySales.textContent =
+    formatMoney(
+      todaySalesTotal
+    );
 
+  todayFootfall.textContent =
+    formatNumber(
+      todayFootfallTotal
+    );
+
+  sevenDaySales.textContent =
+    formatMoney(
+      sevenDaySalesTotal
+    );
+}
     /* =======================================================
        START EDITING
        ======================================================= */

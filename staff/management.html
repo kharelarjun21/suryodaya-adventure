@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -13,7 +15,9 @@
     content="noindex, nofollow"
   >
 
-  <title>Management Dashboard | Suryodaya Adventures</title>
+  <title>
+    Management Dashboard | Suryodaya Adventures
+  </title>
 
   <link
     rel="icon"
@@ -21,9 +25,15 @@
     href="../Logo.png"
   >
 
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
   <style>
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
 
     * {
       box-sizing: border-box;
@@ -31,9 +41,12 @@
       padding: 0;
     }
 
+
     :root {
+
       --forest: #173F35;
       --forest-light: #1F5745;
+
       --orange: #E85D04;
       --gold: #FFB703;
 
@@ -52,129 +65,201 @@
       --soft-red: #FDECEC;
 
       --background: #F4F7F4;
+
     }
 
+
     body {
+
       min-height: 100vh;
 
       font-family:
-        "Plus Jakarta Sans",
         Arial,
         Helvetica,
         sans-serif;
 
-      background: var(--background);
+      background:
+        var(--background);
 
-      color: var(--text);
+      color:
+        var(--text);
+
     }
+
 
     /* =========================================================
        HEADER
        ========================================================= */
 
     .header {
-      background: var(--forest);
 
-      color: white;
+      background:
+        var(--forest);
 
-      padding: 15px 24px;
+      color:
+        white;
+
+      padding:
+        15px 24px;
 
       box-shadow:
-        0 3px 14px rgba(0,0,0,0.12);
+        0 3px 14px
+        rgba(0,0,0,0.12);
+
     }
+
 
     .header-inner {
-      width: min(
-        1250px,
-        calc(100% - 20px)
-      );
 
-      margin: 0 auto;
+      width:
+        min(
+          1250px,
+          calc(100% - 20px)
+        );
 
-      display: flex;
+      margin:
+        0 auto;
 
-      justify-content: space-between;
+      display:
+        flex;
 
-      align-items: center;
+      justify-content:
+        space-between;
 
-      gap: 20px;
+      align-items:
+        center;
+
+      gap:
+        20px;
+
     }
+
 
     .brand {
-      display: flex;
 
-      align-items: center;
+      display:
+        flex;
 
-      gap: 12px;
+      align-items:
+        center;
+
+      gap:
+        12px;
+
     }
+
 
     .brand img {
-      width: 48px;
-      height: 48px;
 
-      object-fit: contain;
+      width:
+        48px;
 
-      background: white;
+      height:
+        48px;
 
-      border-radius: 50%;
+      object-fit:
+        contain;
 
-      padding: 4px;
+      background:
+        white;
+
+      border-radius:
+        50%;
+
+      padding:
+        4px;
+
     }
 
+
     .brand h1 {
+
       font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-      font-size: 22px;
+      font-size:
+        22px;
 
-      line-height: 1.1;
+      line-height:
+        1.1;
+
     }
+
 
     .brand p {
-      font-size: 10px;
 
-      opacity: 0.75;
+      font-size:
+        10px;
 
-      margin-top: 4px;
+      opacity:
+        0.75;
 
-      letter-spacing: 0.5px;
+      margin-top:
+        4px;
+
+      letter-spacing:
+        0.5px;
+
     }
+
 
     .header-actions {
-      display: flex;
 
-      align-items: center;
+      display:
+        flex;
 
-      gap: 10px;
+      align-items:
+        center;
+
+      gap:
+        10px;
+
     }
+
 
     .header-button {
+
       border:
-        1px solid rgba(255,255,255,0.3);
+        1px solid
+        rgba(255,255,255,0.3);
 
-      background: transparent;
+      background:
+        transparent;
 
-      color: white;
+      color:
+        white;
 
-      padding: 9px 13px;
+      padding:
+        9px 13px;
 
-      border-radius: 7px;
+      border-radius:
+        7px;
 
-      font-size: 12px;
+      font-size:
+        12px;
 
-      font-weight: 800;
+      font-weight:
+        800;
 
-      cursor: pointer;
+      cursor:
+        pointer;
 
-      text-decoration: none;
+      text-decoration:
+        none;
+
     }
 
-    .header-button:hover {
-      background: white;
 
-      color: var(--forest);
+    .header-button:hover {
+
+      background:
+        white;
+
+      color:
+        var(--forest);
+
     }
 
 
@@ -183,60 +268,92 @@
        ========================================================= */
 
     .container {
-      width: min(
-        1250px,
-        calc(100% - 32px)
-      );
 
-      margin: 0 auto;
+      width:
+        min(
+          1250px,
+          calc(100% - 32px)
+        );
+
+      margin:
+        0 auto;
+
     }
 
+
     main {
-      padding: 30px 0 60px;
+
+      padding:
+        30px 0 60px;
+
     }
 
 
     /* =========================================================
-       PAGE HEADER
+       PAGE HEADING
        ========================================================= */
 
     .page-heading {
-      margin-bottom: 24px;
+
+      margin-bottom:
+        24px;
+
     }
+
 
     .eyebrow {
-      color: var(--orange);
 
-      font-size: 11px;
+      color:
+        var(--orange);
 
-      font-weight: 900;
+      font-size:
+        11px;
 
-      letter-spacing: 1.5px;
+      font-weight:
+        900;
 
-      text-transform: uppercase;
+      letter-spacing:
+        1.5px;
 
-      margin-bottom: 6px;
+      text-transform:
+        uppercase;
+
+      margin-bottom:
+        6px;
+
     }
 
+
     .page-heading h2 {
+
       font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-      font-size: 31px;
+      font-size:
+        31px;
 
-      line-height: 1.2;
+      line-height:
+        1.2;
 
-      color: var(--forest);
+      color:
+        var(--forest);
+
     }
 
+
     .page-heading p {
-      margin-top: 6px;
 
-      color: var(--muted);
+      margin-top:
+        6px;
 
-      font-size: 13px;
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
     }
 
 
@@ -245,45 +362,66 @@
        ========================================================= */
 
     .loading {
-      background: white;
+
+      background:
+        white;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
-      border-radius: 12px;
+      border-radius:
+        12px;
 
-      padding: 30px;
+      padding:
+        30px;
 
-      text-align: center;
+      text-align:
+        center;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      margin-bottom: 20px;
+      margin-bottom:
+        20px;
+
     }
 
+
     .spinner {
-      width: 25px;
-      height: 25px;
+
+      width:
+        25px;
+
+      height:
+        25px;
 
       border:
-        3px solid #DDE6E1;
+        3px solid
+        #DDE6E1;
 
       border-top-color:
         var(--orange);
 
-      border-radius: 50%;
+      border-radius:
+        50%;
 
       animation:
         spin 0.8s linear infinite;
 
       margin:
         0 auto 12px;
+
     }
 
+
     @keyframes spin {
+
       to {
-        transform: rotate(360deg);
+        transform:
+          rotate(360deg);
       }
+
     }
 
 
@@ -292,233 +430,390 @@
        ========================================================= */
 
     .message {
-      display: none;
 
-      padding: 13px 15px;
+      display:
+        none;
 
-      border-radius: 9px;
+      padding:
+        13px 15px;
 
-      margin-bottom: 20px;
+      border-radius:
+        9px;
 
-      font-size: 12px;
+      margin-bottom:
+        20px;
 
-      line-height: 1.5;
+      font-size:
+        12px;
+
+      line-height:
+        1.5;
+
     }
+
 
     .message.show {
-      display: block;
+
+      display:
+        block;
+
     }
+
 
     .message.error {
-      background: var(--soft-red);
+
+      background:
+        var(--soft-red);
 
       border:
-        1px solid #F5C7C4;
+        1px solid
+        #F5C7C4;
 
-      color: var(--danger);
+      color:
+        var(--danger);
+
     }
 
+
     .message.success {
-      background: var(--soft-green);
+
+      background:
+        var(--soft-green);
 
       border:
-        1px solid #BFE3CD;
+        1px solid
+        #BFE3CD;
 
-      color: var(--success);
+      color:
+        var(--success);
+
+    }
+
+
+    .message.warning {
+
+      background:
+        #FFF8E6;
+
+      border:
+        1px solid
+        #F3D58A;
+
+      color:
+        #8A5A00;
+
     }
 
 
     /* =========================================================
-       STAT CARDS
+       STATS
        ========================================================= */
 
     .stats {
-      display: grid;
+
+      display:
+        grid;
 
       grid-template-columns:
         repeat(4, 1fr);
 
-      gap: 15px;
+      gap:
+        15px;
 
-      margin-bottom: 24px;
+      margin-bottom:
+        24px;
+
     }
 
+
     .stat-card {
-      background: white;
+
+      background:
+        white;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
-      border-radius: 12px;
+      border-radius:
+        12px;
 
-      padding: 19px;
+      padding:
+        19px;
 
       box-shadow:
         0 4px 16px
         rgba(23,63,53,0.05);
+
     }
+
 
     .stat-label {
-      color: var(--muted);
 
-      font-size: 10px;
+      color:
+        var(--muted);
 
-      font-weight: 800;
+      font-size:
+        10px;
 
-      text-transform: uppercase;
+      font-weight:
+        800;
 
-      letter-spacing: 0.7px;
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.7px;
+
     }
+
 
     .stat-value {
-      margin-top: 7px;
 
-      color: var(--forest);
+      margin-top:
+        7px;
 
-      font-size: 25px;
+      color:
+        var(--forest);
 
-      font-weight: 900;
+      font-size:
+        25px;
+
+      font-weight:
+        900;
+
     }
+
 
     .stat-value.orange {
-      color: var(--orange);
+
+      color:
+        var(--orange);
+
     }
+
 
     .stat-value.green {
-      color: var(--success);
+
+      color:
+        var(--success);
+
     }
 
+
     .stat-note {
-      margin-top: 5px;
 
-      color: var(--muted);
+      margin-top:
+        5px;
 
-      font-size: 10px;
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
     }
 
 
     /* =========================================================
-       CONTROL BAR
+       CONTROLS
        ========================================================= */
 
     .control-card {
-      background: white;
+
+      background:
+        white;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
-      border-radius: 12px;
+      border-radius:
+        12px;
 
-      padding: 17px;
+      padding:
+        17px;
 
-      margin-bottom: 20px;
+      margin-bottom:
+        20px;
 
-      display: flex;
+      display:
+        flex;
 
-      justify-content: space-between;
+      justify-content:
+        space-between;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 15px;
+      gap:
+        15px;
 
-      flex-wrap: wrap;
+      flex-wrap:
+        wrap;
+
     }
+
 
     .month-control {
-      display: flex;
 
-      align-items: center;
+      display:
+        flex;
 
-      gap: 10px;
+      align-items:
+        center;
+
+      gap:
+        10px;
+
     }
+
 
     .month-control label {
-      color: var(--forest);
 
-      font-size: 12px;
+      color:
+        var(--forest);
 
-      font-weight: 800;
+      font-size:
+        12px;
+
+      font-weight:
+        800;
+
     }
 
+
     select {
-      height: 42px;
+
+      height:
+        42px;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
-      border-radius: 8px;
+      border-radius:
+        8px;
 
       padding:
         0 35px 0 12px;
 
-      background: white;
+      background:
+        white;
 
-      color: var(--text);
+      color:
+        var(--text);
 
-      font-size: 13px;
+      font-size:
+        13px;
 
-      font-weight: 700;
+      font-weight:
+        700;
 
-      outline: none;
+      outline:
+        none;
+
     }
+
 
     select:focus {
+
       border-color:
         var(--forest-light);
+
     }
+
 
     .export-actions {
-      display: flex;
 
-      gap: 9px;
+      display:
+        flex;
 
-      flex-wrap: wrap;
+      gap:
+        9px;
+
+      flex-wrap:
+        wrap;
+
     }
 
+
     .button {
-      height: 42px;
 
-      border: none;
+      height:
+        42px;
 
-      border-radius: 8px;
+      border:
+        none;
+
+      border-radius:
+        8px;
 
       padding:
         0 15px;
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      font-weight: 900;
+      font-weight:
+        900;
 
-      cursor: pointer;
+      cursor:
+        pointer;
+
     }
+
 
     .button-primary {
-      background: var(--orange);
 
-      color: white;
+      background:
+        var(--orange);
+
+      color:
+        white;
+
     }
+
 
     .button-primary:hover {
-      background: #D94F00;
+
+      background:
+        #D94F00;
+
     }
+
 
     .button-secondary {
-      background: var(--forest);
 
-      color: white;
+      background:
+        var(--forest);
+
+      color:
+        white;
+
     }
+
 
     .button-secondary:hover {
-      background: var(--forest-light);
+
+      background:
+        var(--forest-light);
+
     }
 
-    .button-light {
-      background: white;
 
-      color: var(--forest);
+    .button-light {
+
+      background:
+        white;
+
+      color:
+        var(--forest);
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
+
     }
 
 
@@ -527,198 +822,293 @@
        ========================================================= */
 
     .card {
-      background: white;
+
+      background:
+        white;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
-      border-radius: 13px;
+      border-radius:
+        13px;
 
-      overflow: hidden;
+      overflow:
+        hidden;
 
       box-shadow:
         0 4px 16px
         rgba(23,63,53,0.05);
 
-      margin-bottom: 22px;
+      margin-bottom:
+        22px;
+
     }
+
 
     .card-header {
-      padding: 18px 20px;
+
+      padding:
+        18px 20px;
 
       border-bottom:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
-      display: flex;
+      display:
+        flex;
 
-      justify-content: space-between;
+      justify-content:
+        space-between;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 15px;
+      gap:
+        15px;
+
     }
 
+
     .card-header h3 {
+
       font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-      color: var(--forest);
+      color:
+        var(--forest);
 
-      font-size: 20px;
+      font-size:
+        20px;
+
     }
 
+
     .card-header p {
-      color: var(--muted);
 
-      font-size: 11px;
+      color:
+        var(--muted);
 
-      margin-top: 4px;
+      font-size:
+        11px;
+
+      margin-top:
+        4px;
+
     }
 
 
     /* =========================================================
-       MONTHLY SUMMARY
+       TABLE
        ========================================================= */
 
     .table-wrapper {
-      overflow-x: auto;
+
+      overflow-x:
+        auto;
+
     }
+
 
     table {
-      width: 100%;
 
-      border-collapse: collapse;
+      width:
+        100%;
 
-      min-width: 650px;
+      border-collapse:
+        collapse;
+
+      min-width:
+        650px;
+
     }
+
 
     th {
-      background: #F4F7F4;
 
-      color: var(--muted);
+      background:
+        #F4F7F4;
 
-      text-align: left;
+      color:
+        var(--muted);
 
-      padding: 12px 15px;
+      text-align:
+        left;
 
-      font-size: 10px;
+      padding:
+        12px 15px;
 
-      font-weight: 900;
+      font-size:
+        10px;
 
-      text-transform: uppercase;
+      font-weight:
+        900;
 
-      letter-spacing: 0.5px;
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        0.5px;
 
       border-bottom:
-        1px solid var(--border);
+        1px solid
+        var(--border);
+
     }
+
 
     td {
-      padding: 13px 15px;
+
+      padding:
+        13px 15px;
 
       border-bottom:
-        1px solid #EDF1EE;
+        1px solid
+        #EDF1EE;
 
-      font-size: 12px;
+      font-size:
+        12px;
 
-      color: var(--text);
+      color:
+        var(--text);
+
     }
+
 
     tr:last-child td {
-      border-bottom: none;
+
+      border-bottom:
+        none;
+
     }
+
 
     .amount {
-      font-weight: 900;
 
-      color: var(--orange);
+      font-weight:
+        900;
+
+      color:
+        var(--orange);
+
     }
+
 
     .month-row {
-      cursor: pointer;
+
+      cursor:
+        pointer;
+
     }
+
 
     .month-row:hover {
-      background: #FAFCFA;
+
+      background:
+        #FAFCFA;
+
     }
+
 
     .selected-month {
-      background: var(--soft-green) !important;
+
+      background:
+        var(--soft-green) !important;
+
     }
 
-
-    /* =========================================================
-       SALES TABLE
-       ========================================================= */
-
-    .records-header {
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      gap: 15px;
-
-      flex-wrap: wrap;
-    }
-
-    .record-count {
-      color: var(--muted);
-
-      font-size: 11px;
-    }
-
-    .empty {
-      padding: 45px 20px;
-
-      text-align: center;
-
-      color: var(--muted);
-
-      font-size: 13px;
-    }
 
     .sale-date {
-      font-weight: 800;
+
+      font-weight:
+        800;
+
     }
 
-    .footfall {
-      color: var(--success);
 
-      font-weight: 800;
+    .footfall {
+
+      color:
+        var(--success);
+
+      font-weight:
+        800;
+
+    }
+
+
+    .empty {
+
+      padding:
+        45px 20px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+    }
+
+
+    .record-count {
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
     }
 
 
     /* =========================================================
-       RAW DETAILS
+       DETAILS BUTTON
        ========================================================= */
 
     .details-button {
+
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
-      background: white;
+      background:
+        white;
 
-      color: var(--forest);
+      color:
+        var(--forest);
 
-      border-radius: 6px;
+      border-radius:
+        6px;
 
-      padding: 6px 9px;
+      padding:
+        6px 9px;
 
-      font-size: 10px;
+      font-size:
+        10px;
 
-      font-weight: 800;
+      font-weight:
+        800;
 
-      cursor: pointer;
+      cursor:
+        pointer;
+
     }
 
-    .details-button:hover {
-      background: var(--forest);
 
-      color: white;
+    .details-button:hover {
+
+      background:
+        var(--forest);
+
+      color:
+        white;
+
     }
 
 
@@ -727,116 +1117,186 @@
        ========================================================= */
 
     .modal {
-      position: fixed;
 
-      inset: 0;
+      position:
+        fixed;
+
+      inset:
+        0;
 
       background:
         rgba(0,0,0,0.45);
 
-      display: none;
+      display:
+        none;
 
-      align-items: center;
+      align-items:
+        center;
 
-      justify-content: center;
+      justify-content:
+        center;
 
-      padding: 20px;
+      padding:
+        20px;
 
-      z-index: 1000;
+      z-index:
+        1000;
+
     }
+
 
     .modal.show {
-      display: flex;
+
+      display:
+        flex;
+
     }
+
 
     .modal-card {
-      width: min(
-        800px,
-        100%
-      );
 
-      max-height: 85vh;
+      width:
+        min(
+          800px,
+          100%
+        );
 
-      overflow: auto;
+      max-height:
+        85vh;
 
-      background: white;
+      overflow:
+        auto;
 
-      border-radius: 14px;
+      background:
+        white;
+
+      border-radius:
+        14px;
+
     }
+
 
     .modal-header {
-      padding: 18px;
+
+      padding:
+        18px;
 
       border-bottom:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
-      display: flex;
+      display:
+        flex;
 
-      justify-content: space-between;
+      justify-content:
+        space-between;
 
-      align-items: center;
+      align-items:
+        center;
+
     }
 
+
     .modal-header h3 {
-      color: var(--forest);
+
+      color:
+        var(--forest);
 
       font-family:
         Georgia,
         "Times New Roman",
         serif;
+
     }
+
 
     .close-modal {
-      border: none;
 
-      background: transparent;
+      border:
+        none;
 
-      font-size: 22px;
+      background:
+        transparent;
 
-      cursor: pointer;
+      font-size:
+        22px;
 
-      color: var(--muted);
+      cursor:
+        pointer;
+
+      color:
+        var(--muted);
+
     }
+
 
     .modal-body {
-      padding: 18px;
+
+      padding:
+        18px;
+
     }
 
+
     .detail-grid {
-      display: grid;
+
+      display:
+        grid;
 
       grid-template-columns:
         repeat(2, 1fr);
 
-      gap: 10px;
+      gap:
+        10px;
+
     }
+
 
     .detail-item {
-      background: #F4F7F4;
 
-      border-radius: 8px;
+      background:
+        #F4F7F4;
 
-      padding: 11px;
+      border-radius:
+        8px;
+
+      padding:
+        11px;
+
     }
+
 
     .detail-label {
-      color: var(--muted);
 
-      font-size: 9px;
+      color:
+        var(--muted);
 
-      font-weight: 900;
+      font-size:
+        9px;
 
-      text-transform: uppercase;
+      font-weight:
+        900;
 
-      margin-bottom: 4px;
+      text-transform:
+        uppercase;
+
+      margin-bottom:
+        4px;
+
     }
 
+
     .detail-value {
-      color: var(--text);
 
-      font-size: 12px;
+      color:
+        var(--text);
 
-      word-break: break-word;
+      font-size:
+        12px;
+
+      word-break:
+        break-word;
+
     }
 
 
@@ -847,96 +1307,170 @@
     @media (max-width: 900px) {
 
       .stats {
+
         grid-template-columns:
           repeat(2, 1fr);
+
       }
 
     }
 
+
     @media (max-width: 600px) {
 
       .header {
-        padding: 12px 15px;
+
+        padding:
+          12px 15px;
+
       }
+
 
       .header-inner {
-        align-items: flex-start;
+
+        align-items:
+          flex-start;
+
       }
+
 
       .brand h1 {
-        font-size: 18px;
+
+        font-size:
+          18px;
+
       }
+
 
       .header-actions {
-        flex-direction: column;
-        align-items: stretch;
+
+        flex-direction:
+          column;
+
+        align-items:
+          stretch;
+
       }
+
 
       .header-button {
-        padding: 7px 10px;
+
+        padding:
+          7px 10px;
+
       }
+
 
       .container {
+
         width:
           calc(100% - 22px);
+
       }
+
 
       main {
-        padding-top: 22px;
+
+        padding-top:
+          22px;
+
       }
+
 
       .page-heading h2 {
-        font-size: 26px;
+
+        font-size:
+          26px;
+
       }
+
 
       .stats {
-        grid-template-columns: 1fr 1fr;
 
-        gap: 10px;
+        grid-template-columns:
+          1fr 1fr;
+
+        gap:
+          10px;
+
       }
+
 
       .stat-card {
-        padding: 15px;
+
+        padding:
+          15px;
+
       }
+
 
       .stat-value {
-        font-size: 21px;
+
+        font-size:
+          21px;
+
       }
+
 
       .control-card {
-        align-items: stretch;
+
+        align-items:
+          stretch;
+
       }
 
+
       .month-control {
-        width: 100%;
+
+        width:
+          100%;
 
         justify-content:
           space-between;
+
       }
+
 
       .month-control select {
-        flex: 1;
+
+        flex:
+          1;
+
       }
+
 
       .export-actions {
-        width: 100%;
+
+        width:
+          100%;
+
       }
+
 
       .export-actions .button {
-        flex: 1;
+
+        flex:
+          1;
+
       }
 
+
       .detail-grid {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+          1fr;
+
       }
 
     }
 
   </style>
+
 </head>
 
 
 <body>
+
 
   <!-- =======================================================
        HEADER
@@ -946,6 +1480,7 @@
 
     <div class="header-inner">
 
+
       <div class="brand">
 
         <img
@@ -954,11 +1489,15 @@
         >
 
         <div>
-          <h1>Suryodaya Adventures</h1>
+
+          <h1>
+            Suryodaya Adventures
+          </h1>
 
           <p>
             MANAGEMENT PORTAL
           </p>
+
         </div>
 
       </div>
@@ -974,6 +1513,7 @@
         </a>
 
         <button
+          type="button"
           class="header-button"
           id="logout-button"
         >
@@ -982,9 +1522,11 @@
 
       </div>
 
+
     </div>
 
   </header>
+
 
 
   <!-- =======================================================
@@ -994,6 +1536,7 @@
   <main>
 
     <div class="container">
+
 
       <div class="page-heading">
 
@@ -1013,9 +1556,8 @@
       </div>
 
 
-      <!-- ===================================================
-           MESSAGE
-           =================================================== -->
+
+      <!-- MESSAGE -->
 
       <div
         id="message"
@@ -1023,9 +1565,8 @@
       ></div>
 
 
-      <!-- ===================================================
-           LOADING
-           =================================================== -->
+
+      <!-- LOADING -->
 
       <div
         id="loading"
@@ -1034,16 +1575,22 @@
 
         <div class="spinner"></div>
 
-        Loading sales records...
+        <div id="loading-text">
+          Verifying management access...
+        </div>
 
       </div>
+
 
 
       <!-- ===================================================
            DASHBOARD
            =================================================== -->
 
-      <section id="dashboard" style="display:none;">
+      <section
+        id="dashboard"
+        style="display:none;"
+      >
 
 
         <!-- =================================================
@@ -1073,6 +1620,7 @@
           </div>
 
 
+
           <div class="stat-card">
 
             <div class="stat-label">
@@ -1096,6 +1644,7 @@
           </div>
 
 
+
           <div class="stat-card">
 
             <div class="stat-label">
@@ -1114,6 +1663,7 @@
             </div>
 
           </div>
+
 
 
           <div class="stat-card">
@@ -1135,7 +1685,9 @@
 
           </div>
 
+
         </div>
+
 
 
         <!-- =================================================
@@ -1161,20 +1713,25 @@
           <div class="export-actions">
 
             <button
+              type="button"
               id="export-month"
               class="button button-primary"
             >
               EXPORT SELECTED MONTH CSV
             </button>
 
+
             <button
+              type="button"
               id="export-all"
               class="button button-secondary"
             >
               EXPORT ALL SALES CSV
             </button>
 
+
             <button
+              type="button"
               id="refresh-button"
               class="button button-light"
             >
@@ -1183,7 +1740,9 @@
 
           </div>
 
+
         </div>
+
 
 
         <!-- =================================================
@@ -1191,6 +1750,7 @@
              ================================================= -->
 
         <section class="card">
+
 
           <div class="card-header">
 
@@ -1241,6 +1801,7 @@
 
               </thead>
 
+
               <tbody
                 id="monthly-summary"
               ></tbody>
@@ -1249,22 +1810,25 @@
 
           </div>
 
+
         </section>
 
 
+
         <!-- =================================================
-             SELECTED MONTH RECORDS
+             SALES RECORDS
              ================================================= -->
 
         <section class="card">
 
-          <div class="card-header records-header">
+
+          <div
+            class="card-header records-header"
+          >
 
             <div>
 
-              <h3
-                id="records-title"
-              >
+              <h3 id="records-title">
                 Sales Records
               </h3>
 
@@ -1274,12 +1838,14 @@
 
             </div>
 
+
             <div
               id="record-count"
               class="record-count"
             >
               0 records
             </div>
+
 
           </div>
 
@@ -1312,6 +1878,7 @@
 
               </thead>
 
+
               <tbody
                 id="sales-records"
               ></tbody>
@@ -1320,14 +1887,17 @@
 
           </div>
 
+
         </section>
 
 
       </section>
 
+
     </div>
 
   </main>
+
 
 
   <!-- =======================================================
@@ -1341,6 +1911,7 @@
 
     <div class="modal-card">
 
+
       <div class="modal-header">
 
         <h3>
@@ -1348,6 +1919,7 @@
         </h3>
 
         <button
+          type="button"
           id="close-modal"
           class="close-modal"
         >
@@ -1356,14 +1928,17 @@
 
       </div>
 
+
       <div
         id="modal-body"
         class="modal-body"
       ></div>
 
+
     </div>
 
   </div>
+
 
 
   <!-- =======================================================
@@ -1372,15 +1947,43 @@
 
   <script>
 
+
     /* =======================================================
-       SUPABASE CONFIGURATION
+       SUPABASE
        ======================================================= */
 
     const SUPABASE_URL =
       'https://mvvdfwgjcyayopcsgwvy.supabase.co';
 
+
     const SUPABASE_PUBLISHABLE_KEY =
       'sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4';
+
+
+    const AUTH_STORAGE_KEY =
+      'suryodaya-staff-auth';
+
+
+    /*
+     * IMPORTANT:
+     *
+     * The login page is:
+     *
+     * /staff/index.html
+     *
+     * Therefore every unauthenticated redirect
+     * from this page goes to:
+     *
+     * index.html
+     *
+     * because this file itself is:
+     *
+     * /staff/management.html
+     */
+
+    const LOGIN_PAGE =
+      'index.html';
+
 
 
     /* =======================================================
@@ -1393,21 +1996,26 @@
         SUPABASE_PUBLISHABLE_KEY,
         {
           auth: {
-            persistSession: true,
-            autoRefreshToken: true,
-            detectSessionInUrl: false,
 
-            storage: window.localStorage,
+            persistSession:
+              true,
 
-            /*
-             * IMPORTANT:
-             * This must match the login page.
-             */
+            autoRefreshToken:
+              true,
+
+            detectSessionInUrl:
+              false,
+
+            storage:
+              window.localStorage,
+
             storageKey:
-              'suryodaya-staff-auth'
+              AUTH_STORAGE_KEY
+
           }
         }
       );
+
 
 
     /* =======================================================
@@ -1424,40 +2032,122 @@
 
     let footfallColumn = null;
 
+    let isRedirecting = false;
+
+    let initialLoadComplete = false;
+
+
 
     /* =======================================================
        ELEMENTS
        ======================================================= */
 
     const loading =
-      document.getElementById('loading');
+      document.getElementById(
+        'loading'
+      );
+
+
+    const loadingText =
+      document.getElementById(
+        'loading-text'
+      );
+
 
     const dashboard =
-      document.getElementById('dashboard');
+      document.getElementById(
+        'dashboard'
+      );
+
 
     const message =
-      document.getElementById('message');
+      document.getElementById(
+        'message'
+      );
+
 
     const monthSelect =
-      document.getElementById('month-select');
+      document.getElementById(
+        'month-select'
+      );
+
 
     const monthlySummary =
-      document.getElementById('monthly-summary');
+      document.getElementById(
+        'monthly-summary'
+      );
+
 
     const salesRecords =
-      document.getElementById('sales-records');
+      document.getElementById(
+        'sales-records'
+      );
+
 
     const recordsTitle =
-      document.getElementById('records-title');
+      document.getElementById(
+        'records-title'
+      );
+
 
     const recordCount =
-      document.getElementById('record-count');
+      document.getElementById(
+        'record-count'
+      );
+
 
     const detailsModal =
-      document.getElementById('details-modal');
+      document.getElementById(
+        'details-modal'
+      );
+
 
     const modalBody =
-      document.getElementById('modal-body');
+      document.getElementById(
+        'modal-body'
+      );
+
+
+
+    /* =======================================================
+       REDIRECT TO LOGIN
+       ======================================================= */
+
+    function redirectToLogin() {
+
+      if (isRedirecting) {
+        return;
+      }
+
+      isRedirecting = true;
+
+
+      /*
+       * Hide dashboard immediately.
+       */
+
+      dashboard.style.display =
+        'none';
+
+
+      loading.style.display =
+        'block';
+
+
+      loadingText.textContent =
+        'Session expired. Returning to login...';
+
+
+      /*
+       * Explicitly go to staff/index.html.
+       */
+
+      window.location.replace(
+        LOGIN_PAGE
+      );
+
+    }
+
 
 
     /* =======================================================
@@ -1469,17 +2159,20 @@
       type = 'error'
     ) {
 
-      message.textContent = text;
+      message.textContent =
+        text;
 
       message.className =
-        'message show ' + type;
+        'message show ' +
+        type;
 
     }
 
 
     function clearMessage() {
 
-      message.textContent = '';
+      message.textContent =
+        '';
 
       message.className =
         'message';
@@ -1487,21 +2180,29 @@
     }
 
 
+
     /* =======================================================
-       FORMAT CURRENCY
+       MONEY
        ======================================================= */
 
-    function formatMoney(value) {
+    function formatMoney(
+      value
+    ) {
 
       const number =
         Number(value || 0);
+
 
       return (
         'Rs. ' +
         number.toLocaleString(
           'en-IN',
           {
-            maximumFractionDigits: 2
+            minimumFractionDigits:
+              0,
+
+            maximumFractionDigits:
+              2
           }
         )
       );
@@ -1509,8 +2210,9 @@
     }
 
 
+
     /* =======================================================
-       FIND COLUMN
+       COLUMN DETECTION
        ======================================================= */
 
     function findColumn(
@@ -1522,17 +2224,22 @@
         return null;
       }
 
+
       const keys =
         Object.keys(row);
+
 
       const lowerMap =
         {};
 
+
       keys.forEach(
         key => {
+
           lowerMap[
             key.toLowerCase()
           ] = key;
+
         }
       );
 
@@ -1542,15 +2249,179 @@
         of candidates
       ) {
 
-        if (
+        const found =
           lowerMap[
             candidate.toLowerCase()
+          ];
+
+
+        if (found) {
+          return found;
+        }
+
+      }
+
+
+      return null;
+
+    }
+
+
+
+    /* =======================================================
+       SMART AMOUNT COLUMN DETECTION
+       ======================================================= */
+
+    function detectAmountColumn(
+      row
+    ) {
+
+      if (!row) {
+        return null;
+      }
+
+
+      /*
+       * First try explicit names.
+       */
+
+      const explicit =
+        findColumn(
+          row,
+          [
+
+            'total_amount',
+
+            'total_sales',
+
+            'sales_amount',
+
+            'sale_amount',
+
+            'sales',
+
+            'sale',
+
+            'amount',
+
+            'grand_total',
+
+            'net_total',
+
+            'net_sales',
+
+            'total',
+
+            'revenue',
+
+            'total_revenue',
+
+            'sales_total',
+
+            'daily_sales',
+
+            'daily_sale'
+
           ]
+        );
+
+
+      if (explicit) {
+        return explicit;
+      }
+
+
+      /*
+       * Second pass:
+       *
+       * Find numeric fields whose names
+       * look like financial/sales fields.
+       */
+
+      const keys =
+        Object.keys(row);
+
+
+      for (
+        const key of keys
+      ) {
+
+        const lower =
+          key.toLowerCase();
+
+
+        const value =
+          row[key];
+
+
+        const numeric =
+          Number(value);
+
+
+        const looksLikeAmount =
+          (
+            lower.includes('sale') ||
+            lower.includes('amount') ||
+            lower.includes('revenue') ||
+            lower.includes('total') ||
+            lower.includes('income') ||
+            lower.includes('price')
+          );
+
+
+        if (
+          looksLikeAmount &&
+          Number.isFinite(numeric)
         ) {
 
-          return lowerMap[
-            candidate.toLowerCase()
-          ];
+          return key;
+
+        }
+
+      }
+
+
+      /*
+       * Third pass:
+       *
+       * Numeric fallback.
+       *
+       * Avoid obvious IDs/counts.
+       */
+
+      for (
+        const key of keys
+      ) {
+
+        const lower =
+          key.toLowerCase();
+
+
+        const value =
+          row[key];
+
+
+        const numeric =
+          Number(value);
+
+
+        const excluded =
+          (
+            lower === 'id' ||
+            lower.endsWith('_id') ||
+            lower.includes('count') ||
+            lower.includes('number') ||
+            lower.includes('phone')
+          );
+
+
+        if (
+          !excluded &&
+          Number.isFinite(numeric) &&
+          numeric >= 0
+        ) {
+
+          return key;
 
         }
 
@@ -1562,147 +2433,334 @@
     }
 
 
+
     /* =======================================================
-       DETECT SALES COLUMNS
+       DETECT ALL COLUMNS
        ======================================================= */
 
     function detectColumns() {
 
       if (!allSales.length) {
+
+        dateColumn =
+          null;
+
+        amountColumn =
+          null;
+
+        footfallColumn =
+          null;
+
         return;
+
       }
+
 
       const first =
         allSales[0];
 
 
       /*
-       * Date
+       * DATE
        */
 
       dateColumn =
         findColumn(
           first,
           [
+
             'sale_date',
+
             'sales_date',
+
             'date',
+
             'business_date',
+
             'record_date',
-            'created_at'
+
+            'transaction_date',
+
+            'created_at',
+
+            'created_date'
+
           ]
         );
 
 
       /*
-       * Total sale amount
+       * AMOUNT
        */
 
       amountColumn =
-        findColumn(
-          first,
-          [
-            'total_amount',
-            'total_sales',
-            'sales_amount',
-            'total',
-            'amount',
-            'grand_total',
-            'net_total'
-          ]
+        detectAmountColumn(
+          first
         );
 
 
       /*
-       * Footfall
+       * FOOTFALL
        */
 
       footfallColumn =
         findColumn(
           first,
           [
+
             'footfall',
+
             'visitor_count',
+
             'visitors',
+
             'customers',
+
             'customer_count',
-            'total_visitors'
+
+            'total_visitors',
+
+            'visitor',
+
+            'guest_count',
+
+            'guests'
+
           ]
         );
 
+
+      /*
+       * Console information is useful
+       * if the actual schema differs.
+       */
+
+      console.log(
+        'Management dashboard columns:',
+        {
+          dateColumn,
+          amountColumn,
+          footfallColumn,
+          availableColumns:
+            Object.keys(first)
+        }
+      );
+
     }
 
 
+
     /* =======================================================
-       GET DATE
+       DATE
        ======================================================= */
 
-    function getSaleDate(row) {
+    function getSaleDate(
+      row
+    ) {
 
-      if (!dateColumn) {
+      if (!row) {
         return null;
       }
 
-      const value =
-        row[dateColumn];
 
-      if (!value) {
-        return null;
-      }
-
-      const date =
-        new Date(value);
+      /*
+       * If detected date column exists.
+       */
 
       if (
-        Number.isNaN(
-          date.getTime()
-        )
+        dateColumn &&
+        row[dateColumn]
       ) {
-        return null;
+
+        const date =
+          new Date(
+            row[dateColumn]
+          );
+
+
+        if (
+          !Number.isNaN(
+            date.getTime()
+          )
+        ) {
+
+          return date;
+
+        }
+
       }
 
-      return date;
+
+      /*
+       * Fallback:
+       * inspect date-like fields.
+       */
+
+      const keys =
+        Object.keys(row);
+
+
+      for (
+        const key of keys
+      ) {
+
+        const lower =
+          key.toLowerCase();
+
+
+        if (
+          lower.includes('date') ||
+          lower.includes('created') ||
+          lower.includes('transaction')
+        ) {
+
+          const date =
+            new Date(
+              row[key]
+            );
+
+
+          if (
+            !Number.isNaN(
+              date.getTime()
+            )
+          ) {
+
+            return date;
+
+          }
+
+        }
+
+      }
+
+
+      return null;
 
     }
 
 
+
     /* =======================================================
-       GET AMOUNT
+       AMOUNT
        ======================================================= */
 
-    function getSaleAmount(row) {
+    function getSaleAmount(
+      row
+    ) {
 
-      if (!amountColumn) {
+      if (!row) {
         return 0;
       }
 
-      const value =
-        row[amountColumn];
 
-      const number =
-        Number(value);
+      if (
+        amountColumn &&
+        row[amountColumn] !== null &&
+        row[amountColumn] !== undefined
+      ) {
 
-      return Number.isFinite(number)
-        ? number
-        : 0;
+        const number =
+          Number(
+            String(
+              row[amountColumn]
+            )
+              .replace(/,/g, '')
+              .replace(/[^\d.-]/g, '')
+          );
+
+
+        if (
+          Number.isFinite(number)
+        ) {
+
+          return number;
+
+        }
+
+      }
+
+
+      /*
+       * Dynamic fallback.
+       */
+
+      const keys =
+        Object.keys(row);
+
+
+      for (
+        const key of keys
+      ) {
+
+        const lower =
+          key.toLowerCase();
+
+
+        const looksLikeAmount =
+          (
+            lower.includes('sale') ||
+            lower.includes('amount') ||
+            lower.includes('revenue') ||
+            lower.includes('total')
+          );
+
+
+        if (!looksLikeAmount) {
+          continue;
+        }
+
+
+        const number =
+          Number(
+            String(
+              row[key]
+            )
+              .replace(/,/g, '')
+              .replace(/[^\d.-]/g, '')
+          );
+
+
+        if (
+          Number.isFinite(number)
+        ) {
+
+          return number;
+
+        }
+
+      }
+
+
+      return 0;
 
     }
 
 
+
     /* =======================================================
-       GET FOOTFALL
+       FOOTFALL
        ======================================================= */
 
-    function getFootfall(row) {
+    function getFootfall(
+      row
+    ) {
 
-      if (!footfallColumn) {
+      if (
+        !row ||
+        !footfallColumn
+      ) {
+
         return 0;
+
       }
+
 
       const value =
         Number(
           row[footfallColumn]
         );
+
 
       return Number.isFinite(value)
         ? value
@@ -1711,15 +2769,19 @@
     }
 
 
+
     /* =======================================================
        MONTH KEY
        ======================================================= */
 
-    function getMonthKey(date) {
+    function getMonthKey(
+      date
+    ) {
 
       if (!date) {
         return '';
       }
+
 
       return (
         date.getFullYear() +
@@ -1730,6 +2792,7 @@
       );
 
     }
+
 
 
     /* =======================================================
@@ -1744,17 +2807,32 @@
         return 'Unknown';
       }
 
-      const [
-        year,
-        month
-      ] =
+
+      const parts =
         monthKey.split('-');
+
+
+      if (
+        parts.length !== 2
+      ) {
+
+        return 'Unknown';
+
+      }
+
+
+      const year =
+        Number(parts[0]);
+
+
+      const month =
+        Number(parts[1]);
 
 
       const date =
         new Date(
-          Number(year),
-          Number(month) - 1,
+          year,
+          month - 1,
           1
         );
 
@@ -1762,108 +2840,41 @@
       return date.toLocaleDateString(
         'en-US',
         {
-          month: 'long',
-          year: 'numeric'
+          month:
+            'long',
+
+          year:
+            'numeric'
         }
       );
 
     }
 
 
+
     /* =======================================================
-       LOAD SALES
+       LOAD ALL SALES
        ======================================================= */
 
-    async function loadSales() {
+    async function loadAllSales() {
 
-      clearMessage();
-
-      loading.style.display =
-        'block';
-
-      dashboard.style.display =
-        'none';
+      const pageSize =
+        1000;
 
 
-      try {
-
-        /*
-         * First make sure there is
-         * an authenticated session.
-         */
-
-        const {
-          data: {
-            session
-          }
-        } =
-          await supabaseClient
-            .auth
-            .getSession();
+      let from =
+        0;
 
 
-        if (
-          !session ||
-          !session.user
-        ) {
-
-          window.location.replace(
-            'index.html'
-          );
-
-          return;
-
-        }
+      let finished =
+        false;
 
 
-        /*
-         * Verify management role.
-         *
-         * IMPORTANT:
-         * This only reads the user's
-         * own user_roles row.
-         *
-         * It does NOT query
-         * user_roles from inside
-         * another user_roles policy.
-         */
-
-        const {
-          data: roleData,
-          error: roleError
-        } =
-          await supabaseClient
-            .from('user_roles')
-            .select('role')
-            .eq(
-              'user_id',
-              session.user.id
-            )
-            .maybeSingle();
+      const combined =
+        [];
 
 
-        if (roleError) {
-          throw roleError;
-        }
-
-
-        if (
-          !roleData ||
-          roleData.role !== 'management'
-        ) {
-
-          throw new Error(
-            'Management access required.'
-          );
-
-        }
-
-
-        /*
-         * Load all sales.
-         *
-         * NO 7-DAY LIMIT.
-         */
+      while (!finished) {
 
         const {
           data,
@@ -1875,8 +2886,13 @@
             .order(
               'created_at',
               {
-                ascending: false
+                ascending:
+                  false
               }
+            )
+            .range(
+              from,
+              from + pageSize - 1
             );
 
 
@@ -1885,32 +2901,302 @@
         }
 
 
-        allSales =
+        const rows =
           Array.isArray(data)
             ? data
             : [];
 
 
-        detectColumns();
+        combined.push(
+          ...rows
+        );
 
 
         /*
-         * Safety check.
+         * If fewer than pageSize
+         * were returned, there are
+         * no more rows.
+         */
+
+        if (
+          rows.length <
+          pageSize
+        ) {
+
+          finished =
+            true;
+
+        }
+
+        else {
+
+          from +=
+            pageSize;
+
+        }
+
+      }
+
+
+      return combined;
+
+    }
+
+
+
+    /* =======================================================
+       VERIFY MANAGEMENT ROLE
+       ======================================================= */
+
+    async function verifyManagement(
+      session
+    ) {
+
+      if (
+        !session ||
+        !session.user
+      ) {
+
+        redirectToLogin();
+
+        return false;
+
+      }
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from('user_roles')
+          .select('role')
+          .eq(
+            'user_id',
+            session.user.id
+          )
+          .maybeSingle();
+
+
+      if (error) {
+
+        console.error(
+          'Role verification error:',
+          error
+        );
+
+        throw error;
+
+      }
+
+
+      if (
+        !data ||
+        data.role !== 'management'
+      ) {
+
+        showMessage(
+          'This account does not have management access.',
+          'error'
+        );
+
+
+        setTimeout(
+          () => {
+            redirectToLogin();
+          },
+          1200
+        );
+
+
+        return false;
+
+      }
+
+
+      return true;
+
+    }
+
+
+
+    /* =======================================================
+       LOAD SALES
+       ======================================================= */
+
+    async function loadSales() {
+
+      if (isRedirecting) {
+        return;
+      }
+
+
+      clearMessage();
+
+
+      dashboard.style.display =
+        'none';
+
+
+      loading.style.display =
+        'block';
+
+
+      loadingText.textContent =
+        'Verifying management access...';
+
+
+      try {
+
+
+        /*
+         * Get current session.
+         */
+
+        const {
+          data:
+            {
+              session
+            }
+        } =
+          await supabaseClient
+            .auth
+            .getSession();
+
+
+        /*
+         * No session.
+         */
+
+        if (
+          !session ||
+          !session.user
+        ) {
+
+          redirectToLogin();
+
+          return;
+
+        }
+
+
+        /*
+         * Verify role.
+         */
+
+        const authorized =
+          await verifyManagement(
+            session
+          );
+
+
+        if (!authorized) {
+          return;
+        }
+
+
+        /*
+         * Load ALL sales.
+         */
+
+        loadingText.textContent =
+          'Loading complete sales history...';
+
+
+        allSales =
+          await loadAllSales();
+
+
+        /*
+         * Detect actual database columns.
+         */
+
+        detectColumns();
+
+
+        console.log(
+          'Sales records loaded:',
+          allSales.length
+        );
+
+
+        /*
+         * IMPORTANT:
+         *
+         * Do NOT throw an error merely
+         * because the table is empty.
+         */
+
+        if (
+          allSales.length === 0
+        ) {
+
+          dateColumn =
+            null;
+
+          amountColumn =
+            null;
+
+          footfallColumn =
+            null;
+
+          renderEmptyDashboard();
+
+          loading.style.display =
+            'none';
+
+          dashboard.style.display =
+            'block';
+
+          initialLoadComplete =
+            true;
+
+          return;
+
+        }
+
+
+        /*
+         * Date is required for monthly
+         * reporting.
          */
 
         if (!dateColumn) {
 
+          /*
+           * Instead of killing the whole
+           * dashboard, show the actual
+           * available columns in console.
+           */
+
+          console.error(
+            'No date column detected.',
+            Object.keys(
+              allSales[0]
+            )
+          );
+
+
           throw new Error(
-            'Could not find the sales date column in daily_sales.'
+            'The daily_sales table does not contain a recognized date column. Check the browser console for the actual column names.'
           );
 
         }
 
 
+        /*
+         * If amount was not detected,
+         * continue loading the dashboard.
+         *
+         * This prevents the previous
+         * "content not visible" problem.
+         */
+
         if (!amountColumn) {
 
-          throw new Error(
-            'Could not find the sales amount column in daily_sales.'
+          showMessage(
+            'Sales records loaded, but the sales amount column could not be identified. The dashboard is showing Rs. 0 until the amount field is mapped.',
+            'warning'
           );
 
         }
@@ -1922,8 +3208,14 @@
         loading.style.display =
           'none';
 
+
         dashboard.style.display =
           'block';
+
+
+        initialLoadComplete =
+          true;
+
 
       }
 
@@ -1939,25 +3231,101 @@
           'none';
 
 
+        dashboard.style.display =
+          'none';
+
+
         showMessage(
-          'Access verification failed: ' +
-          (
-            error.message ||
-            'Unable to load sales.'
-          ),
+          error &&
+          error.message
+            ? error.message
+            : 'Unable to load management dashboard.',
           'error'
         );
-
-
-        /*
-         * Do NOT immediately redirect
-         * here. This lets you actually
-         * see the Supabase error.
-         */
 
       }
 
     }
+
+
+
+    /* =======================================================
+       EMPTY DASHBOARD
+       ======================================================= */
+
+    function renderEmptyDashboard() {
+
+      document.getElementById(
+        'till-date-sales'
+      ).textContent =
+        'Rs. 0';
+
+
+      document.getElementById(
+        'current-month-sales'
+      ).textContent =
+        'Rs. 0';
+
+
+      document.getElementById(
+        'transaction-count'
+      ).textContent =
+        '0';
+
+
+      document.getElementById(
+        'current-month-count'
+      ).textContent =
+        '0';
+
+
+      document.getElementById(
+        'current-month-label'
+      ).textContent =
+        getMonthLabel(
+          getMonthKey(
+            new Date()
+          )
+        );
+
+
+      monthSelect.innerHTML =
+        '<option value="">No sales recorded</option>';
+
+
+      monthlySummary.innerHTML =
+        `
+          <tr>
+            <td colspan="5">
+              <div class="empty">
+                No sales records have been recorded yet.
+              </div>
+            </td>
+          </tr>
+        `;
+
+
+      salesRecords.innerHTML =
+        `
+          <tr>
+            <td colspan="4">
+              <div class="empty">
+                No sales records available.
+              </div>
+            </td>
+          </tr>
+        `;
+
+
+      recordsTitle.textContent =
+        'Sales Records';
+
+
+      recordCount.textContent =
+        '0 records';
+
+    }
+
 
 
     /* =======================================================
@@ -1968,23 +3336,16 @@
 
       renderStats();
 
+
       buildMonthSelector();
+
 
       renderMonthlySummary();
 
 
-      /*
-       * Default selected month:
-       * current month if available,
-       * otherwise latest month.
-       */
-
-      const currentDate =
-        new Date();
-
       const currentMonth =
         getMonthKey(
-          currentDate
+          new Date()
         );
 
 
@@ -2015,7 +3376,7 @@
       else {
 
         selectedMonth =
-          currentMonth;
+          '';
 
       }
 
@@ -2029,33 +3390,33 @@
     }
 
 
+
     /* =======================================================
        STATS
        ======================================================= */
 
     function renderStats() {
 
-      let tillDateSales = 0;
+      const tillDateSales =
+        allSales.reduce(
+          (
+            total,
+            row
+          ) =>
+            total +
+            getSaleAmount(row),
+          0
+        );
 
-      let transactionCount =
+
+      const transactionCount =
         allSales.length;
 
 
-      allSales.forEach(
-        row => {
-
-          tillDateSales +=
-            getSaleAmount(row);
-
-        }
-      );
-
-
-      const now =
-        new Date();
-
       const currentMonth =
-        getMonthKey(now);
+        getMonthKey(
+          new Date()
+        );
 
 
       const currentMonthRows =
@@ -2063,7 +3424,8 @@
           row =>
             getMonthKey(
               getSaleDate(row)
-            ) === currentMonth
+            ) ===
+            currentMonth
         );
 
 
@@ -2098,15 +3460,13 @@
       document.getElementById(
         'transaction-count'
       ).textContent =
-        transactionCount
-          .toLocaleString();
+        transactionCount.toLocaleString();
 
 
       document.getElementById(
         'current-month-count'
       ).textContent =
-        currentMonthRows.length
-          .toLocaleString();
+        currentMonthRows.length.toLocaleString();
 
 
       document.getElementById(
@@ -2117,6 +3477,7 @@
         );
 
     }
+
 
 
     /* =======================================================
@@ -2134,6 +3495,7 @@
 
           const date =
             getSaleDate(row);
+
 
           if (date) {
 
@@ -2155,8 +3517,9 @@
     }
 
 
+
     /* =======================================================
-       MONTH SELECT
+       MONTH SELECTOR
        ======================================================= */
 
     function buildMonthSelector() {
@@ -2176,14 +3539,19 @@
             'option'
           );
 
-        option.value = '';
+
+        option.value =
+          '';
+
 
         option.textContent =
           'No sales recorded';
 
+
         monthSelect.appendChild(
           option
         );
+
 
         return;
 
@@ -2198,13 +3566,16 @@
               'option'
             );
 
+
           option.value =
             month;
+
 
           option.textContent =
             getMonthLabel(
               month
             );
+
 
           monthSelect.appendChild(
             option
@@ -2214,6 +3585,7 @@
       );
 
     }
+
 
 
     /* =======================================================
@@ -2236,6 +3608,7 @@
           const date =
             getSaleDate(row);
 
+
           const month =
             getMonthKey(date);
 
@@ -2248,9 +3621,16 @@
           if (!grouped[month]) {
 
             grouped[month] = {
-              sales: 0,
-              entries: 0,
-              footfall: 0
+
+              sales:
+                0,
+
+              entries:
+                0,
+
+              footfall:
+                0
+
             };
 
           }
@@ -2259,8 +3639,10 @@
           grouped[month].sales +=
             getSaleAmount(row);
 
+
           grouped[month].entries +=
             1;
+
 
           grouped[month].footfall +=
             getFootfall(row);
@@ -2279,13 +3661,13 @@
 
         monthlySummary.innerHTML =
           `
-          <tr>
-            <td colspan="5">
-              <div class="empty">
-                No sales records found.
-              </div>
-            </td>
-          </tr>
+            <tr>
+              <td colspan="5">
+                <div class="empty">
+                  No monthly sales records found.
+                </div>
+              </td>
+            </tr>
           `;
 
         return;
@@ -2332,7 +3714,9 @@
               </td>
 
               <td class="amount">
-                ${formatMoney(item.sales)}
+                ${formatMoney(
+                  item.sales
+                )}
               </td>
 
               <td>
@@ -2348,7 +3732,9 @@
               </td>
 
               <td>
-                ${formatMoney(average)}
+                ${formatMoney(
+                  average
+                )}
               </td>
             `;
 
@@ -2360,8 +3746,10 @@
               selectedMonth =
                 month;
 
+
               monthSelect.value =
                 month;
+
 
               renderSelectedMonth();
 
@@ -2379,6 +3767,7 @@
     }
 
 
+
     /* =======================================================
        SELECTED MONTH
        ======================================================= */
@@ -2389,14 +3778,23 @@
 
         salesRecords.innerHTML =
           `
-          <tr>
-            <td colspan="4">
-              <div class="empty">
-                No month selected.
-              </div>
-            </td>
-          </tr>
+            <tr>
+              <td colspan="4">
+                <div class="empty">
+                  No month selected.
+                </div>
+              </td>
+            </tr>
           `;
+
+
+        recordsTitle.textContent =
+          'Sales Records';
+
+
+        recordCount.textContent =
+          '0 records';
+
 
         return;
 
@@ -2409,15 +3807,48 @@
             row =>
               getMonthKey(
                 getSaleDate(row)
-              ) === selectedMonth
+              ) ===
+              selectedMonth
           )
           .sort(
             (
               a,
               b
-            ) =>
-              getSaleDate(b) -
-              getSaleDate(a)
+            ) => {
+
+              const dateA =
+                getSaleDate(a);
+
+              const dateB =
+                getSaleDate(b);
+
+
+              if (
+                !dateA &&
+                !dateB
+              ) {
+
+                return 0;
+
+              }
+
+
+              if (!dateA) {
+                return 1;
+              }
+
+
+              if (!dateB) {
+                return -1;
+              }
+
+
+              return (
+                dateB.getTime() -
+                dateA.getTime()
+              );
+
+            }
           );
 
 
@@ -2445,17 +3876,20 @@
 
         salesRecords.innerHTML =
           `
-          <tr>
-            <td colspan="4">
-              <div class="empty">
-                No sales records for
-                ${escapeHtml(
-                  getMonthLabel(selectedMonth)
-                )}.
-              </div>
-            </td>
-          </tr>
+            <tr>
+              <td colspan="4">
+                <div class="empty">
+                  No sales records for
+                  ${escapeHtml(
+                    getMonthLabel(
+                      selectedMonth
+                    )
+                  )}.
+                </div>
+              </td>
+            </tr>
           `;
+
 
         return;
 
@@ -2463,10 +3897,7 @@
 
 
       rows.forEach(
-        (
-          row,
-          index
-        ) => {
+        row => {
 
           const date =
             getSaleDate(row);
@@ -2493,16 +3924,15 @@
               <td class="footfall">
                 ${
                   footfallColumn
-                    ? getFootfall(row)
-                        .toLocaleString()
+                    ? getFootfall(row).toLocaleString()
                     : '—'
                 }
               </td>
 
               <td>
                 <button
+                  type="button"
                   class="details-button"
-                  data-index="${allSales.indexOf(row)}"
                 >
                   VIEW
                 </button>
@@ -2518,7 +3948,10 @@
 
           button.addEventListener(
             'click',
-            function () {
+            function (event) {
+
+              event.stopPropagation();
+
 
               showDetails(
                 row
@@ -2537,8 +3970,7 @@
 
 
       /*
-       * Highlight selected month
-       * in summary.
+       * Highlight selected month.
        */
 
       document
@@ -2560,33 +3992,45 @@
     }
 
 
+
     /* =======================================================
        DATE FORMAT
        ======================================================= */
 
-    function formatDate(date) {
+    function formatDate(
+      date
+    ) {
 
       if (!date) {
         return 'Unknown';
       }
 
+
       return date.toLocaleDateString(
         'en-GB',
         {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric'
+          day:
+            '2-digit',
+
+          month:
+            'short',
+
+          year:
+            'numeric'
         }
       );
 
     }
 
 
+
     /* =======================================================
-       DETAILS
+       DETAILS MODAL
        ======================================================= */
 
-    function showDetails(row) {
+    function showDetails(
+      row
+    ) {
 
       modalBody.innerHTML =
         '';
@@ -2648,8 +4092,10 @@
 
 
             if (
-              displayValue === null ||
-              displayValue === undefined
+              displayValue ===
+                null ||
+              displayValue ===
+                undefined
             ) {
 
               displayValue =
@@ -2679,6 +4125,7 @@
               label
             );
 
+
             item.appendChild(
               value
             );
@@ -2704,11 +4151,14 @@
     }
 
 
+
     /* =======================================================
        CSV ESCAPE
        ======================================================= */
 
-    function csvEscape(value) {
+    function csvEscape(
+      value
+    ) {
 
       if (
         value === null ||
@@ -2743,15 +4193,17 @@
       }
 
 
-      return '"' +
-        text
-          .replace(
-            /"/g,
-            '""'
-          ) +
-        '"';
+      return (
+        '"' +
+        text.replace(
+          /"/g,
+          '""'
+        ) +
+        '"'
+      );
 
     }
+
 
 
     /* =======================================================
@@ -2763,22 +4215,21 @@
       filename
     ) {
 
-      if (!rows.length) {
+      if (
+        !rows ||
+        !rows.length
+      ) {
 
         showMessage(
           'There are no sales records to export.',
-          'error'
+          'warning'
         );
+
 
         return;
 
       }
 
-
-      /*
-       * Get every column appearing
-       * in the returned records.
-       */
 
       const columnSet =
         new Set();
@@ -2789,8 +4240,13 @@
 
           Object.keys(row)
             .forEach(
-              key =>
-                columnSet.add(key)
+              key => {
+
+                columnSet.add(
+                  key
+                );
+
+              }
             );
 
         }
@@ -2805,7 +4261,9 @@
 
       const header =
         columns
-          .map(csvEscape)
+          .map(
+            csvEscape
+          )
           .join(',');
 
 
@@ -2857,6 +4315,7 @@
       link.href =
         url;
 
+
       link.download =
         filename;
 
@@ -2874,17 +4333,23 @@
       );
 
 
-      URL.revokeObjectURL(
-        url
+      setTimeout(
+        () => {
+          URL.revokeObjectURL(
+            url
+          );
+        },
+        100
       );
 
 
       showMessage(
-        'CSV export completed.',
+        'CSV export completed successfully.',
         'success'
       );
 
     }
+
 
 
     /* =======================================================
@@ -2893,12 +4358,26 @@
 
     function exportSelectedMonth() {
 
+      if (!selectedMonth) {
+
+        showMessage(
+          'Please select a month first.',
+          'warning'
+        );
+
+
+        return;
+
+      }
+
+
       const rows =
         allSales.filter(
           row =>
             getMonthKey(
               getSaleDate(row)
-            ) === selectedMonth
+            ) ===
+            selectedMonth
         );
 
 
@@ -2912,6 +4391,7 @@
     }
 
 
+
     /* =======================================================
        ESCAPE HTML
        ======================================================= */
@@ -2921,28 +4401,34 @@
     ) {
 
       return String(value)
+
         .replace(
           /&/g,
           '&amp;'
         )
+
         .replace(
           /</g,
           '&lt;'
         )
+
         .replace(
           />/g,
           '&gt;'
         )
+
         .replace(
           /"/g,
           '&quot;'
         )
+
         .replace(
           /'/g,
           '&#039;'
         );
 
     }
+
 
 
     /* =======================================================
@@ -2956,10 +4442,12 @@
         selectedMonth =
           this.value;
 
+
         renderSelectedMonth();
 
       }
     );
+
 
 
     document
@@ -2970,6 +4458,7 @@
         'click',
         exportSelectedMonth
       );
+
 
 
     document
@@ -2989,14 +4478,20 @@
       );
 
 
+
     document
       .getElementById(
         'refresh-button'
       )
       .addEventListener(
         'click',
-        loadSales
+        function () {
+
+          loadSales();
+
+        }
       );
+
 
 
     document
@@ -3007,18 +4502,34 @@
         'click',
         async function () {
 
-          await supabaseClient
-            .auth
-            .signOut();
+          try {
+
+            await supabaseClient
+              .auth
+              .signOut();
+
+          }
+
+          catch (error) {
+
+            console.error(
+              'Logout error:',
+              error
+            );
+
+          }
 
 
-          window.location.replace(
-            'index.html'
-          );
+          redirectToLogin();
 
         }
       );
 
+
+
+    /* =======================================================
+       CLOSE MODAL
+       ======================================================= */
 
     document
       .getElementById(
@@ -3034,6 +4545,7 @@
 
         }
       );
+
 
 
     detailsModal.addEventListener(
@@ -3055,23 +4567,18 @@
     );
 
 
-    /* =======================================================
-       AUTH STATE
-       ======================================================= */
 
-    supabaseClient.auth.onAuthStateChange(
-      function (
-        event,
-        session
-      ) {
+    document.addEventListener(
+      'keydown',
+      function (event) {
 
         if (
-          event ===
-          'SIGNED_OUT'
+          event.key ===
+          'Escape'
         ) {
 
-          window.location.replace(
-            'index.html'
+          detailsModal.classList.remove(
+            'show'
           );
 
         }
@@ -3080,13 +4587,188 @@
     );
 
 
+
+    /* =======================================================
+       AUTH STATE CHANGE
+       ======================================================= */
+
+    supabaseClient
+      .auth
+      .onAuthStateChange(
+        function (
+          event,
+          session
+        ) {
+
+          console.log(
+            'Auth event:',
+            event
+          );
+
+
+          /*
+           * If Supabase tells us the user
+           * signed out, immediately return
+           * to staff login.
+           */
+
+          if (
+            event ===
+            'SIGNED_OUT'
+          ) {
+
+            redirectToLogin();
+
+            return;
+
+          }
+
+
+          /*
+           * Token/session has disappeared.
+           */
+
+          if (
+            (
+              event ===
+              'TOKEN_REFRESHED' ||
+              event ===
+              'INITIAL_SESSION'
+            ) &&
+            !session &&
+            initialLoadComplete
+          ) {
+
+            redirectToLogin();
+
+          }
+
+        }
+      );
+
+
+
+    /* =======================================================
+       HANDLE BROWSER TAB / PAGE RETURN
+       ======================================================= */
+
+    window.addEventListener(
+      'pageshow',
+      async function () {
+
+        /*
+         * Re-check the session whenever
+         * browser restores this page.
+         */
+
+        if (
+          initialLoadComplete &&
+          !isRedirecting
+        ) {
+
+          const {
+            data:
+              {
+                session
+              }
+          } =
+            await supabaseClient
+              .auth
+              .getSession();
+
+
+          if (
+            !session ||
+            !session.user
+          ) {
+
+            redirectToLogin();
+
+          }
+
+        }
+
+      }
+    );
+
+
+
+    /* =======================================================
+       HANDLE TAB VISIBILITY
+       ======================================================= */
+
+    document.addEventListener(
+      'visibilitychange',
+      async function () {
+
+        if (
+          document.visibilityState !==
+          'visible'
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          !initialLoadComplete ||
+          isRedirecting
+        ) {
+
+          return;
+
+        }
+
+
+        try {
+
+          const {
+            data:
+              {
+                session
+              }
+          } =
+            await supabaseClient
+              .auth
+              .getSession();
+
+
+          if (
+            !session ||
+            !session.user
+          ) {
+
+            redirectToLogin();
+
+          }
+
+        }
+
+        catch (error) {
+
+          console.error(
+            'Session check failed:',
+            error
+          );
+
+        }
+
+      }
+    );
+
+
+
     /* =======================================================
        START
        ======================================================= */
 
     loadSales();
 
+
   </script>
 
+
 </body>
+
 </html>

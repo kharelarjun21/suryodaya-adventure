@@ -688,3 +688,24 @@ table.info-table tr:last-child td{border-bottom:none;}
 #booking-form{
   scroll-margin-top: 130px;
 }
+/* Staff Login — Home page top bar */
+.staff-login-top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 14px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.staff-login-top:hover {
+  background: #ffffff;
+  color: #173F35;
+}

@@ -1762,6 +1762,49 @@ async function checkLogin() {
 
   try {
 
+    /*
+     * A dashboard visit is allowed only when it
+     * immediately follows a successful login.
+     */
+    const freshLogin =
+      sessionStorage.getItem(
+        'suryodaya_fresh_staff_login'
+      );
+
+    /*
+     * No fresh login marker means this is:
+     *
+     * - a page refresh
+     * - a direct dashboard URL
+     * - browser restoration
+     * - an old dashboard page
+     *
+     * Force authentication again.
+     */
+    if (freshLogin !== 'true') {
+
+      await supabaseClient.auth.signOut();
+
+      window.location.replace(
+        'index.html'
+      );
+
+      return false;
+    }
+
+    /*
+     * Consume the marker.
+     *
+     * It must NOT survive a refresh.
+     */
+    sessionStorage.removeItem(
+      'suryodaya_fresh_staff_login'
+    );
+
+    /*
+     * Now verify that Supabase actually has
+     * an authenticated session.
+     */
     const {
       data,
       error
@@ -1770,33 +1813,37 @@ async function checkLogin() {
     if (error) {
 
       console.error(
-        'Session error:',
+        'Session check error:',
         error
       );
 
-      window.location.href =
-        'index.html';
+      await supabaseClient.auth.signOut();
+
+      window.location.replace(
+        'index.html'
+      );
+
+      return false;
+    }
+
+    if (
+      !data ||
+      !data.session
+    ) {
+
+      window.location.replace(
+        'index.html'
+      );
 
       return false;
     }
 
     /*
-     * Supabase has restored the browser session.
-     * If there is no session, the user is not logged in.
+     * Authentication confirmed.
      */
-
-    if (!data || !data.session) {
-
-      window.location.href =
-        'index.html';
-
-      return false;
-    }
-
-    /*
-     * Session exists.
-     * Dashboard may continue loading.
-     */
+    document.body.classList.remove(
+      'auth-pending'
+    );
 
     return true;
 
@@ -1807,8 +1854,18 @@ async function checkLogin() {
       error
     );
 
-    window.location.href =
-      'index.html';
+    try {
+      await supabaseClient.auth.signOut();
+    } catch (signOutError) {
+      console.error(
+        'Sign-out error:',
+        signOutError
+      );
+    }
+
+    window.location.replace(
+      'index.html'
+    );
 
     return false;
   }

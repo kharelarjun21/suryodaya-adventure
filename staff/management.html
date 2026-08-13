@@ -1,0 +1,3092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
+
+  <title>Management Dashboard | Suryodaya Adventures</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="../Logo.png"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --forest: #173F35;
+      --forest-light: #1F5745;
+      --orange: #E85D04;
+      --gold: #FFB703;
+
+      --cream: #FDF9F1;
+      --white: #FFFFFF;
+
+      --text: #173F35;
+      --muted: #64746E;
+
+      --border: #DDE6E1;
+
+      --success: #16794A;
+      --danger: #B42318;
+
+      --soft-green: #EAF7F0;
+      --soft-red: #FDECEC;
+
+      --background: #F4F7F4;
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family:
+        "Plus Jakarta Sans",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: var(--background);
+
+      color: var(--text);
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .header {
+      background: var(--forest);
+
+      color: white;
+
+      padding: 15px 24px;
+
+      box-shadow:
+        0 3px 14px rgba(0,0,0,0.12);
+    }
+
+    .header-inner {
+      width: min(
+        1250px,
+        calc(100% - 20px)
+      );
+
+      margin: 0 auto;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+
+      object-fit: contain;
+
+      background: white;
+
+      border-radius: 50%;
+
+      padding: 4px;
+    }
+
+    .brand h1 {
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-size: 22px;
+
+      line-height: 1.1;
+    }
+
+    .brand p {
+      font-size: 10px;
+
+      opacity: 0.75;
+
+      margin-top: 4px;
+
+      letter-spacing: 0.5px;
+    }
+
+    .header-actions {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+    }
+
+    .header-button {
+      border:
+        1px solid rgba(255,255,255,0.3);
+
+      background: transparent;
+
+      color: white;
+
+      padding: 9px 13px;
+
+      border-radius: 7px;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      text-decoration: none;
+    }
+
+    .header-button:hover {
+      background: white;
+
+      color: var(--forest);
+    }
+
+
+    /* =========================================================
+       MAIN
+       ========================================================= */
+
+    .container {
+      width: min(
+        1250px,
+        calc(100% - 32px)
+      );
+
+      margin: 0 auto;
+    }
+
+    main {
+      padding: 30px 0 60px;
+    }
+
+
+    /* =========================================================
+       PAGE HEADER
+       ========================================================= */
+
+    .page-heading {
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      color: var(--orange);
+
+      font-size: 11px;
+
+      font-weight: 900;
+
+      letter-spacing: 1.5px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 6px;
+    }
+
+    .page-heading h2 {
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-size: 31px;
+
+      line-height: 1.2;
+
+      color: var(--forest);
+    }
+
+    .page-heading p {
+      margin-top: 6px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    /* =========================================================
+       LOADING
+       ========================================================= */
+
+    .loading {
+      background: white;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 12px;
+
+      padding: 30px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      margin-bottom: 20px;
+    }
+
+    .spinner {
+      width: 25px;
+      height: 25px;
+
+      border:
+        3px solid #DDE6E1;
+
+      border-top-color:
+        var(--orange);
+
+      border-radius: 50%;
+
+      animation:
+        spin 0.8s linear infinite;
+
+      margin:
+        0 auto 12px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+
+    /* =========================================================
+       MESSAGE
+       ========================================================= */
+
+    .message {
+      display: none;
+
+      padding: 13px 15px;
+
+      border-radius: 9px;
+
+      margin-bottom: 20px;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      background: var(--soft-red);
+
+      border:
+        1px solid #F5C7C4;
+
+      color: var(--danger);
+    }
+
+    .message.success {
+      background: var(--soft-green);
+
+      border:
+        1px solid #BFE3CD;
+
+      color: var(--success);
+    }
+
+
+    /* =========================================================
+       STAT CARDS
+       ========================================================= */
+
+    .stats {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 15px;
+
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 12px;
+
+      padding: 19px;
+
+      box-shadow:
+        0 4px 16px
+        rgba(23,63,53,0.05);
+    }
+
+    .stat-label {
+      color: var(--muted);
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.7px;
+    }
+
+    .stat-value {
+      margin-top: 7px;
+
+      color: var(--forest);
+
+      font-size: 25px;
+
+      font-weight: 900;
+    }
+
+    .stat-value.orange {
+      color: var(--orange);
+    }
+
+    .stat-value.green {
+      color: var(--success);
+    }
+
+    .stat-note {
+      margin-top: 5px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+
+    /* =========================================================
+       CONTROL BAR
+       ========================================================= */
+
+    .control-card {
+      background: white;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 12px;
+
+      padding: 17px;
+
+      margin-bottom: 20px;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 15px;
+
+      flex-wrap: wrap;
+    }
+
+    .month-control {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+    }
+
+    .month-control label {
+      color: var(--forest);
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+    select {
+      height: 42px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 8px;
+
+      padding:
+        0 35px 0 12px;
+
+      background: white;
+
+      color: var(--text);
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      outline: none;
+    }
+
+    select:focus {
+      border-color:
+        var(--forest-light);
+    }
+
+    .export-actions {
+      display: flex;
+
+      gap: 9px;
+
+      flex-wrap: wrap;
+    }
+
+    .button {
+      height: 42px;
+
+      border: none;
+
+      border-radius: 8px;
+
+      padding:
+        0 15px;
+
+      font-size: 11px;
+
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    .button-primary {
+      background: var(--orange);
+
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: #D94F00;
+    }
+
+    .button-secondary {
+      background: var(--forest);
+
+      color: white;
+    }
+
+    .button-secondary:hover {
+      background: var(--forest-light);
+    }
+
+    .button-light {
+      background: white;
+
+      color: var(--forest);
+
+      border:
+        1px solid var(--border);
+    }
+
+
+    /* =========================================================
+       CARDS
+       ========================================================= */
+
+    .card {
+      background: white;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 13px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 4px 16px
+        rgba(23,63,53,0.05);
+
+      margin-bottom: 22px;
+    }
+
+    .card-header {
+      padding: 18px 20px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 15px;
+    }
+
+    .card-header h3 {
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      color: var(--forest);
+
+      font-size: 20px;
+    }
+
+    .card-header p {
+      color: var(--muted);
+
+      font-size: 11px;
+
+      margin-top: 4px;
+    }
+
+
+    /* =========================================================
+       MONTHLY SUMMARY
+       ========================================================= */
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+
+      border-collapse: collapse;
+
+      min-width: 650px;
+    }
+
+    th {
+      background: #F4F7F4;
+
+      color: var(--muted);
+
+      text-align: left;
+
+      padding: 12px 15px;
+
+      font-size: 10px;
+
+      font-weight: 900;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.5px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    td {
+      padding: 13px 15px;
+
+      border-bottom:
+        1px solid #EDF1EE;
+
+      font-size: 12px;
+
+      color: var(--text);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .amount {
+      font-weight: 900;
+
+      color: var(--orange);
+    }
+
+    .month-row {
+      cursor: pointer;
+    }
+
+    .month-row:hover {
+      background: #FAFCFA;
+    }
+
+    .selected-month {
+      background: var(--soft-green) !important;
+    }
+
+
+    /* =========================================================
+       SALES TABLE
+       ========================================================= */
+
+    .records-header {
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 15px;
+
+      flex-wrap: wrap;
+    }
+
+    .record-count {
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+    .empty {
+      padding: 45px 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+    .sale-date {
+      font-weight: 800;
+    }
+
+    .footfall {
+      color: var(--success);
+
+      font-weight: 800;
+    }
+
+
+    /* =========================================================
+       RAW DETAILS
+       ========================================================= */
+
+    .details-button {
+      border:
+        1px solid var(--border);
+
+      background: white;
+
+      color: var(--forest);
+
+      border-radius: 6px;
+
+      padding: 6px 9px;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .details-button:hover {
+      background: var(--forest);
+
+      color: white;
+    }
+
+
+    /* =========================================================
+       MODAL
+       ========================================================= */
+
+    .modal {
+      position: fixed;
+
+      inset: 0;
+
+      background:
+        rgba(0,0,0,0.45);
+
+      display: none;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 20px;
+
+      z-index: 1000;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(
+        800px,
+        100%
+      );
+
+      max-height: 85vh;
+
+      overflow: auto;
+
+      background: white;
+
+      border-radius: 14px;
+    }
+
+    .modal-header {
+      padding: 18px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      color: var(--forest);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    }
+
+    .close-modal {
+      border: none;
+
+      background: transparent;
+
+      font-size: 22px;
+
+      cursor: pointer;
+
+      color: var(--muted);
+    }
+
+    .modal-body {
+      padding: 18px;
+    }
+
+    .detail-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 10px;
+    }
+
+    .detail-item {
+      background: #F4F7F4;
+
+      border-radius: 8px;
+
+      padding: 11px;
+    }
+
+    .detail-label {
+      color: var(--muted);
+
+      font-size: 9px;
+
+      font-weight: 900;
+
+      text-transform: uppercase;
+
+      margin-bottom: 4px;
+    }
+
+    .detail-value {
+      color: var(--text);
+
+      font-size: 12px;
+
+      word-break: break-word;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 900px) {
+
+      .stats {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .header {
+        padding: 12px 15px;
+      }
+
+      .header-inner {
+        align-items: flex-start;
+      }
+
+      .brand h1 {
+        font-size: 18px;
+      }
+
+      .header-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .header-button {
+        padding: 7px 10px;
+      }
+
+      .container {
+        width:
+          calc(100% - 22px);
+      }
+
+      main {
+        padding-top: 22px;
+      }
+
+      .page-heading h2 {
+        font-size: 26px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 15px;
+      }
+
+      .stat-value {
+        font-size: 21px;
+      }
+
+      .control-card {
+        align-items: stretch;
+      }
+
+      .month-control {
+        width: 100%;
+
+        justify-content:
+          space-between;
+      }
+
+      .month-control select {
+        flex: 1;
+      }
+
+      .export-actions {
+        width: 100%;
+      }
+
+      .export-actions .button {
+        flex: 1;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <!-- =======================================================
+       HEADER
+       ======================================================= -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <div class="brand">
+
+        <img
+          src="../Logo.png"
+          alt="Suryodaya Adventures"
+        >
+
+        <div>
+          <h1>Suryodaya Adventures</h1>
+
+          <p>
+            MANAGEMENT PORTAL
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <a
+          href="../index.html"
+          class="header-button"
+        >
+          HOME
+        </a>
+
+        <button
+          class="header-button"
+          id="logout-button"
+        >
+          LOGOUT
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =======================================================
+       MAIN
+       ======================================================= -->
+
+  <main>
+
+    <div class="container">
+
+      <div class="page-heading">
+
+        <div class="eyebrow">
+          Management Dashboard
+        </div>
+
+        <h2>
+          Sales Overview
+        </h2>
+
+        <p>
+          Monitor Suryodaya Adventures sales performance
+          by month and cumulative till-date results.
+        </p>
+
+      </div>
+
+
+      <!-- ===================================================
+           MESSAGE
+           =================================================== -->
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+
+      <!-- ===================================================
+           LOADING
+           =================================================== -->
+
+      <div
+        id="loading"
+        class="loading"
+      >
+
+        <div class="spinner"></div>
+
+        Loading sales records...
+
+      </div>
+
+
+      <!-- ===================================================
+           DASHBOARD
+           =================================================== -->
+
+      <section id="dashboard" style="display:none;">
+
+
+        <!-- =================================================
+             STAT CARDS
+             ================================================= -->
+
+        <div class="stats">
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Till Date Sales
+            </div>
+
+            <div
+              id="till-date-sales"
+              class="stat-value orange"
+            >
+              Rs. 0
+            </div>
+
+            <div class="stat-note">
+              All recorded sales
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Current Month Sales
+            </div>
+
+            <div
+              id="current-month-sales"
+              class="stat-value"
+            >
+              Rs. 0
+            </div>
+
+            <div
+              id="current-month-label"
+              class="stat-note"
+            >
+              Current month
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Transactions
+            </div>
+
+            <div
+              id="transaction-count"
+              class="stat-value green"
+            >
+              0
+            </div>
+
+            <div class="stat-note">
+              Total recorded sales entries
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Current Month Entries
+            </div>
+
+            <div
+              id="current-month-count"
+              class="stat-value"
+            >
+              0
+            </div>
+
+            <div class="stat-note">
+              Sales records this month
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTROLS
+             ================================================= -->
+
+        <div class="control-card">
+
+
+          <div class="month-control">
+
+            <label for="month-select">
+              VIEW MONTH
+            </label>
+
+            <select
+              id="month-select"
+            ></select>
+
+          </div>
+
+
+          <div class="export-actions">
+
+            <button
+              id="export-month"
+              class="button button-primary"
+            >
+              EXPORT SELECTED MONTH CSV
+            </button>
+
+            <button
+              id="export-all"
+              class="button button-secondary"
+            >
+              EXPORT ALL SALES CSV
+            </button>
+
+            <button
+              id="refresh-button"
+              class="button button-light"
+            >
+              REFRESH
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MONTHLY SUMMARY
+             ================================================= -->
+
+        <section class="card">
+
+          <div class="card-header">
+
+            <div>
+
+              <h3>
+                Monthly Sales Summary
+              </h3>
+
+              <p>
+                Complete sales performance by month.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Month
+                  </th>
+
+                  <th>
+                    Sales
+                  </th>
+
+                  <th>
+                    Entries
+                  </th>
+
+                  <th>
+                    Footfall
+                  </th>
+
+                  <th>
+                    Average Sale
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody
+                id="monthly-summary"
+              ></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SELECTED MONTH RECORDS
+             ================================================= -->
+
+        <section class="card">
+
+          <div class="card-header records-header">
+
+            <div>
+
+              <h3
+                id="records-title"
+              >
+                Sales Records
+              </h3>
+
+              <p>
+                Detailed records for the selected month.
+              </p>
+
+            </div>
+
+            <div
+              id="record-count"
+              class="record-count"
+            >
+              0 records
+            </div>
+
+          </div>
+
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Date
+                  </th>
+
+                  <th>
+                    Sale
+                  </th>
+
+                  <th>
+                    Footfall
+                  </th>
+
+                  <th>
+                    Record
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody
+                id="sales-records"
+              ></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- =======================================================
+       DETAILS MODAL
+       ======================================================= -->
+
+  <div
+    id="details-modal"
+    class="modal"
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <h3>
+          Sales Record Details
+        </h3>
+
+        <button
+          id="close-modal"
+          class="close-modal"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div
+        id="modal-body"
+        class="modal-body"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       JAVASCRIPT
+       ======================================================= -->
+
+  <script>
+
+    /* =======================================================
+       SUPABASE CONFIGURATION
+       ======================================================= */
+
+    const SUPABASE_URL =
+      'https://mvvdfwgjcyayopcsgwvy.supabase.co';
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      'sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4';
+
+
+    /* =======================================================
+       SUPABASE CLIENT
+       ======================================================= */
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: false,
+
+            storage: window.localStorage,
+
+            /*
+             * IMPORTANT:
+             * This must match the login page.
+             */
+            storageKey:
+              'suryodaya-staff-auth'
+          }
+        }
+      );
+
+
+    /* =======================================================
+       STATE
+       ======================================================= */
+
+    let allSales = [];
+
+    let selectedMonth = '';
+
+    let dateColumn = null;
+
+    let amountColumn = null;
+
+    let footfallColumn = null;
+
+
+    /* =======================================================
+       ELEMENTS
+       ======================================================= */
+
+    const loading =
+      document.getElementById('loading');
+
+    const dashboard =
+      document.getElementById('dashboard');
+
+    const message =
+      document.getElementById('message');
+
+    const monthSelect =
+      document.getElementById('month-select');
+
+    const monthlySummary =
+      document.getElementById('monthly-summary');
+
+    const salesRecords =
+      document.getElementById('sales-records');
+
+    const recordsTitle =
+      document.getElementById('records-title');
+
+    const recordCount =
+      document.getElementById('record-count');
+
+    const detailsModal =
+      document.getElementById('details-modal');
+
+    const modalBody =
+      document.getElementById('modal-body');
+
+
+    /* =======================================================
+       MESSAGE
+       ======================================================= */
+
+    function showMessage(
+      text,
+      type = 'error'
+    ) {
+
+      message.textContent = text;
+
+      message.className =
+        'message show ' + type;
+
+    }
+
+
+    function clearMessage() {
+
+      message.textContent = '';
+
+      message.className =
+        'message';
+
+    }
+
+
+    /* =======================================================
+       FORMAT CURRENCY
+       ======================================================= */
+
+    function formatMoney(value) {
+
+      const number =
+        Number(value || 0);
+
+      return (
+        'Rs. ' +
+        number.toLocaleString(
+          'en-IN',
+          {
+            maximumFractionDigits: 2
+          }
+        )
+      );
+
+    }
+
+
+    /* =======================================================
+       FIND COLUMN
+       ======================================================= */
+
+    function findColumn(
+      row,
+      candidates
+    ) {
+
+      if (!row) {
+        return null;
+      }
+
+      const keys =
+        Object.keys(row);
+
+      const lowerMap =
+        {};
+
+      keys.forEach(
+        key => {
+          lowerMap[
+            key.toLowerCase()
+          ] = key;
+        }
+      );
+
+
+      for (
+        const candidate
+        of candidates
+      ) {
+
+        if (
+          lowerMap[
+            candidate.toLowerCase()
+          ]
+        ) {
+
+          return lowerMap[
+            candidate.toLowerCase()
+          ];
+
+        }
+
+      }
+
+
+      return null;
+
+    }
+
+
+    /* =======================================================
+       DETECT SALES COLUMNS
+       ======================================================= */
+
+    function detectColumns() {
+
+      if (!allSales.length) {
+        return;
+      }
+
+      const first =
+        allSales[0];
+
+
+      /*
+       * Date
+       */
+
+      dateColumn =
+        findColumn(
+          first,
+          [
+            'sale_date',
+            'sales_date',
+            'date',
+            'business_date',
+            'record_date',
+            'created_at'
+          ]
+        );
+
+
+      /*
+       * Total sale amount
+       */
+
+      amountColumn =
+        findColumn(
+          first,
+          [
+            'total_amount',
+            'total_sales',
+            'sales_amount',
+            'total',
+            'amount',
+            'grand_total',
+            'net_total'
+          ]
+        );
+
+
+      /*
+       * Footfall
+       */
+
+      footfallColumn =
+        findColumn(
+          first,
+          [
+            'footfall',
+            'visitor_count',
+            'visitors',
+            'customers',
+            'customer_count',
+            'total_visitors'
+          ]
+        );
+
+    }
+
+
+    /* =======================================================
+       GET DATE
+       ======================================================= */
+
+    function getSaleDate(row) {
+
+      if (!dateColumn) {
+        return null;
+      }
+
+      const value =
+        row[dateColumn];
+
+      if (!value) {
+        return null;
+      }
+
+      const date =
+        new Date(value);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return null;
+      }
+
+      return date;
+
+    }
+
+
+    /* =======================================================
+       GET AMOUNT
+       ======================================================= */
+
+    function getSaleAmount(row) {
+
+      if (!amountColumn) {
+        return 0;
+      }
+
+      const value =
+        row[amountColumn];
+
+      const number =
+        Number(value);
+
+      return Number.isFinite(number)
+        ? number
+        : 0;
+
+    }
+
+
+    /* =======================================================
+       GET FOOTFALL
+       ======================================================= */
+
+    function getFootfall(row) {
+
+      if (!footfallColumn) {
+        return 0;
+      }
+
+      const value =
+        Number(
+          row[footfallColumn]
+        );
+
+      return Number.isFinite(value)
+        ? value
+        : 0;
+
+    }
+
+
+    /* =======================================================
+       MONTH KEY
+       ======================================================= */
+
+    function getMonthKey(date) {
+
+      if (!date) {
+        return '';
+      }
+
+      return (
+        date.getFullYear() +
+        '-' +
+        String(
+          date.getMonth() + 1
+        ).padStart(2, '0')
+      );
+
+    }
+
+
+    /* =======================================================
+       MONTH LABEL
+       ======================================================= */
+
+    function getMonthLabel(
+      monthKey
+    ) {
+
+      if (!monthKey) {
+        return 'Unknown';
+      }
+
+      const [
+        year,
+        month
+      ] =
+        monthKey.split('-');
+
+
+      const date =
+        new Date(
+          Number(year),
+          Number(month) - 1,
+          1
+        );
+
+
+      return date.toLocaleDateString(
+        'en-US',
+        {
+          month: 'long',
+          year: 'numeric'
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       LOAD SALES
+       ======================================================= */
+
+    async function loadSales() {
+
+      clearMessage();
+
+      loading.style.display =
+        'block';
+
+      dashboard.style.display =
+        'none';
+
+
+      try {
+
+        /*
+         * First make sure there is
+         * an authenticated session.
+         */
+
+        const {
+          data: {
+            session
+          }
+        } =
+          await supabaseClient
+            .auth
+            .getSession();
+
+
+        if (
+          !session ||
+          !session.user
+        ) {
+
+          window.location.replace(
+            'index.html'
+          );
+
+          return;
+
+        }
+
+
+        /*
+         * Verify management role.
+         *
+         * IMPORTANT:
+         * This only reads the user's
+         * own user_roles row.
+         *
+         * It does NOT query
+         * user_roles from inside
+         * another user_roles policy.
+         */
+
+        const {
+          data: roleData,
+          error: roleError
+        } =
+          await supabaseClient
+            .from('user_roles')
+            .select('role')
+            .eq(
+              'user_id',
+              session.user.id
+            )
+            .maybeSingle();
+
+
+        if (roleError) {
+          throw roleError;
+        }
+
+
+        if (
+          !roleData ||
+          roleData.role !== 'management'
+        ) {
+
+          throw new Error(
+            'Management access required.'
+          );
+
+        }
+
+
+        /*
+         * Load all sales.
+         *
+         * NO 7-DAY LIMIT.
+         */
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from('daily_sales')
+            .select('*')
+            .order(
+              'created_at',
+              {
+                ascending: false
+              }
+            );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        allSales =
+          Array.isArray(data)
+            ? data
+            : [];
+
+
+        detectColumns();
+
+
+        /*
+         * Safety check.
+         */
+
+        if (!dateColumn) {
+
+          throw new Error(
+            'Could not find the sales date column in daily_sales.'
+          );
+
+        }
+
+
+        if (!amountColumn) {
+
+          throw new Error(
+            'Could not find the sales amount column in daily_sales.'
+          );
+
+        }
+
+
+        renderDashboard();
+
+
+        loading.style.display =
+          'none';
+
+        dashboard.style.display =
+          'block';
+
+      }
+
+      catch (error) {
+
+        console.error(
+          'Management dashboard error:',
+          error
+        );
+
+
+        loading.style.display =
+          'none';
+
+
+        showMessage(
+          'Access verification failed: ' +
+          (
+            error.message ||
+            'Unable to load sales.'
+          ),
+          'error'
+        );
+
+
+        /*
+         * Do NOT immediately redirect
+         * here. This lets you actually
+         * see the Supabase error.
+         */
+
+      }
+
+    }
+
+
+    /* =======================================================
+       RENDER DASHBOARD
+       ======================================================= */
+
+    function renderDashboard() {
+
+      renderStats();
+
+      buildMonthSelector();
+
+      renderMonthlySummary();
+
+
+      /*
+       * Default selected month:
+       * current month if available,
+       * otherwise latest month.
+       */
+
+      const currentDate =
+        new Date();
+
+      const currentMonth =
+        getMonthKey(
+          currentDate
+        );
+
+
+      const availableMonths =
+        getAvailableMonths();
+
+
+      if (
+        availableMonths.includes(
+          currentMonth
+        )
+      ) {
+
+        selectedMonth =
+          currentMonth;
+
+      }
+
+      else if (
+        availableMonths.length
+      ) {
+
+        selectedMonth =
+          availableMonths[0];
+
+      }
+
+      else {
+
+        selectedMonth =
+          currentMonth;
+
+      }
+
+
+      monthSelect.value =
+        selectedMonth;
+
+
+      renderSelectedMonth();
+
+    }
+
+
+    /* =======================================================
+       STATS
+       ======================================================= */
+
+    function renderStats() {
+
+      let tillDateSales = 0;
+
+      let transactionCount =
+        allSales.length;
+
+
+      allSales.forEach(
+        row => {
+
+          tillDateSales +=
+            getSaleAmount(row);
+
+        }
+      );
+
+
+      const now =
+        new Date();
+
+      const currentMonth =
+        getMonthKey(now);
+
+
+      const currentMonthRows =
+        allSales.filter(
+          row =>
+            getMonthKey(
+              getSaleDate(row)
+            ) === currentMonth
+        );
+
+
+      const currentMonthSales =
+        currentMonthRows.reduce(
+          (
+            total,
+            row
+          ) =>
+            total +
+            getSaleAmount(row),
+          0
+        );
+
+
+      document.getElementById(
+        'till-date-sales'
+      ).textContent =
+        formatMoney(
+          tillDateSales
+        );
+
+
+      document.getElementById(
+        'current-month-sales'
+      ).textContent =
+        formatMoney(
+          currentMonthSales
+        );
+
+
+      document.getElementById(
+        'transaction-count'
+      ).textContent =
+        transactionCount
+          .toLocaleString();
+
+
+      document.getElementById(
+        'current-month-count'
+      ).textContent =
+        currentMonthRows.length
+          .toLocaleString();
+
+
+      document.getElementById(
+        'current-month-label'
+      ).textContent =
+        getMonthLabel(
+          currentMonth
+        );
+
+    }
+
+
+    /* =======================================================
+       AVAILABLE MONTHS
+       ======================================================= */
+
+    function getAvailableMonths() {
+
+      const months =
+        new Set();
+
+
+      allSales.forEach(
+        row => {
+
+          const date =
+            getSaleDate(row);
+
+          if (date) {
+
+            months.add(
+              getMonthKey(date)
+            );
+
+          }
+
+        }
+      );
+
+
+      return Array
+        .from(months)
+        .sort()
+        .reverse();
+
+    }
+
+
+    /* =======================================================
+       MONTH SELECT
+       ======================================================= */
+
+    function buildMonthSelector() {
+
+      const months =
+        getAvailableMonths();
+
+
+      monthSelect.innerHTML =
+        '';
+
+
+      if (!months.length) {
+
+        const option =
+          document.createElement(
+            'option'
+          );
+
+        option.value = '';
+
+        option.textContent =
+          'No sales recorded';
+
+        monthSelect.appendChild(
+          option
+        );
+
+        return;
+
+      }
+
+
+      months.forEach(
+        month => {
+
+          const option =
+            document.createElement(
+              'option'
+            );
+
+          option.value =
+            month;
+
+          option.textContent =
+            getMonthLabel(
+              month
+            );
+
+          monthSelect.appendChild(
+            option
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       MONTHLY SUMMARY
+       ======================================================= */
+
+    function renderMonthlySummary() {
+
+      monthlySummary.innerHTML =
+        '';
+
+
+      const grouped =
+        {};
+
+
+      allSales.forEach(
+        row => {
+
+          const date =
+            getSaleDate(row);
+
+          const month =
+            getMonthKey(date);
+
+
+          if (!month) {
+            return;
+          }
+
+
+          if (!grouped[month]) {
+
+            grouped[month] = {
+              sales: 0,
+              entries: 0,
+              footfall: 0
+            };
+
+          }
+
+
+          grouped[month].sales +=
+            getSaleAmount(row);
+
+          grouped[month].entries +=
+            1;
+
+          grouped[month].footfall +=
+            getFootfall(row);
+
+        }
+      );
+
+
+      const months =
+        Object.keys(grouped)
+          .sort()
+          .reverse();
+
+
+      if (!months.length) {
+
+        monthlySummary.innerHTML =
+          `
+          <tr>
+            <td colspan="5">
+              <div class="empty">
+                No sales records found.
+              </div>
+            </td>
+          </tr>
+          `;
+
+        return;
+
+      }
+
+
+      months.forEach(
+        month => {
+
+          const item =
+            grouped[month];
+
+
+          const average =
+            item.entries
+              ? item.sales /
+                item.entries
+              : 0;
+
+
+          const tr =
+            document.createElement(
+              'tr'
+            );
+
+
+          tr.className =
+            'month-row';
+
+
+          tr.dataset.month =
+            month;
+
+
+          tr.innerHTML =
+            `
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    getMonthLabel(month)
+                  )}
+                </strong>
+              </td>
+
+              <td class="amount">
+                ${formatMoney(item.sales)}
+              </td>
+
+              <td>
+                ${item.entries.toLocaleString()}
+              </td>
+
+              <td class="footfall">
+                ${
+                  footfallColumn
+                    ? item.footfall.toLocaleString()
+                    : '—'
+                }
+              </td>
+
+              <td>
+                ${formatMoney(average)}
+              </td>
+            `;
+
+
+          tr.addEventListener(
+            'click',
+            function () {
+
+              selectedMonth =
+                month;
+
+              monthSelect.value =
+                month;
+
+              renderSelectedMonth();
+
+            }
+          );
+
+
+          monthlySummary.appendChild(
+            tr
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       SELECTED MONTH
+       ======================================================= */
+
+    function renderSelectedMonth() {
+
+      if (!selectedMonth) {
+
+        salesRecords.innerHTML =
+          `
+          <tr>
+            <td colspan="4">
+              <div class="empty">
+                No month selected.
+              </div>
+            </td>
+          </tr>
+          `;
+
+        return;
+
+      }
+
+
+      const rows =
+        allSales
+          .filter(
+            row =>
+              getMonthKey(
+                getSaleDate(row)
+              ) === selectedMonth
+          )
+          .sort(
+            (
+              a,
+              b
+            ) =>
+              getSaleDate(b) -
+              getSaleDate(a)
+          );
+
+
+      recordsTitle.textContent =
+        getMonthLabel(
+          selectedMonth
+        ) +
+        ' — Sales Records';
+
+
+      recordCount.textContent =
+        rows.length.toLocaleString() +
+        (
+          rows.length === 1
+            ? ' record'
+            : ' records'
+        );
+
+
+      salesRecords.innerHTML =
+        '';
+
+
+      if (!rows.length) {
+
+        salesRecords.innerHTML =
+          `
+          <tr>
+            <td colspan="4">
+              <div class="empty">
+                No sales records for
+                ${escapeHtml(
+                  getMonthLabel(selectedMonth)
+                )}.
+              </div>
+            </td>
+          </tr>
+          `;
+
+        return;
+
+      }
+
+
+      rows.forEach(
+        (
+          row,
+          index
+        ) => {
+
+          const date =
+            getSaleDate(row);
+
+
+          const tr =
+            document.createElement(
+              'tr'
+            );
+
+
+          tr.innerHTML =
+            `
+              <td class="sale-date">
+                ${formatDate(date)}
+              </td>
+
+              <td class="amount">
+                ${formatMoney(
+                  getSaleAmount(row)
+                )}
+              </td>
+
+              <td class="footfall">
+                ${
+                  footfallColumn
+                    ? getFootfall(row)
+                        .toLocaleString()
+                    : '—'
+                }
+              </td>
+
+              <td>
+                <button
+                  class="details-button"
+                  data-index="${allSales.indexOf(row)}"
+                >
+                  VIEW
+                </button>
+              </td>
+            `;
+
+
+          const button =
+            tr.querySelector(
+              '.details-button'
+            );
+
+
+          button.addEventListener(
+            'click',
+            function () {
+
+              showDetails(
+                row
+              );
+
+            }
+          );
+
+
+          salesRecords.appendChild(
+            tr
+          );
+
+        }
+      );
+
+
+      /*
+       * Highlight selected month
+       * in summary.
+       */
+
+      document
+        .querySelectorAll(
+          '.month-row'
+        )
+        .forEach(
+          row => {
+
+            row.classList.toggle(
+              'selected-month',
+              row.dataset.month ===
+              selectedMonth
+            );
+
+          }
+        );
+
+    }
+
+
+    /* =======================================================
+       DATE FORMAT
+       ======================================================= */
+
+    function formatDate(date) {
+
+      if (!date) {
+        return 'Unknown';
+      }
+
+      return date.toLocaleDateString(
+        'en-GB',
+        {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       DETAILS
+       ======================================================= */
+
+    function showDetails(row) {
+
+      modalBody.innerHTML =
+        '';
+
+
+      const grid =
+        document.createElement(
+          'div'
+        );
+
+
+      grid.className =
+        'detail-grid';
+
+
+      Object.keys(row)
+        .forEach(
+          key => {
+
+            const item =
+              document.createElement(
+                'div'
+              );
+
+
+            item.className =
+              'detail-item';
+
+
+            const label =
+              document.createElement(
+                'div'
+              );
+
+
+            label.className =
+              'detail-label';
+
+
+            label.textContent =
+              key.replace(
+                /_/g,
+                ' '
+              );
+
+
+            const value =
+              document.createElement(
+                'div'
+              );
+
+
+            value.className =
+              'detail-value';
+
+
+            let displayValue =
+              row[key];
+
+
+            if (
+              displayValue === null ||
+              displayValue === undefined
+            ) {
+
+              displayValue =
+                '—';
+
+            }
+
+
+            if (
+              typeof displayValue ===
+              'object'
+            ) {
+
+              displayValue =
+                JSON.stringify(
+                  displayValue
+                );
+
+            }
+
+
+            value.textContent =
+              displayValue;
+
+
+            item.appendChild(
+              label
+            );
+
+            item.appendChild(
+              value
+            );
+
+
+            grid.appendChild(
+              item
+            );
+
+          }
+        );
+
+
+      modalBody.appendChild(
+        grid
+      );
+
+
+      detailsModal.classList.add(
+        'show'
+      );
+
+    }
+
+
+    /* =======================================================
+       CSV ESCAPE
+       ======================================================= */
+
+    function csvEscape(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+
+        return '';
+
+      }
+
+
+      let text;
+
+
+      if (
+        typeof value ===
+        'object'
+      ) {
+
+        text =
+          JSON.stringify(
+            value
+          );
+
+      }
+
+      else {
+
+        text =
+          String(value);
+
+      }
+
+
+      return '"' +
+        text
+          .replace(
+            /"/g,
+            '""'
+          ) +
+        '"';
+
+    }
+
+
+    /* =======================================================
+       EXPORT CSV
+       ======================================================= */
+
+    function exportCSV(
+      rows,
+      filename
+    ) {
+
+      if (!rows.length) {
+
+        showMessage(
+          'There are no sales records to export.',
+          'error'
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * Get every column appearing
+       * in the returned records.
+       */
+
+      const columnSet =
+        new Set();
+
+
+      rows.forEach(
+        row => {
+
+          Object.keys(row)
+            .forEach(
+              key =>
+                columnSet.add(key)
+            );
+
+        }
+      );
+
+
+      const columns =
+        Array.from(
+          columnSet
+        );
+
+
+      const header =
+        columns
+          .map(csvEscape)
+          .join(',');
+
+
+      const body =
+        rows
+          .map(
+            row =>
+              columns
+                .map(
+                  column =>
+                    csvEscape(
+                      row[column]
+                    )
+                )
+                .join(',')
+          )
+          .join('\n');
+
+
+      const csv =
+        '\uFEFF' +
+        header +
+        '\n' +
+        body;
+
+
+      const blob =
+        new Blob(
+          [csv],
+          {
+            type:
+              'text/csv;charset=utf-8;'
+          }
+        );
+
+
+      const url =
+        URL.createObjectURL(
+          blob
+        );
+
+
+      const link =
+        document.createElement(
+          'a'
+        );
+
+
+      link.href =
+        url;
+
+      link.download =
+        filename;
+
+
+      document.body.appendChild(
+        link
+      );
+
+
+      link.click();
+
+
+      document.body.removeChild(
+        link
+      );
+
+
+      URL.revokeObjectURL(
+        url
+      );
+
+
+      showMessage(
+        'CSV export completed.',
+        'success'
+      );
+
+    }
+
+
+    /* =======================================================
+       EXPORT SELECTED MONTH
+       ======================================================= */
+
+    function exportSelectedMonth() {
+
+      const rows =
+        allSales.filter(
+          row =>
+            getMonthKey(
+              getSaleDate(row)
+            ) === selectedMonth
+        );
+
+
+      exportCSV(
+        rows,
+        'suryodaya-sales-' +
+        selectedMonth +
+        '.csv'
+      );
+
+    }
+
+
+    /* =======================================================
+       ESCAPE HTML
+       ======================================================= */
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(value)
+        .replace(
+          /&/g,
+          '&amp;'
+        )
+        .replace(
+          /</g,
+          '&lt;'
+        )
+        .replace(
+          />/g,
+          '&gt;'
+        )
+        .replace(
+          /"/g,
+          '&quot;'
+        )
+        .replace(
+          /'/g,
+          '&#039;'
+        );
+
+    }
+
+
+    /* =======================================================
+       EVENTS
+       ======================================================= */
+
+    monthSelect.addEventListener(
+      'change',
+      function () {
+
+        selectedMonth =
+          this.value;
+
+        renderSelectedMonth();
+
+      }
+    );
+
+
+    document
+      .getElementById(
+        'export-month'
+      )
+      .addEventListener(
+        'click',
+        exportSelectedMonth
+      );
+
+
+    document
+      .getElementById(
+        'export-all'
+      )
+      .addEventListener(
+        'click',
+        function () {
+
+          exportCSV(
+            allSales,
+            'suryodaya-all-sales.csv'
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        'refresh-button'
+      )
+      .addEventListener(
+        'click',
+        loadSales
+      );
+
+
+    document
+      .getElementById(
+        'logout-button'
+      )
+      .addEventListener(
+        'click',
+        async function () {
+
+          await supabaseClient
+            .auth
+            .signOut();
+
+
+          window.location.replace(
+            'index.html'
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        'close-modal'
+      )
+      .addEventListener(
+        'click',
+        function () {
+
+          detailsModal.classList.remove(
+            'show'
+          );
+
+        }
+      );
+
+
+    detailsModal.addEventListener(
+      'click',
+      function (event) {
+
+        if (
+          event.target ===
+          detailsModal
+        ) {
+
+          detailsModal.classList.remove(
+            'show'
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =======================================================
+       AUTH STATE
+       ======================================================= */
+
+    supabaseClient.auth.onAuthStateChange(
+      function (
+        event,
+        session
+      ) {
+
+        if (
+          event ===
+          'SIGNED_OUT'
+        ) {
+
+          window.location.replace(
+            'index.html'
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =======================================================
+       START
+       ======================================================= */
+
+    loadSales();
+
+  </script>
+
+</body>
+</html>

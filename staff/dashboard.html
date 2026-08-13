@@ -3,18 +3,29 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <meta name="robots" content="noindex, nofollow">
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
 
   <title>Staff Dashboard | Suryodaya Adventures</title>
 
-  <link rel="icon" type="image/png" href="../Logo.png">
+  <link
+    rel="icon"
+    type="image/png"
+    href="../Logo.png"
+  >
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
     /* =========================================================
        SURYODAYA ADVENTURES — STAFF DASHBOARD
        ========================================================= */
@@ -39,10 +50,17 @@
       --danger: #B42318;
       --soft-green: #EAF7F0;
       --soft-red: #FDECEC;
+
+      --footfall-bg: #EAF7F0;
+      --footfall-border: #BFE3CD;
+      --warning-bg: #FFF8E6;
+      --warning-border: #F2D48A;
+      --warning-text: #7A5A00;
     }
 
     body {
       min-height: 100vh;
+
       font-family:
         "Plus Jakarta Sans",
         Arial,
@@ -60,8 +78,11 @@
     .dashboard-header {
       background: var(--forest);
       color: white;
+
       padding: 16px 24px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+
+      box-shadow:
+        0 3px 12px rgba(0,0,0,0.12);
     }
 
     .header-inner {
@@ -84,20 +105,27 @@
     .brand img {
       width: 48px;
       height: 48px;
+
       object-fit: contain;
+
       background: white;
       border-radius: 50%;
       padding: 4px;
     }
 
     .brand-text h1 {
-      font-family: Georgia, "Times New Roman", serif;
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
       font-size: 22px;
       line-height: 1.1;
     }
 
     .brand-text p {
       margin-top: 3px;
+
       font-size: 11px;
       opacity: 0.75;
     }
@@ -111,10 +139,12 @@
     .home-link,
     .logout-button {
       border: 1px solid rgba(255,255,255,0.3);
+
       background: transparent;
       color: white;
 
       padding: 9px 13px;
+
       border-radius: 7px;
 
       font-size: 12px;
@@ -135,7 +165,11 @@
        ========================================================= */
 
     .container {
-      width: min(1180px, calc(100% - 32px));
+      width: min(
+        1180px,
+        calc(100% - 32px)
+      );
+
       margin: 0 auto;
     }
 
@@ -149,23 +183,33 @@
 
     .page-heading .eyebrow {
       color: var(--orange);
+
       font-size: 11px;
       font-weight: 800;
+
       letter-spacing: 1.5px;
       text-transform: uppercase;
+
       margin-bottom: 6px;
     }
 
     .page-heading h2 {
-      font-family: Georgia, "Times New Roman", serif;
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
       color: var(--forest);
+
       font-size: 30px;
       line-height: 1.2;
     }
 
     .page-heading p {
       margin-top: 6px;
+
       color: var(--muted);
+
       font-size: 13px;
     }
 
@@ -175,31 +219,44 @@
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
       gap: 16px;
+
       margin-bottom: 24px;
     }
 
     .stat-card {
       background: white;
+
       border: 1px solid var(--border);
+
       border-radius: 12px;
+
       padding: 20px;
 
-      box-shadow: 0 4px 16px rgba(23,63,53,0.05);
+      box-shadow:
+        0 4px 16px rgba(23,63,53,0.05);
     }
 
     .stat-label {
       color: var(--muted);
+
       font-size: 11px;
       font-weight: 700;
+
       text-transform: uppercase;
+
       letter-spacing: 0.6px;
     }
 
     .stat-value {
       margin-top: 7px;
+
       color: var(--forest);
+
       font-size: 26px;
       font-weight: 800;
     }
@@ -208,40 +265,61 @@
       color: var(--orange);
     }
 
+    .stat-value.green {
+      color: var(--success);
+    }
+
     /* =========================================================
-       ENTRY SECTION
+       CONTENT
        ========================================================= */
 
     .content-grid {
       display: grid;
-      grid-template-columns: 430px 1fr;
+
+      grid-template-columns:
+        430px 1fr;
+
       gap: 22px;
+
       align-items: start;
     }
 
     .card {
       background: white;
+
       border: 1px solid var(--border);
+
       border-radius: 14px;
 
-      box-shadow: 0 4px 16px rgba(23,63,53,0.05);
+      box-shadow:
+        0 4px 16px rgba(23,63,53,0.05);
+
       overflow: hidden;
     }
 
     .card-header {
       padding: 19px 21px;
-      border-bottom: 1px solid var(--border);
+
+      border-bottom:
+        1px solid var(--border);
     }
 
     .card-header h3 {
       color: var(--forest);
-      font-family: Georgia, "Times New Roman", serif;
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
       font-size: 20px;
     }
 
     .card-header p {
       color: var(--muted);
+
       font-size: 11px;
+
       margin-top: 4px;
     }
 
@@ -259,9 +337,12 @@
 
     label {
       display: block;
+
       color: var(--forest);
+
       font-size: 12px;
       font-weight: 800;
+
       margin-bottom: 7px;
     }
 
@@ -269,7 +350,9 @@
       width: 100%;
       height: 46px;
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
+
       border-radius: 8px;
 
       background: white;
@@ -288,22 +371,124 @@
     }
 
     input:focus {
-      border-color: var(--forest-light);
-      box-shadow: 0 0 0 3px rgba(31,87,69,0.11);
+      border-color:
+        var(--forest-light);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(31,87,69,0.11);
     }
 
     input[type="number"] {
-      font-variant-numeric: tabular-nums;
+      font-variant-numeric:
+        tabular-nums;
     }
+
+    /* =========================================================
+       FOOTFALL
+       ========================================================= */
+
+    .footfall-box {
+      background: var(--footfall-bg);
+
+      border:
+        1px solid var(--footfall-border);
+
+      border-radius: 10px;
+
+      padding: 15px;
+
+      margin-bottom: 19px;
+    }
+
+    .footfall-heading {
+      color: var(--forest);
+
+      font-size: 11px;
+      font-weight: 900;
+
+      letter-spacing: 1px;
+    }
+
+    .footfall-description {
+      color: var(--muted);
+
+      font-size: 11px;
+
+      margin-top: 3px;
+      margin-bottom: 12px;
+    }
+
+    .footfall-box .form-group {
+      margin-bottom: 0;
+    }
+
+    .footfall-box input {
+      background: white;
+
+      border-color:
+        var(--footfall-border);
+    }
+
+    /* =========================================================
+       DUPLICATE DATE WARNING
+       ========================================================= */
+
+    .duplicate-warning {
+      display: none;
+
+      margin-bottom: 17px;
+
+      padding: 12px 14px;
+
+      border-radius: 9px;
+
+      background:
+        var(--warning-bg);
+
+      border:
+        1px solid var(--warning-border);
+
+      color:
+        var(--warning-text);
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+    .duplicate-warning.show {
+      display: block;
+    }
+
+    .duplicate-warning strong {
+      display: block;
+
+      margin-bottom: 3px;
+
+      font-size: 12px;
+    }
+
+    .duplicate-warning span {
+      display: block;
+    }
+
+    /* =========================================================
+       TOTAL
+       ========================================================= */
 
     .total-preview {
       background: var(--cream);
-      border: 1px solid #E8DDC8;
+
+      border:
+        1px solid #E8DDC8;
+
       border-radius: 9px;
 
       padding: 14px;
 
       display: flex;
+
       justify-content: space-between;
       align-items: center;
 
@@ -312,32 +497,44 @@
 
     .total-preview span:first-child {
       color: var(--muted);
+
       font-size: 12px;
       font-weight: 700;
     }
 
     .total-preview strong {
       color: var(--orange);
+
       font-size: 21px;
     }
+
+    /* =========================================================
+       BUTTONS
+       ========================================================= */
 
     .save-button {
       width: 100%;
       height: 48px;
 
       border: none;
+
       border-radius: 8px;
 
-      background: var(--orange);
+      background:
+        var(--orange);
+
       color: white;
 
       font-family: inherit;
+
       font-size: 13px;
       font-weight: 800;
 
       cursor: pointer;
 
-      box-shadow: 0 7px 18px rgba(232,93,4,0.2);
+      box-shadow:
+        0 7px 18px
+        rgba(232,93,4,0.2);
 
       transition:
         background 0.2s ease,
@@ -346,12 +543,16 @@
 
     .save-button:hover {
       background: #D94F00;
-      transform: translateY(-1px);
+
+      transform:
+        translateY(-1px);
     }
 
     .save-button:disabled {
       opacity: 0.65;
+
       cursor: not-allowed;
+
       transform: none;
     }
 
@@ -361,13 +562,17 @@
 
       margin-top: 9px;
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
+
       border-radius: 8px;
 
       background: white;
+
       color: var(--forest);
 
       font-family: inherit;
+
       font-size: 12px;
       font-weight: 800;
 
@@ -394,6 +599,7 @@
       border-radius: 8px;
 
       font-size: 12px;
+
       line-height: 1.5;
     }
 
@@ -402,98 +608,157 @@
     }
 
     .message.success {
-      background: var(--soft-green);
-      border: 1px solid #BFE3CD;
-      color: var(--success);
+      background:
+        var(--soft-green);
+
+      border:
+        1px solid #BFE3CD;
+
+      color:
+        var(--success);
     }
 
-/* Existing entry warning */
-.duplicate-warning {
-  display: none;
-  margin-bottom: 17px;
-  padding: 12px 14px;
-  border-radius: 9px;
-  background: #FFF8E6;
-  border: 1px solid #F2D48A;
-  color: #7A5A00;
-  font-size: 12px;
-  line-height: 1.5;
-}
+    .message.error {
+      background:
+        var(--soft-red);
 
-.duplicate-warning.show {
-  display: block;
-}
+      border:
+        1px solid #F5C7C4;
 
-.duplicate-warning strong {
-  display: block;
-  margin-bottom: 3px;
-  font-size: 12px;
-}
-
-.duplicate-warning span {
-  display: block;
-}
+      color:
+        var(--danger);
+    }
 
     /* =========================================================
-       TABLE
+       7 DAY RECORDS
        ========================================================= */
 
-    .table-wrapper {
-      overflow-x: auto;
+    .records-container {
+      padding: 18px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 650px;
+    .day-group {
+      border:
+        1px solid var(--border);
+
+      border-radius: 11px;
+
+      margin-bottom: 14px;
+
+      overflow: hidden;
+
+      background: white;
     }
 
-    th {
-      background: #F4F7F4;
+    .day-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .day-header {
+      background:
+        #F4F7F4;
+
+      padding: 13px 15px;
+
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 15px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    .day-title {
+      color: var(--forest);
+
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .day-subtitle {
       color: var(--muted);
 
-      text-align: left;
+      font-size: 10px;
+
+      margin-top: 3px;
+    }
+
+    .day-total {
+      text-align: right;
+    }
+
+    .day-total-label {
+      color: var(--muted);
+
+      font-size: 9px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.5px;
+    }
+
+    .day-total-value {
+      color: var(--orange);
+
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .day-footfall {
+      margin-top: 2px;
+
+      color: var(--success);
 
       font-size: 10px;
       font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-
-      padding: 12px 14px;
-
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
     }
 
-    td {
-      padding: 13px 14px;
+    /* =========================================================
+       ENTRY ROW
+       ========================================================= */
 
-      border-bottom: 1px solid #EDF1EE;
+    .entry-row {
+      padding: 13px 15px;
 
-      color: var(--text);
-
-      font-size: 12px;
-
-      white-space: nowrap;
+      border-bottom:
+        1px solid #EDF1EE;
     }
 
-    tbody tr:hover {
-      background: #FAFCFA;
+    .entry-row:last-child {
+      border-bottom: none;
     }
 
-    .amount {
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
+    .entry-top {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 12px;
+
+      margin-bottom: 10px;
     }
 
-    .total-cell {
-      color: var(--orange);
+    .entry-number {
+      color: var(--muted);
+
+      font-size: 10px;
       font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.5px;
     }
 
     .edit-button {
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
+
       background: white;
+
       color: var(--forest);
 
       border-radius: 6px;
@@ -501,6 +766,7 @@
       padding: 6px 9px;
 
       font-family: inherit;
+
       font-size: 10px;
       font-weight: 800;
 
@@ -509,25 +775,102 @@
 
     .edit-button:hover {
       background: var(--forest);
+
       color: white;
     }
 
-    .empty-state {
-      padding: 35px 20px;
-      text-align: center;
+    .edit-button:disabled {
+      opacity: 0.5;
+
+      cursor: not-allowed;
+    }
+
+    .entry-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 8px;
+    }
+
+    .entry-item {
+      background:
+        #FAFCFA;
+
+      border-radius: 7px;
+
+      padding: 9px;
+    }
+
+    .entry-label {
       color: var(--muted);
-      font-size: 12px;
+
+      font-size: 9px;
+      font-weight: 700;
+
+      text-transform: uppercase;
+    }
+
+    .entry-value {
+      margin-top: 3px;
+
+      color: var(--forest);
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .entry-value.sales-total {
+      color: var(--orange);
+    }
+
+    .entry-value.footfall-value {
+      color: var(--success);
     }
 
     /* =========================================================
-       LOADING
+       EMPTY / LOADING
        ========================================================= */
+
+    .empty-state {
+      padding: 35px 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
 
     .loading {
       padding: 35px 20px;
+
       text-align: center;
+
       color: var(--muted);
+
       font-size: 12px;
+    }
+
+    .seven-day-note {
+      margin-bottom: 15px;
+
+      padding: 10px 12px;
+
+      background:
+        #F4F7F4;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 8px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+
+      line-height: 1.5;
     }
 
     /* =========================================================
@@ -541,8 +884,10 @@
       }
 
       .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns:
+          repeat(3, 1fr);
       }
+
     }
 
     @media (max-width: 650px) {
@@ -595,7 +940,18 @@
       .card-body {
         padding: 17px;
       }
+
+      .day-header {
+        align-items: flex-start;
+      }
+
+      .entry-grid {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
     }
+
   </style>
 </head>
 
@@ -618,9 +974,13 @@
 
         <div class="brand-text">
 
-          <h1>Suryodaya Adventures</h1>
+          <h1>
+            Suryodaya Adventures
+          </h1>
 
-          <p>Staff Management Portal</p>
+          <p>
+            Staff Management Portal
+          </p>
 
         </div>
 
@@ -671,7 +1031,7 @@
         </h2>
 
         <p>
-          Record the day's business performance.
+          Manage daily business records for the last 7 days.
         </p>
 
       </section>
@@ -706,7 +1066,7 @@
           </div>
 
           <div
-            class="stat-value"
+            class="stat-value green"
             id="today-footfall"
           >
             0
@@ -718,14 +1078,14 @@
         <div class="stat-card">
 
           <div class="stat-label">
-            Records This Month
+            7-Day Sales
           </div>
 
           <div
-            class="stat-value"
-            id="month-records"
+            class="stat-value orange"
+            id="seven-day-sales"
           >
-            0
+            NPR 0
           </div>
 
         </div>
@@ -753,7 +1113,7 @@
             </h3>
 
             <p>
-              Enter today's sales and total visitors.
+              Enter sales and visitor footfall.
             </p>
 
           </div>
@@ -769,13 +1129,28 @@
 
 
             <form id="sales-form">
-<div id="duplicate-warning" class="duplicate-warning">
-  <strong>⚠️ Existing entry found for this date.</strong>
-  <span>
-    You are creating an additional entry for the same day.
-    Use this only for a separate shift/session or correction.
-  </span>
-</div>
+
+
+              <!-- DUPLICATE WARNING -->
+
+              <div
+                id="duplicate-warning"
+                class="duplicate-warning"
+              >
+
+                <strong>
+                  ⚠️ Existing entry found for this date.
+                </strong>
+
+                <span>
+                  You are creating an additional entry
+                  for the same day. Use this only for a
+                  separate shift/session or correction.
+                </span>
+
+              </div>
+
+
               <!-- DATE -->
 
               <div class="form-group">
@@ -791,34 +1166,39 @@
                 >
 
               </div>
-<!-- FOOTFALL -->
 
-<div class="footfall-box">
 
-  <div class="footfall-heading">
-    VISITOR FOOTFALL
-  </div>
+              <!-- FOOTFALL -->
 
-  <div class="footfall-description">
-    Total visitors for this entry
-  </div>
+              <div class="footfall-box">
 
-  <div class="form-group">
-    <label for="total-footfall">
-      Total Visitors
-    </label>
+                <div class="footfall-heading">
+                  VISITOR FOOTFALL
+                </div>
 
-    <input
-      type="number"
-      id="total-footfall"
-      min="0"
-      step="1"
-      placeholder="0"
-      required
-    >
-  </div>
+                <div class="footfall-description">
+                  Total visitors for this entry
+                </div>
 
-</div>
+                <div class="form-group">
+
+                  <label for="total-footfall">
+                    Total Visitors
+                  </label>
+
+                  <input
+                    type="number"
+                    id="total-footfall"
+                    min="0"
+                    step="1"
+                    placeholder="0"
+                    required
+                  >
+
+                </div>
+
+              </div>
+
 
               <!-- ADVENTURE SALES -->
 
@@ -879,6 +1259,7 @@
 
               </div>
 
+
               <!-- TOTAL -->
 
               <div class="total-preview">
@@ -923,7 +1304,7 @@
 
 
         <!-- ================================================
-             RECENT RECORDS
+             LAST 7 DAYS
              ================================================ -->
 
         <div class="card">
@@ -931,16 +1312,27 @@
           <div class="card-header">
 
             <h3>
-              Recent Daily Records
+              Last 7 Days
             </h3>
 
             <p>
-              Latest sales and footfall entries.
+              Records are grouped by business date.
             </p>
 
           </div>
 
-          <div class="table-wrapper">
+
+          <div class="records-container">
+
+            <div class="seven-day-note">
+
+              Only today and the previous 6 days are
+              shown here. Older records remain safely
+              stored in the database but are not shown
+              to staff.
+
+            </div>
+
 
             <div
               id="table-loading"
@@ -949,44 +1341,20 @@
               Loading records...
             </div>
 
-            <table
-              id="records-table"
-              style="display:none;"
-            >
 
-              <thead>
+            <div
+              id="records-body"
+            ></div>
 
-                <tr>
-
-                  <th>Date</th>
-
-                  <th>Adventure</th>
-
-                  <th>Videography</th>
-
-                  <th>Restaurant/Camping</th>
-
-                  <th>Total Sales</th>
-
-                  <th>Footfall</th>
-
-                  <th>Action</th>
-
-                </tr>
-
-              </thead>
-
-              <tbody id="records-body">
-              </tbody>
-
-            </table>
 
             <div
               id="empty-state"
               class="empty-state"
               style="display:none;"
             >
-              No daily records yet.
+              No records have been entered for the
+              last 7 days.
+
             </div>
 
           </div>
@@ -1033,61 +1401,99 @@
        ======================================================= */
 
     const salesForm =
-      document.getElementById('sales-form');
+      document.getElementById(
+        'sales-form'
+      );
 
     const dateInput =
-      document.getElementById('business-date');
+      document.getElementById(
+        'business-date'
+      );
 
     const adventureInput =
-      document.getElementById('adventure-sales');
+      document.getElementById(
+        'adventure-sales'
+      );
 
     const videographyInput =
-      document.getElementById('videography-sales');
+      document.getElementById(
+        'videography-sales'
+      );
 
     const restaurantCampingInput =
-      document.getElementById('restaurant-camping-sales');
+      document.getElementById(
+        'restaurant-camping-sales'
+      );
 
     const footfallInput =
-      document.getElementById('total-footfall');
+      document.getElementById(
+        'total-footfall'
+      );
 
     const totalPreview =
-      document.getElementById('total-preview');
+      document.getElementById(
+        'total-preview'
+      );
 
     const saveButton =
-      document.getElementById('save-button');
+      document.getElementById(
+        'save-button'
+      );
 
     const cancelButton =
-      document.getElementById('cancel-button');
+      document.getElementById(
+        'cancel-button'
+      );
 
     const formTitle =
-      document.getElementById('form-title');
+      document.getElementById(
+        'form-title'
+      );
 
     const messageBox =
-      document.getElementById('message');
+      document.getElementById(
+        'message'
+      );
 
     const recordsBody =
-      document.getElementById('records-body');
-
-    const recordsTable =
-      document.getElementById('records-table');
+      document.getElementById(
+        'records-body'
+      );
 
     const tableLoading =
-      document.getElementById('table-loading');
+      document.getElementById(
+        'table-loading'
+      );
 
     const emptyState =
-      document.getElementById('empty-state');
+      document.getElementById(
+        'empty-state'
+      );
 
     const logoutButton =
-      document.getElementById('logout-button');
+      document.getElementById(
+        'logout-button'
+      );
 
     const todaySales =
-      document.getElementById('today-sales');
+      document.getElementById(
+        'today-sales'
+      );
 
     const todayFootfall =
-      document.getElementById('today-footfall');
+      document.getElementById(
+        'today-footfall'
+      );
 
-    const monthRecords =
-      document.getElementById('month-records');
+    const sevenDaySales =
+      document.getElementById(
+        'seven-day-sales'
+      );
+
+    const duplicateWarning =
+      document.getElementById(
+        'duplicate-warning'
+      );
 
 
     /* =======================================================
@@ -1100,7 +1506,7 @@
 
 
     /* =======================================================
-       TODAY'S DATE
+       DATE HELPERS
        ======================================================= */
 
     function getLocalDateString() {
@@ -1111,14 +1517,67 @@
         now.getFullYear();
 
       const month =
-        String(now.getMonth() + 1)
-          .padStart(2, '0');
+        String(
+          now.getMonth() + 1
+        ).padStart(2, '0');
 
       const day =
-        String(now.getDate())
-          .padStart(2, '0');
+        String(
+          now.getDate()
+        ).padStart(2, '0');
 
       return `${year}-${month}-${day}`;
+
+    }
+
+
+    function getDateDaysAgo(days) {
+
+      const date = new Date();
+
+      date.setHours(
+        0,
+        0,
+        0,
+        0
+      );
+
+      date.setDate(
+        date.getDate() - days
+      );
+
+      const year =
+        date.getFullYear();
+
+      const month =
+        String(
+          date.getMonth() + 1
+        ).padStart(2, '0');
+
+      const day =
+        String(
+          date.getDate()
+        ).padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+
+    }
+
+
+    function isWithinLastSevenDays(
+      dateString
+    ) {
+
+      const today =
+        getLocalDateString();
+
+      const oldest =
+        getDateDaysAgo(6);
+
+      return (
+        dateString >= oldest &&
+        dateString <= today
+      );
 
     }
 
@@ -1132,13 +1591,30 @@
       const number =
         Number(value) || 0;
 
-      return 'NPR ' +
+      return (
+        'NPR ' +
         number.toLocaleString(
           'en-NP',
           {
             maximumFractionDigits: 2
           }
-        );
+        )
+      );
+
+    }
+
+
+    /* =======================================================
+       FORMAT NUMBER
+       ======================================================= */
+
+    function formatNumber(value) {
+
+      return (
+        Number(value) || 0
+      ).toLocaleString(
+        'en-NP'
+      );
 
     }
 
@@ -1147,7 +1623,9 @@
        FORMAT DATE
        ======================================================= */
 
-    function formatDate(dateString) {
+    function formatDate(
+      dateString
+    ) {
 
       if (!dateString) {
         return '-';
@@ -1155,12 +1633,14 @@
 
       const date =
         new Date(
-          dateString + 'T00:00:00'
+          dateString +
+          'T00:00:00'
         );
 
       return date.toLocaleDateString(
         'en-GB',
         {
+          weekday: 'short',
           day: '2-digit',
           month: 'short',
           year: 'numeric'
@@ -1177,13 +1657,19 @@
     function calculateTotal() {
 
       const adventure =
-        Number(adventureInput.value) || 0;
+        Number(
+          adventureInput.value
+        ) || 0;
 
       const videography =
-        Number(videographyInput.value) || 0;
+        Number(
+          videographyInput.value
+        ) || 0;
 
       const restaurantCamping =
-        Number(restaurantCampingInput.value) || 0;
+        Number(
+          restaurantCampingInput.value
+        ) || 0;
 
       const total =
         adventure +
@@ -1227,7 +1713,8 @@
         text;
 
       messageBox.className =
-        'message show ' + type;
+        'message show ' +
+        type;
 
     }
 
@@ -1253,7 +1740,9 @@
         data,
         error
       } =
-        await supabaseClient.auth.getSession();
+        await supabaseClient
+          .auth
+          .getSession();
 
 
       if (error) {
@@ -1287,7 +1776,63 @@
 
 
     /* =======================================================
-       LOAD RECORDS
+       CHECK EXISTING DATE
+       ======================================================= */
+
+    function checkDuplicateDate() {
+
+      if (
+        !dateInput.value ||
+        editingId
+      ) {
+
+        duplicateWarning
+          .classList
+          .remove('show');
+
+        return;
+
+      }
+
+
+      const exists =
+        records.some(
+          function(record) {
+
+            return (
+              record.business_date ===
+              dateInput.value
+            );
+
+          }
+        );
+
+
+      if (exists) {
+
+        duplicateWarning
+          .classList
+          .add('show');
+
+      } else {
+
+        duplicateWarning
+          .classList
+          .remove('show');
+
+      }
+
+    }
+
+
+    dateInput.addEventListener(
+      'change',
+      checkDuplicateDate
+    );
+
+
+    /* =======================================================
+       LOAD LAST 7 DAYS
        ======================================================= */
 
     async function loadRecords() {
@@ -1295,11 +1840,18 @@
       tableLoading.style.display =
         'block';
 
-      recordsTable.style.display =
-        'none';
+      recordsBody.innerHTML =
+        '';
 
       emptyState.style.display =
         'none';
+
+
+      const oldestDate =
+        getDateDaysAgo(6);
+
+      const today =
+        getLocalDateString();
 
 
       const {
@@ -1308,9 +1860,21 @@
       } =
         await supabaseClient
 
-          .from('daily_sales')
+          .from(
+            'daily_sales'
+          )
 
           .select('*')
+
+          .gte(
+            'business_date',
+            oldestDate
+          )
+
+          .lte(
+            'business_date',
+            today
+          )
 
           .order(
             'business_date',
@@ -1319,7 +1883,12 @@
             }
           )
 
-          .limit(100);
+          .order(
+            'created_at',
+            {
+              ascending: false
+            }
+          );
 
 
       tableLoading.style.display =
@@ -1347,125 +1916,361 @@
         data || [];
 
 
-      if (records.length === 0) {
+      updateStats();
+
+      renderGroupedRecords();
+
+      checkDuplicateDate();
+
+    }
+
+
+    /* =======================================================
+       RENDER GROUPED RECORDS
+       ======================================================= */
+
+    function renderGroupedRecords() {
+
+      recordsBody.innerHTML =
+        '';
+
+      emptyState.style.display =
+        'none';
+
+
+      if (
+        records.length === 0
+      ) {
 
         emptyState.style.display =
           'block';
-
-        updateStats();
 
         return;
 
       }
 
 
-      recordsTable.style.display =
-        'table';
+      /*
+       * Group records by business date.
+       */
 
-
-      recordsBody.innerHTML =
-        '';
+      const grouped =
+        {};
 
 
       records.forEach(
         function(record) {
 
-          const adventure =
-            Number(
-              record.adventure_sales
-            ) || 0;
+          const date =
+            record.business_date;
 
-          const videography =
-            Number(
-              record.videography_sales
-            ) || 0;
+          if (!grouped[date]) {
 
-          const restaurantCamping =
-            Number(
-              record.restaurant_camping_sales
-            ) || 0;
+            grouped[date] =
+              [];
 
-          const total =
-            adventure +
-            videography +
-            restaurantCamping;
+          }
 
-
-          const row =
-            document.createElement('tr');
-
-
-          row.innerHTML = `
-
-            <td>
-              ${formatDate(record.business_date)}
-            </td>
-
-            <td class="amount">
-              ${formatMoney(adventure)}
-            </td>
-
-            <td class="amount">
-              ${formatMoney(videography)}
-            </td>
-
-            <td class="amount">
-              ${formatMoney(restaurantCamping)}
-            </td>
-
-            <td class="total-cell">
-              ${formatMoney(total)}
-            </td>
-
-            <td class="amount">
-              ${Number(record.total_footfall || 0).toLocaleString('en-NP')}
-            </td>
-
-            <td>
-              <button
-                type="button"
-                class="edit-button"
-                data-id="${record.id}"
-              >
-                EDIT
-              </button>
-            </td>
-
-          `;
-
-
-          recordsBody.appendChild(row);
+          grouped[date].push(
+            record
+          );
 
         }
       );
 
 
-      /* Attach edit events */
+      const dates =
+        Object.keys(grouped)
+          .sort()
+          .reverse();
 
-      recordsBody
-        .querySelectorAll('.edit-button')
-        .forEach(
-          function(button) {
 
-            button.addEventListener(
-              'click',
-              function() {
+      dates.forEach(
+        function(date) {
 
-                const id =
-                  button.getAttribute(
-                    'data-id'
-                  );
+          const dayRecords =
+            grouped[date];
 
-                startEditing(id);
 
-              }
+          let dayAdventure = 0;
+
+          let dayVideography = 0;
+
+          let dayRestaurant = 0;
+
+          let dayFootfall = 0;
+
+
+          dayRecords.forEach(
+            function(record) {
+
+              dayAdventure +=
+                Number(
+                  record.adventure_sales
+                ) || 0;
+
+              dayVideography +=
+                Number(
+                  record.videography_sales
+                ) || 0;
+
+              dayRestaurant +=
+                Number(
+                  record.restaurant_camping_sales
+                ) || 0;
+
+              dayFootfall +=
+                Number(
+                  record.total_footfall
+                ) || 0;
+
+            }
+          );
+
+
+          const daySales =
+            dayAdventure +
+            dayVideography +
+            dayRestaurant;
+
+
+          const dayGroup =
+            document.createElement(
+              'div'
             );
 
-          }
-        );
+          dayGroup.className =
+            'day-group';
 
 
-      updateStats();
+          /* DAY HEADER */
+
+          const dayHeader =
+            document.createElement(
+              'div'
+            );
+
+          dayHeader.className =
+            'day-header';
+
+
+          dayHeader.innerHTML = `
+
+            <div>
+
+              <div class="day-title">
+                ${formatDate(date)}
+              </div>
+
+              <div class="day-subtitle">
+                ${dayRecords.length}
+                ${dayRecords.length === 1 ? 'entry' : 'entries'}
+              </div>
+
+            </div>
+
+
+            <div class="day-total">
+
+              <div class="day-total-label">
+                Daily Sales
+              </div>
+
+              <div class="day-total-value">
+                ${formatMoney(daySales)}
+              </div>
+
+              <div class="day-footfall">
+                ${formatNumber(dayFootfall)}
+                visitors
+              </div>
+
+            </div>
+
+          `;
+
+
+          dayGroup.appendChild(
+            dayHeader
+          );
+
+
+          /* INDIVIDUAL ENTRIES */
+
+          dayRecords.forEach(
+            function(record, index) {
+
+              const adventure =
+                Number(
+                  record.adventure_sales
+                ) || 0;
+
+              const videography =
+                Number(
+                  record.videography_sales
+                ) || 0;
+
+              const restaurantCamping =
+                Number(
+                  record.restaurant_camping_sales
+                ) || 0;
+
+              const footfall =
+                Number(
+                  record.total_footfall
+                ) || 0;
+
+              const total =
+                adventure +
+                videography +
+                restaurantCamping;
+
+
+              const entryRow =
+                document.createElement(
+                  'div'
+                );
+
+              entryRow.className =
+                'entry-row';
+
+
+              const canEdit =
+                isWithinLastSevenDays(
+                  record.business_date
+                );
+
+
+              entryRow.innerHTML = `
+
+                <div class="entry-top">
+
+                  <div class="entry-number">
+                    Entry ${index + 1}
+                  </div>
+
+                  <button
+                    type="button"
+                    class="edit-button"
+                    data-id="${record.id}"
+                    ${canEdit ? '' : 'disabled'}
+                  >
+                    ${canEdit ? 'EDIT' : 'LOCKED'}
+                  </button>
+
+                </div>
+
+
+                <div class="entry-grid">
+
+                  <div class="entry-item">
+
+                    <div class="entry-label">
+                      Adventure
+                    </div>
+
+                    <div class="entry-value">
+                      ${formatMoney(adventure)}
+                    </div>
+
+                  </div>
+
+
+                  <div class="entry-item">
+
+                    <div class="entry-label">
+                      Videography
+                    </div>
+
+                    <div class="entry-value">
+                      ${formatMoney(videography)}
+                    </div>
+
+                  </div>
+
+
+                  <div class="entry-item">
+
+                    <div class="entry-label">
+                      Restaurant/Camping
+                    </div>
+
+                    <div class="entry-value">
+                      ${formatMoney(restaurantCamping)}
+                    </div>
+
+                  </div>
+
+
+                  <div class="entry-item">
+
+                    <div class="entry-label">
+                      Footfall
+                    </div>
+
+                    <div class="entry-value footfall-value">
+                      ${formatNumber(footfall)}
+                    </div>
+
+                  </div>
+
+
+                  <div class="entry-item">
+
+                    <div class="entry-label">
+                      Total Sales
+                    </div>
+
+                    <div class="entry-value sales-total">
+                      ${formatMoney(total)}
+                    </div>
+
+                  </div>
+
+                </div>
+
+              `;
+
+
+              dayGroup.appendChild(
+                entryRow
+              );
+
+
+              const editButton =
+                entryRow.querySelector(
+                  '.edit-button'
+                );
+
+
+              if (
+                editButton &&
+                canEdit
+              ) {
+
+                editButton.addEventListener(
+                  'click',
+                  function() {
+
+                    startEditing(
+                      record.id
+                    );
+
+                  }
+                );
+
+              }
+
+            }
+          );
+
+
+          recordsBody.appendChild(
+            dayGroup
+          );
+
+        }
+      );
 
     }
 
@@ -1480,82 +2285,82 @@
         getLocalDateString();
 
 
-      const currentDate =
-        new Date();
+      let todaySalesTotal =
+        0;
 
-      const year =
-        currentDate.getFullYear();
+      let todayFootfallTotal =
+        0;
 
-      const month =
-        currentDate.getMonth();
+      let sevenDaySalesTotal =
+        0;
 
 
-      const todayRecord =
-        records.find(
-          function(record) {
+      records.forEach(
+        function(record) {
 
-            return record.business_date === today;
+          const sales =
+            (
+              Number(
+                record.adventure_sales
+              ) || 0
+            ) +
+
+            (
+              Number(
+                record.videography_sales
+              ) || 0
+            ) +
+
+            (
+              Number(
+                record.restaurant_camping_sales
+              ) || 0
+            );
+
+
+          const footfall =
+            Number(
+              record.total_footfall
+            ) || 0;
+
+
+          sevenDaySalesTotal +=
+            sales;
+
+
+          if (
+            record.business_date ===
+            today
+          ) {
+
+            todaySalesTotal +=
+              sales;
+
+            todayFootfallTotal +=
+              footfall;
 
           }
+
+        }
+      );
+
+
+      todaySales.textContent =
+        formatMoney(
+          todaySalesTotal
         );
 
 
-      if (todayRecord) {
-
-        const total =
-          Number(
-            todayRecord.adventure_sales || 0
-          ) +
-
-          Number(
-            todayRecord.videography_sales || 0
-          ) +
-
-          Number(
-            todayRecord.restaurant_camping_sales || 0
-          );
+      todayFootfall.textContent =
+        formatNumber(
+          todayFootfallTotal
+        );
 
 
-        todaySales.textContent =
-          formatMoney(total);
-
-        todayFootfall.textContent =
-          Number(
-            todayRecord.total_footfall || 0
-          ).toLocaleString('en-NP');
-
-      } else {
-
-        todaySales.textContent =
-          'NPR 0';
-
-        todayFootfall.textContent =
-          '0';
-
-      }
-
-
-      const monthCount =
-        records.filter(
-          function(record) {
-
-            const date =
-              new Date(
-                record.business_date +
-                'T00:00:00'
-              );
-
-            return (
-              date.getFullYear() === year &&
-              date.getMonth() === month
-            );
-
-          }
-        ).length;
-
-
-      monthRecords.textContent =
-        monthCount;
+      sevenDaySales.textContent =
+        formatMoney(
+          sevenDaySalesTotal
+        );
 
     }
 
@@ -1570,8 +2375,10 @@
         records.find(
           function(item) {
 
-            return String(item.id) ===
-              String(id);
+            return (
+              String(item.id) ===
+              String(id)
+            );
 
           }
         );
@@ -1579,6 +2386,28 @@
 
       if (!record) {
         return;
+      }
+
+
+      /*
+       * Safety check:
+       * Editing is allowed only within
+       * the last 7 days.
+       */
+
+      if (
+        !isWithinLastSevenDays(
+          record.business_date
+        )
+      ) {
+
+        showMessage(
+          'This record is older than 7 days and cannot be edited.',
+          'error'
+        );
+
+        return;
+
       }
 
 
@@ -1622,6 +2451,11 @@
       );
 
 
+      duplicateWarning
+        .classList
+        .remove('show');
+
+
       clearMessage();
 
 
@@ -1654,23 +2488,35 @@
       editingId =
         null;
 
+
       salesForm.reset();
+
 
       dateInput.value =
         getLocalDateString();
 
+
       formTitle.textContent =
         'Add Daily Record';
 
+
       saveButton.textContent =
         'SAVE DAILY RECORD';
+
 
       cancelButton.classList.remove(
         'show'
       );
 
+
       totalPreview.textContent =
         'NPR 0';
+
+
+      duplicateWarning
+        .classList
+        .remove('show');
+
 
       clearMessage();
 
@@ -1693,20 +2539,24 @@
         const businessDate =
           dateInput.value;
 
+
         const adventureSales =
           Number(
             adventureInput.value
           ) || 0;
+
 
         const videographySales =
           Number(
             videographyInput.value
           ) || 0;
 
+
         const restaurantCampingSales =
           Number(
             restaurantCampingInput.value
           ) || 0;
+
 
         const totalFootfall =
           Number(
@@ -1714,12 +2564,35 @@
           ) || 0;
 
 
-        /* Validation */
+        /* ===================================================
+           VALIDATION
+           =================================================== */
 
         if (!businessDate) {
 
           showMessage(
             'Please select a date.',
+            'error'
+          );
+
+          return;
+
+        }
+
+
+        /*
+         * Staff can only create/edit records
+         * for the last 7 days.
+         */
+
+        if (
+          !isWithinLastSevenDays(
+            businessDate
+          )
+        ) {
+
+          showMessage(
+            'Staff can only enter or edit records from today and the previous 6 days.',
             'error'
           );
 
@@ -1780,18 +2653,22 @@
           let result;
 
 
-          /* -----------------------------------------------
+          /* ===============================================
              UPDATE EXISTING RECORD
-             ----------------------------------------------- */
+             =============================================== */
 
           if (editingId) {
 
             result =
               await supabaseClient
 
-                .from('daily_sales')
+                .from(
+                  'daily_sales'
+                )
 
-                .update(payload)
+                .update(
+                  payload
+                )
 
                 .eq(
                   'id',
@@ -1804,67 +2681,32 @@
           }
 
 
-          /* -----------------------------------------------
+          /* ===============================================
              INSERT NEW RECORD
-             ----------------------------------------------- */
+             =============================================== */
 
           else {
 
             /*
-             * First check whether this date already exists.
-             * This gives staff a friendly message instead
-             * of a database error.
+             * IMPORTANT:
+             *
+             * We intentionally DO NOT block
+             * duplicate dates.
+             *
+             * Multiple entries for the same
+             * date are allowed.
              */
-
-            const {
-              data: existing,
-              error: existingError
-            } =
-              await supabaseClient
-
-                .from('daily_sales')
-
-                .select('id')
-
-                .eq(
-                  'business_date',
-                  businessDate
-                )
-
-                .maybeSingle();
-
-
-            if (existingError) {
-
-              throw existingError;
-
-            }
-
-
-            if (existing) {
-
-              showMessage(
-                'A record already exists for this date. Use EDIT to update it.',
-                'error'
-              );
-
-              saveButton.disabled =
-                false;
-
-              saveButton.textContent =
-                'SAVE DAILY RECORD';
-
-              return;
-
-            }
-
 
             result =
               await supabaseClient
 
-                .from('daily_sales')
+                .from(
+                  'daily_sales'
+                )
 
-                .insert(payload)
+                .insert(
+                  payload
+                )
 
                 .select();
 
@@ -1878,13 +2720,20 @@
           }
 
 
-          /* Success */
+          /* ===============================================
+             SUCCESS
+             =============================================== */
 
           showMessage(
+
             editingId
+
               ? 'Daily record updated successfully.'
+
               : 'Daily record saved successfully.',
+
             'success'
+
           );
 
 
@@ -1894,7 +2743,10 @@
           await loadRecords();
 
 
-        } catch (error) {
+        }
+
+
+        catch (error) {
 
           console.error(
             'Save/update error:',
@@ -1903,21 +2755,32 @@
 
 
           showMessage(
-            'Unable to save the record. Please try again.',
+
+            error.message
+              ? 'Unable to save: ' +
+                error.message
+
+              : 'Unable to save the record. Please try again.',
+
             'error'
+
           );
 
         }
 
 
-        saveButton.disabled =
-          false;
+        finally {
+
+          saveButton.disabled =
+            false;
 
 
-        saveButton.textContent =
-          editingId
-            ? 'UPDATE DAILY RECORD'
-            : 'SAVE DAILY RECORD';
+          saveButton.textContent =
+            editingId
+              ? 'UPDATE DAILY RECORD'
+              : 'SAVE DAILY RECORD';
+
+        }
 
       }
     );
@@ -1934,6 +2797,7 @@
         logoutButton.disabled =
           true;
 
+
         logoutButton.textContent =
           'Logging out...';
 
@@ -1941,7 +2805,9 @@
         const {
           error
         } =
-          await supabaseClient.auth.signOut();
+          await supabaseClient
+            .auth
+            .signOut();
 
 
         if (error) {
@@ -1951,19 +2817,64 @@
             error
           );
 
+
           logoutButton.disabled =
             false;
 
+
           logoutButton.textContent =
             'Logout';
+
+
+          showMessage(
+            'Unable to logout. Please try again.',
+            'error'
+          );
 
           return;
 
         }
 
 
+        /*
+         * Clear browser session marker.
+         */
+
+        sessionStorage.removeItem(
+          'suryodaya_staff_authenticated'
+        );
+
+
         window.location.href =
           'index.html';
+
+      }
+    );
+
+
+    /* =======================================================
+       AUTH STATE CHANGE
+       ======================================================= */
+
+    supabaseClient.auth.onAuthStateChange(
+      function(event, session) {
+
+        if (
+          event === 'SIGNED_OUT' ||
+          !session
+        ) {
+
+          /*
+           * Do not redirect immediately during
+           * the initial page load.
+           *
+           * initializeDashboard() handles
+           * the initial authentication check.
+           */
+
+          return;
+
+        }
 
       }
     );
@@ -1980,7 +2891,9 @@
 
 
       if (!loggedIn) {
+
         return;
+
       }
 
 
@@ -1990,17 +2903,34 @@
         getLocalDateString();
 
 
+      /*
+       * Restrict date picker to
+       * the last 7 days.
+       */
+
+      dateInput.min =
+        getDateDaysAgo(6);
+
+
+      dateInput.max =
+        getLocalDateString();
+
+
       /* Calculate initial total */
 
       calculateTotal();
 
 
-      /* Load database records */
+      /* Load last 7 days */
 
       await loadRecords();
 
     }
 
+
+    /* =======================================================
+       START
+       ======================================================= */
 
     initializeDashboard();
 

@@ -407,11 +407,32 @@
       color: var(--success);
     }
 
-    .message.error {
-      background: var(--soft-red);
-      border: 1px solid #F5C7C4;
-      color: var(--danger);
-    }
+/* Existing entry warning */
+.duplicate-warning {
+  display: none;
+  margin-bottom: 17px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: #FFF8E6;
+  border: 1px solid #F2D48A;
+  color: #7A5A00;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.duplicate-warning.show {
+  display: block;
+}
+
+.duplicate-warning strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12px;
+}
+
+.duplicate-warning span {
+  display: block;
+}
 
     /* =========================================================
        TABLE
@@ -748,7 +769,13 @@
 
 
             <form id="sales-form">
-
+<div id="duplicate-warning" class="duplicate-warning">
+  <strong>⚠️ Existing entry found for this date.</strong>
+  <span>
+    You are creating an additional entry for the same day.
+    Use this only for a separate shift/session or correction.
+  </span>
+</div>
               <!-- DATE -->
 
               <div class="form-group">
@@ -764,7 +791,34 @@
                 >
 
               </div>
+<!-- FOOTFALL -->
 
+<div class="footfall-box">
+
+  <div class="footfall-heading">
+    VISITOR FOOTFALL
+  </div>
+
+  <div class="footfall-description">
+    Total visitors for this entry
+  </div>
+
+  <div class="form-group">
+    <label for="total-footfall">
+      Total Visitors
+    </label>
+
+    <input
+      type="number"
+      id="total-footfall"
+      min="0"
+      step="1"
+      placeholder="0"
+      required
+    >
+  </div>
+
+</div>
 
               <!-- ADVENTURE SALES -->
 
@@ -824,27 +878,6 @@
                 >
 
               </div>
-
-
-              <!-- FOOTFALL -->
-
-              <div class="form-group">
-
-                <label for="total-footfall">
-                  Total Footfall
-                </label>
-
-                <input
-                  type="number"
-                  id="total-footfall"
-                  min="0"
-                  step="1"
-                  placeholder="0"
-                  required
-                >
-
-              </div>
-
 
               <!-- TOTAL -->
 

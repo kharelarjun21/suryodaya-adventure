@@ -1758,48 +1758,61 @@ const supabaseClient =
     /* =======================================================
        CHECK LOGIN
        ======================================================= */
+async function checkLogin() {
 
-    async function checkLogin() {
+  try {
 
-      const {
-        data,
+    const {
+      data,
+      error
+    } = await supabaseClient.auth.getSession();
+
+    if (error) {
+
+      console.error(
+        'Session error:',
         error
-      } =
-        await supabaseClient
-          .auth
-          .getSession();
+      );
 
+      window.location.href =
+        'index.html';
 
-      if (error) {
-
-        console.error(
-          'Session error:',
-          error
-        );
-
-        window.location.href =
-          'index.html';
-
-        return false;
-
-      }
-
-
-      if (!data.session) {
-
-        window.location.href =
-          'index.html';
-
-        return false;
-
-      }
-
-
-      return true;
-
+      return false;
     }
 
+    /*
+     * Supabase has restored the browser session.
+     * If there is no session, the user is not logged in.
+     */
 
+    if (!data || !data.session) {
+
+      window.location.href =
+        'index.html';
+
+      return false;
+    }
+
+    /*
+     * Session exists.
+     * Dashboard may continue loading.
+     */
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      'Authentication check failed:',
+      error
+    );
+
+    window.location.href =
+      'index.html';
+
+    return false;
+  }
+}
     /* =======================================================
        CHECK EXISTING DATE
        ======================================================= */

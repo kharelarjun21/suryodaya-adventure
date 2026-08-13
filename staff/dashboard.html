@@ -3017,8 +3017,28 @@ function updateStats() {
        ======================================================= */
 
     initializeDashboard();
+    
+/* =======================================================
+   BROWSER BACK/FORWARD CACHE PROTECTION
+   ======================================================= */
 
-  </script>
+window.addEventListener(
+  'pageshow',
+  async function(event) {
+
+    if (event.persisted) {
+
+      await supabaseClient.auth.signOut();
+
+      window.location.replace(
+        'index.html'
+      );
+    }
+
+  }
+);
+
+</script>
 
 </body>
 </html>

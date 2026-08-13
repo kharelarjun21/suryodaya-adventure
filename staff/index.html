@@ -1,1 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
 
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Staff Login | Suryodaya Adventures</title>
+
+  <!-- Suryodaya favicon -->
+  <link rel="icon"
+        type="image/png"
+        href="../Logo.png">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    /* =========================================================
+       SURYODAYA ADVENTURES — STAFF LOGIN
+       ========================================================= */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --forest: #173F35;
+      --forest-light: #1F5745;
+      --orange: #E85D04;
+      --gold: #FFB703;
+      --cream: #FDF9F1;
+      --white: #FFFFFF;
+      --text: #173F35;
+      --muted: #64746E;
+      --border: #DDE6E1;
+      --error: #B42318;
+      --success: #16794A;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family:
+        "Plus Jakarta Sans",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background:
+        linear-gradient(
+          135deg,
+          #173F35 0%,
+          #1F5745 50%,
+          #0F342C 100%
+        );
+
+      color: var(--text);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 24px;
+
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative background circles */
+
+    body::before {
+      content: "";
+      position: fixed;
+
+      width: 420px;
+      height: 420px;
+
+      border-radius: 50%;
+
+      background: rgba(255, 183, 3, 0.08);
+
+      top: -180px;
+      right: -140px;
+
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+
+      width: 350px;
+      height: 350px;
+
+      border-radius: 50%;
+
+      background: rgba(232, 93, 4, 0.08);
+
+      bottom: -160px;
+      left: -120px;
+
+      pointer-events: none;
+    }
+
+    /* =========================================================
+       LOGIN CARD
+       ========================================================= */
+
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+
+      background: var(--cream);
+
+      border-radius: 20px;
+
+      padding: 42px 38px 34px;
+
+      box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.28);
+
+      position: relative;
+      z-index: 2;
+    }
+
+    /* =========================================================
+       LOGO
+       ========================================================= */
+
+    .logo-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      width: 92px;
+      height: 92px;
+
+      object-fit: contain;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .eyebrow {
+      text-align: center;
+
+      color: var(--orange);
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: 1.8px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      text-align: center;
+
+      color: var(--forest);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-size: 32px;
+
+      line-height: 1.1;
+
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.6;
+
+      margin-bottom: 30px;
+    }
+
+    /* =========================================================
+       FORM
+       ========================================================= */
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+
+      color: var(--forest);
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+
+      height: 48px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 9px;
+
+      background: #FFFFFF;
+
+      color: var(--text);
+
+      padding: 0 14px;
+
+      font-size: 14px;
+
+      outline: none;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    input:focus {
+      border-color: var(--forest-light);
+
+      box-shadow:
+        0 0 0 3px rgba(31, 87, 69, 0.12);
+    }
+
+    input::placeholder {
+      color: #9AA8A2;
+    }
+
+    /* =========================================================
+       PASSWORD TOGGLE
+       ========================================================= */
+
+    .password-input {
+      padding-right: 70px;
+    }
+
+    .show-password {
+      position: absolute;
+
+      right: 10px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      border: none;
+
+      background: transparent;
+
+      color: var(--forest-light);
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      padding: 7px;
+    }
+
+    /* =========================================================
+       LOGIN BUTTON
+       ========================================================= */
+
+    .login-button {
+      width: 100%;
+
+      height: 50px;
+
+      margin-top: 6px;
+
+      border: none;
+
+      border-radius: 9px;
+
+      background: var(--orange);
+
+      color: white;
+
+      font-size: 14px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+
+      box-shadow:
+        0 8px 20px rgba(232, 93, 4, 0.22);
+    }
+
+    .login-button:hover {
+      background: #D94F00;
+
+      transform: translateY(-1px);
+
+      box-shadow:
+        0 10px 24px rgba(232, 93, 4, 0.28);
+    }
+
+    .login-button:active {
+      transform: translateY(0);
+    }
+
+    .login-button:disabled {
+      opacity: 0.65;
+
+      cursor: not-allowed;
+
+      transform: none;
+    }
+
+    /* =========================================================
+       MESSAGE
+       ========================================================= */
+
+    .message {
+      display: none;
+
+      margin-top: 16px;
+
+      padding: 11px 13px;
+
+      border-radius: 8px;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      text-align: center;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      background: #FDECEC;
+
+      color: var(--error);
+
+      border: 1px solid #F5C7C4;
+    }
+
+    .message.success {
+      background: #EAF7F0;
+
+      color: var(--success);
+
+      border: 1px solid #BFE3CD;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .login-footer {
+      margin-top: 26px;
+
+      padding-top: 18px;
+
+      border-top: 1px solid var(--border);
+
+      text-align: center;
+    }
+
+    .login-footer p {
+      color: var(--muted);
+
+      font-size: 11px;
+
+      line-height: 1.6;
+    }
+
+    .back-home {
+      display: inline-block;
+
+      margin-top: 8px;
+
+      color: var(--forest);
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      text-decoration: none;
+    }
+
+    .back-home:hover {
+      color: var(--orange);
+    }
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 480px) {
+
+      body {
+        padding: 16px;
+      }
+
+      .login-card {
+        padding: 32px 24px 26px;
+
+        border-radius: 16px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .logo {
+        width: 78px;
+        height: 78px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =======================================================
+       LOGIN CARD
+       ======================================================= -->
+
+  <main class="login-card">
+
+    <!-- Logo -->
+
+    <div class="logo-wrapper">
+      <img
+        src="../Logo.png"
+        alt="Suryodaya Adventures"
+        class="logo"
+      >
+    </div>
+
+
+    <!-- Heading -->
+
+    <div class="eyebrow">
+      Staff Portal
+    </div>
+
+    <h1>
+      Suryodaya Adventures
+    </h1>
+
+    <p class="subtitle">
+      Sign in to record daily sales and visitor footfall.
+    </p>
+
+
+    <!-- =====================================================
+         LOGIN FORM
+         ===================================================== -->
+
+    <form id="login-form">
+
+      <!-- User ID / Email -->
+
+      <div class="form-group">
+
+        <label for="email">
+          User ID
+        </label>
+
+        <div class="input-wrapper">
+
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your staff email"
+            autocomplete="username"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- Password -->
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <div class="input-wrapper">
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="password-input"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          >
+
+          <button
+            type="button"
+            class="show-password"
+            id="show-password"
+          >
+            SHOW
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- Login -->
+
+      <button
+        type="submit"
+        class="login-button"
+        id="login-button"
+      >
+        LOGIN
+      </button>
+
+
+      <!-- Message -->
+
+      <div
+        id="message"
+        class="message"
+        role="alert"
+      ></div>
+
+    </form>
+
+
+    <!-- Footer -->
+
+    <div class="login-footer">
+
+      <p>
+        Authorized staff access only.
+      </p>
+
+      <a
+        href="../index.html"
+        class="back-home"
+      >
+        ← Back to Suryodaya Adventures
+      </a>
+
+    </div>
+
+  </main>
+
+
+  <!-- =======================================================
+       SUPABASE LOGIN SCRIPT
+       ======================================================= -->
+
+  <script>
+
+    /* -------------------------------------------------------
+       SUPABASE CONFIGURATION
+       ------------------------------------------------------- */
+
+    const SUPABASE_URL =
+      'https://mvvdfwgjcyayopcsgwvy.supabase.co';
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      'sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4';
+
+
+    /* -------------------------------------------------------
+       CREATE SUPABASE CLIENT
+       ------------------------------------------------------- */
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    /* -------------------------------------------------------
+       ELEMENTS
+       ------------------------------------------------------- */
+
+    const loginForm =
+      document.getElementById('login-form');
+
+    const emailInput =
+      document.getElementById('email');
+
+    const passwordInput =
+      document.getElementById('password');
+
+    const loginButton =
+      document.getElementById('login-button');
+
+    const messageBox =
+      document.getElementById('message');
+
+    const showPasswordButton =
+      document.getElementById('show-password');
+
+
+    /* -------------------------------------------------------
+       MESSAGE FUNCTION
+       ------------------------------------------------------- */
+
+    function showMessage(text, type) {
+
+      messageBox.textContent = text;
+
+      messageBox.className =
+        'message show ' + type;
+    }
+
+
+    function clearMessage() {
+
+      messageBox.textContent = '';
+
+      messageBox.className = 'message';
+    }
+
+
+    /* -------------------------------------------------------
+       SHOW / HIDE PASSWORD
+       ------------------------------------------------------- */
+
+    showPasswordButton.addEventListener(
+      'click',
+      function () {
+
+        if (passwordInput.type === 'password') {
+
+          passwordInput.type = 'text';
+
+          showPasswordButton.textContent = 'HIDE';
+
+        } else {
+
+          passwordInput.type = 'password';
+
+          showPasswordButton.textContent = 'SHOW';
+
+        }
+
+      }
+    );
+
+
+    /* -------------------------------------------------------
+       CHECK EXISTING LOGIN SESSION
+       ------------------------------------------------------- */
+
+    async function checkExistingSession() {
+
+      try {
+
+        const {
+          data: {
+            session
+          }
+        } = await supabaseClient.auth.getSession();
+
+        if (session) {
+
+          window.location.href =
+            'dashboard.html';
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          'Session check error:',
+          error
+        );
+
+      }
+
+    }
+
+
+    checkExistingSession();
+
+
+    /* -------------------------------------------------------
+       LOGIN
+       ------------------------------------------------------- */
+
+    loginForm.addEventListener(
+      'submit',
+      async function (event) {
+
+        event.preventDefault();
+
+        clearMessage();
+
+        const email =
+          emailInput.value.trim();
+
+        const password =
+          passwordInput.value;
+
+
+        /* Basic validation */
+
+        if (!email || !password) {
+
+          showMessage(
+            'Please enter your User ID and password.',
+            'error'
+          );
+
+          return;
+
+        }
+
+
+        /* Disable button */
+
+        loginButton.disabled = true;
+
+        loginButton.textContent =
+          'SIGNING IN...';
+
+
+        try {
+
+          const {
+            data,
+            error
+          } = await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+          /* Login failed */
+
+          if (error) {
+
+            console.error(
+              'Login error:',
+              error
+            );
+
+            showMessage(
+              'Login failed. Please check your User ID and password.',
+              'error'
+            );
+
+            loginButton.disabled = false;
+
+            loginButton.textContent =
+              'LOGIN';
+
+            return;
+
+          }
+
+
+          /* Login successful */
+
+          if (data && data.session) {
+
+            showMessage(
+              'Login successful. Opening staff dashboard...',
+              'success'
+            );
+
+            loginButton.textContent =
+              'OPENING...';
+
+            setTimeout(
+              function () {
+
+                window.location.href =
+                  'dashboard.html';
+
+              },
+              500
+            );
+
+          }
+
+        } catch (error) {
+
+          console.error(
+            'Unexpected login error:',
+            error
+          );
+
+          showMessage(
+            'Something went wrong. Please try again.',
+            'error'
+          );
+
+          loginButton.disabled = false;
+
+          loginButton.textContent =
+            'LOGIN';
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

@@ -607,13 +607,20 @@
     /* -------------------------------------------------------
        CREATE SUPABASE CLIENT
        ------------------------------------------------------- */
-
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-      );
-
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: false,
+        storage: window.localStorage,
+        storageKey: 'suryodaya-staff-auth'
+      }
+    }
+  );
 
     /* -------------------------------------------------------
        ELEMENTS

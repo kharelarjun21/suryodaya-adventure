@@ -21,7 +21,7 @@
   <style>
 
     /* =========================================================
-       SURYODAYA ADVENTURES — STAFF LOGIN
+       SURYODAYA ADVENTURES — STAFF / MANAGEMENT LOGIN
        ========================================================= */
 
     * {
@@ -46,6 +46,7 @@
 
     body {
       min-height: 100vh;
+
       font-family:
         "Plus Jakarta Sans",
         Arial,
@@ -76,6 +77,7 @@
 
     body::before {
       content: "";
+
       position: fixed;
 
       width: 420px;
@@ -83,7 +85,8 @@
 
       border-radius: 50%;
 
-      background: rgba(255, 183, 3, 0.08);
+      background:
+        rgba(255, 183, 3, 0.08);
 
       top: -180px;
       right: -140px;
@@ -93,6 +96,7 @@
 
     body::after {
       content: "";
+
       position: fixed;
 
       width: 350px;
@@ -100,7 +104,8 @@
 
       border-radius: 50%;
 
-      background: rgba(232, 93, 4, 0.08);
+      background:
+        rgba(232, 93, 4, 0.08);
 
       bottom: -160px;
       left: -120px;
@@ -135,7 +140,9 @@
 
     .logo-wrapper {
       display: flex;
+
       justify-content: center;
+
       margin-bottom: 22px;
     }
 
@@ -459,18 +466,20 @@
     <!-- Logo -->
 
     <div class="logo-wrapper">
+
       <img
         src="../Logo.png"
         alt="Suryodaya Adventures"
         class="logo"
       >
+
     </div>
 
 
     <!-- Heading -->
 
     <div class="eyebrow">
-      Staff Portal
+      Staff &amp; Management Portal
     </div>
 
     <h1>
@@ -478,7 +487,7 @@
     </h1>
 
     <p class="subtitle">
-      Sign in to record daily sales and visitor footfall.
+      Authorized access for daily operations and management.
     </p>
 
 
@@ -502,7 +511,7 @@
             type="email"
             id="email"
             name="email"
-            placeholder="Enter your staff email"
+            placeholder="Enter your User ID"
             autocomplete="username"
             required
           >
@@ -572,7 +581,7 @@
     <div class="login-footer">
 
       <p>
-        Authorized staff access only.
+        Authorized access only.
       </p>
 
       <a
@@ -593,9 +602,9 @@
 
   <script>
 
-    /* -------------------------------------------------------
+    /* =======================================================
        SUPABASE CONFIGURATION
-       ------------------------------------------------------- */
+       ======================================================= */
 
     const SUPABASE_URL =
       'https://mvvdfwgjcyayopcsgwvy.supabase.co';
@@ -604,27 +613,29 @@
       'sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4';
 
 
-    /* -------------------------------------------------------
+    /* =======================================================
        CREATE SUPABASE CLIENT
-       ------------------------------------------------------- */
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY,
-    {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: false,
-        storage: window.localStorage,
-        storageKey: 'suryodaya-staff-auth'
-      }
-    }
-  );
+       ======================================================= */
 
-    /* -------------------------------------------------------
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: false,
+            storage: window.localStorage,
+            storageKey: 'suryodaya-staff-auth'
+          }
+        }
+      );
+
+
+    /* =======================================================
        ELEMENTS
-       ------------------------------------------------------- */
+       ======================================================= */
 
     const loginForm =
       document.getElementById('login-form');
@@ -645,9 +656,9 @@ const supabaseClient =
       document.getElementById('show-password');
 
 
-    /* -------------------------------------------------------
-       MESSAGE FUNCTION
-       ------------------------------------------------------- */
+    /* =======================================================
+       MESSAGE FUNCTIONS
+       ======================================================= */
 
     function showMessage(text, type) {
 
@@ -662,29 +673,34 @@ const supabaseClient =
 
       messageBox.textContent = '';
 
-      messageBox.className = 'message';
+      messageBox.className =
+        'message';
     }
 
 
-    /* -------------------------------------------------------
+    /* =======================================================
        SHOW / HIDE PASSWORD
-       ------------------------------------------------------- */
+       ======================================================= */
 
     showPasswordButton.addEventListener(
       'click',
       function () {
 
-        if (passwordInput.type === 'password') {
+        if (
+          passwordInput.type === 'password'
+        ) {
 
           passwordInput.type = 'text';
 
-          showPasswordButton.textContent = 'HIDE';
+          showPasswordButton.textContent =
+            'HIDE';
 
         } else {
 
           passwordInput.type = 'password';
 
-          showPasswordButton.textContent = 'SHOW';
+          showPasswordButton.textContent =
+            'SHOW';
 
         }
 
@@ -692,9 +708,138 @@ const supabaseClient =
     );
 
 
-    /* -------------------------------------------------------
+    /* =======================================================
+       GET USER ROLE
+       ======================================================= */
+
+    async function getUserRole(userId) {
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+
+      if (error) {
+
+        console.error(
+          'Role lookup error:',
+          error
+        );
+
+        throw error;
+
+      }
+
+
+      if (!data || !data.role) {
+
+        throw new Error(
+          'No role assigned to this account.'
+        );
+
+      }
+
+
+      return data.role;
+
+    }
+
+
+    /* =======================================================
+       ROUTE USER BASED ON ROLE
+       ======================================================= */
+
+    async function routeUser(session) {
+
+      if (
+        !session ||
+        !session.user
+      ) {
+
+        throw new Error(
+          'No authenticated session.'
+        );
+
+      }
+
+
+      const role =
+        await getUserRole(
+          session.user.id
+        );
+
+
+      /* -----------------------------------------------------
+         STAFF
+         ----------------------------------------------------- */
+
+      if (role === 'staff') {
+
+        /*
+         * Preserve the existing fresh-login
+         * protection used by dashboard.html.
+         */
+
+        sessionStorage.setItem(
+          'suryodaya_fresh_staff_login',
+          'true'
+        );
+
+
+        window.location.replace(
+          'dashboard.html'
+        );
+
+        return;
+
+      }
+
+
+      /* -----------------------------------------------------
+         MANAGEMENT
+         ----------------------------------------------------- */
+
+      if (role === 'management') {
+
+        /*
+         * Separate marker for the future
+         * Management dashboard.
+         */
+
+        sessionStorage.setItem(
+          'suryodaya_fresh_management_login',
+          'true'
+        );
+
+
+        window.location.replace(
+          'management.html'
+        );
+
+        return;
+
+      }
+
+
+      /* -----------------------------------------------------
+         UNKNOWN ROLE
+         ----------------------------------------------------- */
+
+      throw new Error(
+        'This account does not have a valid access role.'
+      );
+
+    }
+
+
+    /* =======================================================
        CHECK EXISTING LOGIN SESSION
-       ------------------------------------------------------- */
+       ======================================================= */
 
     async function checkExistingSession() {
 
@@ -704,20 +849,58 @@ const supabaseClient =
           data: {
             session
           }
-        } = await supabaseClient.auth.getSession();
+        } =
+          await supabaseClient.auth.getSession();
 
-        if (session) {
 
-          window.location.href =
-            'dashboard.html';
+        if (!session) {
+
+          return;
 
         }
+
+
+        /*
+         * A valid existing session exists.
+         *
+         * Do not automatically assume Staff.
+         *
+         * Look up the actual role and route
+         * accordingly.
+         */
+
+        await routeUser(session);
 
       } catch (error) {
 
         console.error(
-          'Session check error:',
+          'Existing session / role check error:',
           error
+        );
+
+
+        /*
+         * If a session exists but the account
+         * has no valid role, remove the session.
+         */
+
+        try {
+
+          await supabaseClient.auth.signOut();
+
+        } catch (signOutError) {
+
+          console.error(
+            'Sign-out error:',
+            signOutError
+          );
+
+        }
+
+
+        showMessage(
+          'Your account does not have valid portal access. Please contact management.',
+          'error'
         );
 
       }
@@ -725,12 +908,16 @@ const supabaseClient =
     }
 
 
+    /*
+     * Run session check after the page has loaded.
+     */
+
     checkExistingSession();
 
 
-    /* -------------------------------------------------------
+    /* =======================================================
        LOGIN
-       ------------------------------------------------------- */
+       ======================================================= */
 
     loginForm.addEventListener(
       'submit',
@@ -740,6 +927,7 @@ const supabaseClient =
 
         clearMessage();
 
+
         const email =
           emailInput.value.trim();
 
@@ -747,7 +935,9 @@ const supabaseClient =
           passwordInput.value;
 
 
-        /* Basic validation */
+        /* ---------------------------------------------------
+           BASIC VALIDATION
+           --------------------------------------------------- */
 
         if (!email || !password) {
 
@@ -761,7 +951,9 @@ const supabaseClient =
         }
 
 
-        /* Disable button */
+        /* ---------------------------------------------------
+           DISABLE LOGIN BUTTON
+           --------------------------------------------------- */
 
         loginButton.disabled = true;
 
@@ -771,19 +963,26 @@ const supabaseClient =
 
         try {
 
+          /* -------------------------------------------------
+             SUPABASE AUTHENTICATION
+             ------------------------------------------------- */
+
           const {
             data,
             error
-          } = await supabaseClient.auth.signInWithPassword({
+          } =
+            await supabaseClient.auth.signInWithPassword({
 
-            email: email,
+              email: email,
 
-            password: password
+              password: password
 
-          });
+            });
 
 
-          /* Login failed */
+          /* -------------------------------------------------
+             LOGIN FAILED
+             ------------------------------------------------- */
 
           if (error) {
 
@@ -792,10 +991,12 @@ const supabaseClient =
               error
             );
 
+
             showMessage(
               'Login failed. Please check your User ID and password.',
               'error'
             );
+
 
             loginButton.disabled = false;
 
@@ -807,44 +1008,80 @@ const supabaseClient =
           }
 
 
-/* Login successful */
+          /* -------------------------------------------------
+             LOGIN SUCCESSFUL
+             ------------------------------------------------- */
 
-if (data && data.session) {
+          if (
+            data &&
+            data.session
+          ) {
 
-  /*
-   * Mark this as a fresh, successful login.
-   * The dashboard will consume this marker.
-   */
-  sessionStorage.setItem(
-    'suryodaya_fresh_staff_login',
-    'true'
-  );
+            showMessage(
+              'Login successful. Checking access...',
+              'success'
+            );
 
-  showMessage(
-    'Login successful. Opening staff dashboard...',
-    'success'
-  );
 
-  loginButton.textContent =
-    'OPENING...';
+            loginButton.textContent =
+              'OPENING...';
 
-  window.location.replace(
-    'dashboard.html'
-  );
 
-}
+            /*
+             * IMPORTANT:
+             *
+             * We do NOT decide Staff vs Management
+             * from the email entered into the form.
+             *
+             * We use the authenticated Supabase user's
+             * UUID and look up its role in user_roles.
+             */
+
+            await routeUser(
+              data.session
+            );
+
+          } else {
+
+            throw new Error(
+              'Authentication succeeded but no session was returned.'
+            );
+
+          }
 
         } catch (error) {
 
           console.error(
-            'Unexpected login error:',
+            'Unexpected login / role error:',
             error
           );
 
+
+          /*
+           * If role lookup failed after authentication,
+           * sign the user out so an authenticated account
+           * without a valid role cannot remain logged in.
+           */
+
+          try {
+
+            await supabaseClient.auth.signOut();
+
+          } catch (signOutError) {
+
+            console.error(
+              'Sign-out error:',
+              signOutError
+            );
+
+          }
+
+
           showMessage(
-            'Something went wrong. Please try again.',
+            'Access verification failed. Please contact management.',
             'error'
           );
+
 
           loginButton.disabled = false;
 

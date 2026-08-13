@@ -807,29 +807,32 @@ const supabaseClient =
           }
 
 
-          /* Login successful */
+/* Login successful */
 
-          if (data && data.session) {
+if (data && data.session) {
 
-            showMessage(
-              'Login successful. Opening staff dashboard...',
-              'success'
-            );
+  /*
+   * Mark this as a fresh, successful login.
+   * The dashboard will consume this marker.
+   */
+  sessionStorage.setItem(
+    'suryodaya_fresh_staff_login',
+    'true'
+  );
 
-            loginButton.textContent =
-              'OPENING...';
+  showMessage(
+    'Login successful. Opening staff dashboard...',
+    'success'
+  );
 
-            setTimeout(
-              function () {
+  loginButton.textContent =
+    'OPENING...';
 
-                window.location.href =
-                  'dashboard.html';
+  window.location.replace(
+    'dashboard.html'
+  );
 
-              },
-              500
-            );
-
-          }
+}
 
         } catch (error) {
 

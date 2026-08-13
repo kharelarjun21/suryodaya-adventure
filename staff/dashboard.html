@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Staff Dashboard | Suryodaya Adventures</title>
+
+  <link rel="icon" type="image/png" href="../Logo.png">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* =========================================================
+       SURYODAYA ADVENTURES — STAFF DASHBOARD
+       ========================================================= */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --forest: #173F35;
+      --forest-light: #1F5745;
+      --orange: #E85D04;
+      --gold: #FFB703;
+      --cream: #FDF9F1;
+      --white: #FFFFFF;
+      --text: #173F35;
+      --muted: #64746E;
+      --border: #DDE6E1;
+      --success: #16794A;
+      --danger: #B42318;
+      --soft-green: #EAF7F0;
+      --soft-red: #FDECEC;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family:
+        "Plus Jakarta Sans",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #F4F7F4;
+      color: var(--text);
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .dashboard-header {
+      background: var(--forest);
+      color: white;
+      padding: 16px 24px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      background: white;
+      border-radius: 50%;
+      padding: 4px;
+    }
+
+    .brand-text h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 22px;
+      line-height: 1.1;
+    }
+
+    .brand-text p {
+      margin-top: 3px;
+      font-size: 11px;
+      opacity: 0.75;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .home-link,
+    .logout-button {
+      border: 1px solid rgba(255,255,255,0.3);
+      background: transparent;
+      color: white;
+
+      padding: 9px 13px;
+      border-radius: 7px;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .home-link:hover,
+    .logout-button:hover {
+      background: white;
+      color: var(--forest);
+    }
+
+    /* =========================================================
+       MAIN
+       ========================================================= */
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .main {
+      padding: 30px 0 50px;
+    }
+
+    .page-heading {
+      margin-bottom: 24px;
+    }
+
+    .page-heading .eyebrow {
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .page-heading h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--forest);
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .page-heading p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================================================
+       STAT CARDS
+       ========================================================= */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+
+      box-shadow: 0 4px 16px rgba(23,63,53,0.05);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .stat-value {
+      margin-top: 7px;
+      color: var(--forest);
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .stat-value.orange {
+      color: var(--orange);
+    }
+
+    /* =========================================================
+       ENTRY SECTION
+       ========================================================= */
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+
+      box-shadow: 0 4px 16px rgba(23,63,53,0.05);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 19px 21px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-header h3 {
+      color: var(--forest);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+    }
+
+    .card-header p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .card-body {
+      padding: 21px;
+    }
+
+    /* =========================================================
+       FORM
+       ========================================================= */
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      color: var(--forest);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    input {
+      width: 100%;
+      height: 46px;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      background: white;
+      color: var(--text);
+
+      padding: 0 12px;
+
+      font-family: inherit;
+      font-size: 14px;
+
+      outline: none;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    input:focus {
+      border-color: var(--forest-light);
+      box-shadow: 0 0 0 3px rgba(31,87,69,0.11);
+    }
+
+    input[type="number"] {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .total-preview {
+      background: var(--cream);
+      border: 1px solid #E8DDC8;
+      border-radius: 9px;
+
+      padding: 14px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin: 5px 0 18px;
+    }
+
+    .total-preview span:first-child {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .total-preview strong {
+      color: var(--orange);
+      font-size: 21px;
+    }
+
+    .save-button {
+      width: 100%;
+      height: 48px;
+
+      border: none;
+      border-radius: 8px;
+
+      background: var(--orange);
+      color: white;
+
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      box-shadow: 0 7px 18px rgba(232,93,4,0.2);
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .save-button:hover {
+      background: #D94F00;
+      transform: translateY(-1px);
+    }
+
+    .save-button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .cancel-button {
+      width: 100%;
+      height: 43px;
+
+      margin-top: 9px;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      background: white;
+      color: var(--forest);
+
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      display: none;
+    }
+
+    .cancel-button.show {
+      display: block;
+    }
+
+    /* =========================================================
+       MESSAGE
+       ========================================================= */
+
+    .message {
+      display: none;
+
+      margin-bottom: 17px;
+
+      padding: 11px 13px;
+
+      border-radius: 8px;
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: var(--soft-green);
+      border: 1px solid #BFE3CD;
+      color: var(--success);
+    }
+
+    .message.error {
+      background: var(--soft-red);
+      border: 1px solid #F5C7C4;
+      color: var(--danger);
+    }
+
+    /* =========================================================
+       TABLE
+       ========================================================= */
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    th {
+      background: #F4F7F4;
+      color: var(--muted);
+
+      text-align: left;
+
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      padding: 12px 14px;
+
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 13px 14px;
+
+      border-bottom: 1px solid #EDF1EE;
+
+      color: var(--text);
+
+      font-size: 12px;
+
+      white-space: nowrap;
+    }
+
+    tbody tr:hover {
+      background: #FAFCFA;
+    }
+
+    .amount {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .total-cell {
+      color: var(--orange);
+      font-weight: 800;
+    }
+
+    .edit-button {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--forest);
+
+      border-radius: 6px;
+
+      padding: 6px 9px;
+
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .edit-button:hover {
+      background: var(--forest);
+      color: white;
+    }
+
+    .empty-state {
+      padding: 35px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* =========================================================
+       LOADING
+       ========================================================= */
+
+    .loading {
+      padding: 35px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 900px) {
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 650px) {
+
+      .dashboard-header {
+        padding: 13px 16px;
+      }
+
+      .header-inner {
+        align-items: flex-start;
+      }
+
+      .brand-text h1 {
+        font-size: 18px;
+      }
+
+      .brand-text p {
+        display: none;
+      }
+
+      .brand img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .home-link {
+        display: none;
+      }
+
+      .main {
+        padding-top: 22px;
+      }
+
+      .page-heading h2 {
+        font-size: 26px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-card {
+        padding: 16px;
+      }
+
+      .stat-value {
+        font-size: 23px;
+      }
+
+      .card-body {
+        padding: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =======================================================
+       HEADER
+       ======================================================= -->
+
+  <header class="dashboard-header">
+
+    <div class="header-inner">
+
+      <div class="brand">
+
+        <img
+          src="../Logo.png"
+          alt="Suryodaya Adventures"
+        >
+
+        <div class="brand-text">
+
+          <h1>Suryodaya Adventures</h1>
+
+          <p>Staff Management Portal</p>
+
+        </div>
+
+      </div>
+
+      <div class="header-actions">
+
+        <a
+          href="../index.html"
+          class="home-link"
+        >
+          ← Website
+        </a>
+
+        <button
+          type="button"
+          id="logout-button"
+          class="logout-button"
+        >
+          Logout
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =======================================================
+       MAIN
+       ======================================================= -->
+
+  <main class="main">
+
+    <div class="container">
+
+      <!-- PAGE HEADING -->
+
+      <section class="page-heading">
+
+        <div class="eyebrow">
+          Staff Portal
+        </div>
+
+        <h2>
+          Daily Sales & Footfall
+        </h2>
+
+        <p>
+          Record the day's business performance.
+        </p>
+
+      </section>
+
+
+      <!-- ===================================================
+           STAT CARDS
+           =================================================== -->
+
+      <section class="stats-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Today's Sales
+          </div>
+
+          <div
+            class="stat-value orange"
+            id="today-sales"
+          >
+            NPR 0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Today's Footfall
+          </div>
+
+          <div
+            class="stat-value"
+            id="today-footfall"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Records This Month
+          </div>
+
+          <div
+            class="stat-value"
+            id="month-records"
+          >
+            0
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           CONTENT
+           =================================================== -->
+
+      <section class="content-grid">
+
+
+        <!-- ================================================
+             DAILY ENTRY FORM
+             ================================================ -->
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h3 id="form-title">
+              Add Daily Record
+            </h3>
+
+            <p>
+              Enter today's sales and total visitors.
+            </p>
+
+          </div>
+
+
+          <div class="card-body">
+
+            <div
+              id="message"
+              class="message"
+              role="alert"
+            ></div>
+
+
+            <form id="sales-form">
+
+              <!-- DATE -->
+
+              <div class="form-group">
+
+                <label for="business-date">
+                  Date
+                </label>
+
+                <input
+                  type="date"
+                  id="business-date"
+                  required
+                >
+
+              </div>
+
+
+              <!-- ADVENTURE SALES -->
+
+              <div class="form-group">
+
+                <label for="adventure-sales">
+                  Adventures Sales (NPR)
+                </label>
+
+                <input
+                  type="number"
+                  id="adventure-sales"
+                  min="0"
+                  step="0.01"
+                  placeholder="0"
+                  required
+                >
+
+              </div>
+
+
+              <!-- VIDEOGRAPHY SALES -->
+
+              <div class="form-group">
+
+                <label for="videography-sales">
+                  Videography Sales (NPR)
+                </label>
+
+                <input
+                  type="number"
+                  id="videography-sales"
+                  min="0"
+                  step="0.01"
+                  placeholder="0"
+                  required
+                >
+
+              </div>
+
+
+              <!-- RESTAURANT + CAMPING -->
+
+              <div class="form-group">
+
+                <label for="restaurant-camping-sales">
+                  Restaurant & Camping Sales (NPR)
+                </label>
+
+                <input
+                  type="number"
+                  id="restaurant-camping-sales"
+                  min="0"
+                  step="0.01"
+                  placeholder="0"
+                  required
+                >
+
+              </div>
+
+
+              <!-- FOOTFALL -->
+
+              <div class="form-group">
+
+                <label for="total-footfall">
+                  Total Footfall
+                </label>
+
+                <input
+                  type="number"
+                  id="total-footfall"
+                  min="0"
+                  step="1"
+                  placeholder="0"
+                  required
+                >
+
+              </div>
+
+
+              <!-- TOTAL -->
+
+              <div class="total-preview">
+
+                <span>
+                  Total Sales
+                </span>
+
+                <strong id="total-preview">
+                  NPR 0
+                </strong>
+
+              </div>
+
+
+              <!-- SAVE -->
+
+              <button
+                type="submit"
+                id="save-button"
+                class="save-button"
+              >
+                SAVE DAILY RECORD
+              </button>
+
+
+              <!-- CANCEL EDIT -->
+
+              <button
+                type="button"
+                id="cancel-button"
+                class="cancel-button"
+              >
+                CANCEL EDIT
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================
+             RECENT RECORDS
+             ================================================ -->
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h3>
+              Recent Daily Records
+            </h3>
+
+            <p>
+              Latest sales and footfall entries.
+            </p>
+
+          </div>
+
+          <div class="table-wrapper">
+
+            <div
+              id="table-loading"
+              class="loading"
+            >
+              Loading records...
+            </div>
+
+            <table
+              id="records-table"
+              style="display:none;"
+            >
+
+              <thead>
+
+                <tr>
+
+                  <th>Date</th>
+
+                  <th>Adventure</th>
+
+                  <th>Videography</th>
+
+                  <th>Restaurant/Camping</th>
+
+                  <th>Total Sales</th>
+
+                  <th>Footfall</th>
+
+                  <th>Action</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="records-body">
+              </tbody>
+
+            </table>
+
+            <div
+              id="empty-state"
+              class="empty-state"
+              style="display:none;"
+            >
+              No daily records yet.
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- =======================================================
+       SUPABASE + DASHBOARD LOGIC
+       ======================================================= -->
+
+  <script>
+
+    /* =======================================================
+       SUPABASE CONFIGURATION
+       ======================================================= */
+
+    const SUPABASE_URL =
+      'https://mvvdfwgjcyayopcsgwvy.supabase.co';
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      'sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4';
+
+
+    /* =======================================================
+       CREATE SUPABASE CLIENT
+       ======================================================= */
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    /* =======================================================
+       ELEMENTS
+       ======================================================= */
+
+    const salesForm =
+      document.getElementById('sales-form');
+
+    const dateInput =
+      document.getElementById('business-date');
+
+    const adventureInput =
+      document.getElementById('adventure-sales');
+
+    const videographyInput =
+      document.getElementById('videography-sales');
+
+    const restaurantCampingInput =
+      document.getElementById('restaurant-camping-sales');
+
+    const footfallInput =
+      document.getElementById('total-footfall');
+
+    const totalPreview =
+      document.getElementById('total-preview');
+
+    const saveButton =
+      document.getElementById('save-button');
+
+    const cancelButton =
+      document.getElementById('cancel-button');
+
+    const formTitle =
+      document.getElementById('form-title');
+
+    const messageBox =
+      document.getElementById('message');
+
+    const recordsBody =
+      document.getElementById('records-body');
+
+    const recordsTable =
+      document.getElementById('records-table');
+
+    const tableLoading =
+      document.getElementById('table-loading');
+
+    const emptyState =
+      document.getElementById('empty-state');
+
+    const logoutButton =
+      document.getElementById('logout-button');
+
+    const todaySales =
+      document.getElementById('today-sales');
+
+    const todayFootfall =
+      document.getElementById('today-footfall');
+
+    const monthRecords =
+      document.getElementById('month-records');
+
+
+    /* =======================================================
+       STATE
+       ======================================================= */
+
+    let editingId = null;
+
+    let records = [];
+
+
+    /* =======================================================
+       TODAY'S DATE
+       ======================================================= */
+
+    function getLocalDateString() {
+
+      const now = new Date();
+
+      const year =
+        now.getFullYear();
+
+      const month =
+        String(now.getMonth() + 1)
+          .padStart(2, '0');
+
+      const day =
+        String(now.getDate())
+          .padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+
+    }
+
+
+    /* =======================================================
+       FORMAT MONEY
+       ======================================================= */
+
+    function formatMoney(value) {
+
+      const number =
+        Number(value) || 0;
+
+      return 'NPR ' +
+        number.toLocaleString(
+          'en-NP',
+          {
+            maximumFractionDigits: 2
+          }
+        );
+
+    }
+
+
+    /* =======================================================
+       FORMAT DATE
+       ======================================================= */
+
+    function formatDate(dateString) {
+
+      if (!dateString) {
+        return '-';
+      }
+
+      const date =
+        new Date(
+          dateString + 'T00:00:00'
+        );
+
+      return date.toLocaleDateString(
+        'en-GB',
+        {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       CALCULATE TOTAL
+       ======================================================= */
+
+    function calculateTotal() {
+
+      const adventure =
+        Number(adventureInput.value) || 0;
+
+      const videography =
+        Number(videographyInput.value) || 0;
+
+      const restaurantCamping =
+        Number(restaurantCampingInput.value) || 0;
+
+      const total =
+        adventure +
+        videography +
+        restaurantCamping;
+
+      totalPreview.textContent =
+        formatMoney(total);
+
+      return total;
+
+    }
+
+
+    adventureInput.addEventListener(
+      'input',
+      calculateTotal
+    );
+
+    videographyInput.addEventListener(
+      'input',
+      calculateTotal
+    );
+
+    restaurantCampingInput.addEventListener(
+      'input',
+      calculateTotal
+    );
+
+
+    /* =======================================================
+       MESSAGE
+       ======================================================= */
+
+    function showMessage(
+      text,
+      type
+    ) {
+
+      messageBox.textContent =
+        text;
+
+      messageBox.className =
+        'message show ' + type;
+
+    }
+
+
+    function clearMessage() {
+
+      messageBox.textContent =
+        '';
+
+      messageBox.className =
+        'message';
+
+    }
+
+
+    /* =======================================================
+       CHECK LOGIN
+       ======================================================= */
+
+    async function checkLogin() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.getSession();
+
+
+      if (error) {
+
+        console.error(
+          'Session error:',
+          error
+        );
+
+        window.location.href =
+          'index.html';
+
+        return false;
+
+      }
+
+
+      if (!data.session) {
+
+        window.location.href =
+          'index.html';
+
+        return false;
+
+      }
+
+
+      return true;
+
+    }
+
+
+    /* =======================================================
+       LOAD RECORDS
+       ======================================================= */
+
+    async function loadRecords() {
+
+      tableLoading.style.display =
+        'block';
+
+      recordsTable.style.display =
+        'none';
+
+      emptyState.style.display =
+        'none';
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+
+          .from('daily_sales')
+
+          .select('*')
+
+          .order(
+            'business_date',
+            {
+              ascending: false
+            }
+          )
+
+          .limit(100);
+
+
+      tableLoading.style.display =
+        'none';
+
+
+      if (error) {
+
+        console.error(
+          'Load records error:',
+          error
+        );
+
+        showMessage(
+          'Unable to load records. Please refresh the page.',
+          'error'
+        );
+
+        return;
+
+      }
+
+
+      records =
+        data || [];
+
+
+      if (records.length === 0) {
+
+        emptyState.style.display =
+          'block';
+
+        updateStats();
+
+        return;
+
+      }
+
+
+      recordsTable.style.display =
+        'table';
+
+
+      recordsBody.innerHTML =
+        '';
+
+
+      records.forEach(
+        function(record) {
+
+          const adventure =
+            Number(
+              record.adventure_sales
+            ) || 0;
+
+          const videography =
+            Number(
+              record.videography_sales
+            ) || 0;
+
+          const restaurantCamping =
+            Number(
+              record.restaurant_camping_sales
+            ) || 0;
+
+          const total =
+            adventure +
+            videography +
+            restaurantCamping;
+
+
+          const row =
+            document.createElement('tr');
+
+
+          row.innerHTML = `
+
+            <td>
+              ${formatDate(record.business_date)}
+            </td>
+
+            <td class="amount">
+              ${formatMoney(adventure)}
+            </td>
+
+            <td class="amount">
+              ${formatMoney(videography)}
+            </td>
+
+            <td class="amount">
+              ${formatMoney(restaurantCamping)}
+            </td>
+
+            <td class="total-cell">
+              ${formatMoney(total)}
+            </td>
+
+            <td class="amount">
+              ${Number(record.total_footfall || 0).toLocaleString('en-NP')}
+            </td>
+
+            <td>
+              <button
+                type="button"
+                class="edit-button"
+                data-id="${record.id}"
+              >
+                EDIT
+              </button>
+            </td>
+
+          `;
+
+
+          recordsBody.appendChild(row);
+
+        }
+      );
+
+
+      /* Attach edit events */
+
+      recordsBody
+        .querySelectorAll('.edit-button')
+        .forEach(
+          function(button) {
+
+            button.addEventListener(
+              'click',
+              function() {
+
+                const id =
+                  button.getAttribute(
+                    'data-id'
+                  );
+
+                startEditing(id);
+
+              }
+            );
+
+          }
+        );
+
+
+      updateStats();
+
+    }
+
+
+    /* =======================================================
+       UPDATE STAT CARDS
+       ======================================================= */
+
+    function updateStats() {
+
+      const today =
+        getLocalDateString();
+
+
+      const currentDate =
+        new Date();
+
+      const year =
+        currentDate.getFullYear();
+
+      const month =
+        currentDate.getMonth();
+
+
+      const todayRecord =
+        records.find(
+          function(record) {
+
+            return record.business_date === today;
+
+          }
+        );
+
+
+      if (todayRecord) {
+
+        const total =
+          Number(
+            todayRecord.adventure_sales || 0
+          ) +
+
+          Number(
+            todayRecord.videography_sales || 0
+          ) +
+
+          Number(
+            todayRecord.restaurant_camping_sales || 0
+          );
+
+
+        todaySales.textContent =
+          formatMoney(total);
+
+        todayFootfall.textContent =
+          Number(
+            todayRecord.total_footfall || 0
+          ).toLocaleString('en-NP');
+
+      } else {
+
+        todaySales.textContent =
+          'NPR 0';
+
+        todayFootfall.textContent =
+          '0';
+
+      }
+
+
+      const monthCount =
+        records.filter(
+          function(record) {
+
+            const date =
+              new Date(
+                record.business_date +
+                'T00:00:00'
+              );
+
+            return (
+              date.getFullYear() === year &&
+              date.getMonth() === month
+            );
+
+          }
+        ).length;
+
+
+      monthRecords.textContent =
+        monthCount;
+
+    }
+
+
+    /* =======================================================
+       START EDITING
+       ======================================================= */
+
+    function startEditing(id) {
+
+      const record =
+        records.find(
+          function(item) {
+
+            return String(item.id) ===
+              String(id);
+
+          }
+        );
+
+
+      if (!record) {
+        return;
+      }
+
+
+      editingId =
+        record.id;
+
+
+      dateInput.value =
+        record.business_date || '';
+
+
+      adventureInput.value =
+        record.adventure_sales || 0;
+
+
+      videographyInput.value =
+        record.videography_sales || 0;
+
+
+      restaurantCampingInput.value =
+        record.restaurant_camping_sales || 0;
+
+
+      footfallInput.value =
+        record.total_footfall || 0;
+
+
+      calculateTotal();
+
+
+      formTitle.textContent =
+        'Edit Daily Record';
+
+
+      saveButton.textContent =
+        'UPDATE DAILY RECORD';
+
+
+      cancelButton.classList.add(
+        'show'
+      );
+
+
+      clearMessage();
+
+
+      window.scrollTo(
+        {
+          top: 0,
+          behavior: 'smooth'
+        }
+      );
+
+    }
+
+
+    /* =======================================================
+       CANCEL EDIT
+       ======================================================= */
+
+    cancelButton.addEventListener(
+      'click',
+      function() {
+
+        resetForm();
+
+      }
+    );
+
+
+    function resetForm() {
+
+      editingId =
+        null;
+
+      salesForm.reset();
+
+      dateInput.value =
+        getLocalDateString();
+
+      formTitle.textContent =
+        'Add Daily Record';
+
+      saveButton.textContent =
+        'SAVE DAILY RECORD';
+
+      cancelButton.classList.remove(
+        'show'
+      );
+
+      totalPreview.textContent =
+        'NPR 0';
+
+      clearMessage();
+
+    }
+
+
+    /* =======================================================
+       SAVE / UPDATE RECORD
+       ======================================================= */
+
+    salesForm.addEventListener(
+      'submit',
+      async function(event) {
+
+        event.preventDefault();
+
+        clearMessage();
+
+
+        const businessDate =
+          dateInput.value;
+
+        const adventureSales =
+          Number(
+            adventureInput.value
+          ) || 0;
+
+        const videographySales =
+          Number(
+            videographyInput.value
+          ) || 0;
+
+        const restaurantCampingSales =
+          Number(
+            restaurantCampingInput.value
+          ) || 0;
+
+        const totalFootfall =
+          Number(
+            footfallInput.value
+          ) || 0;
+
+
+        /* Validation */
+
+        if (!businessDate) {
+
+          showMessage(
+            'Please select a date.',
+            'error'
+          );
+
+          return;
+
+        }
+
+
+        if (
+          adventureSales < 0 ||
+          videographySales < 0 ||
+          restaurantCampingSales < 0 ||
+          totalFootfall < 0
+        ) {
+
+          showMessage(
+            'Values cannot be negative.',
+            'error'
+          );
+
+          return;
+
+        }
+
+
+        const payload = {
+
+          business_date:
+            businessDate,
+
+          adventure_sales:
+            adventureSales,
+
+          videography_sales:
+            videographySales,
+
+          restaurant_camping_sales:
+            restaurantCampingSales,
+
+          total_footfall:
+            totalFootfall
+
+        };
+
+
+        saveButton.disabled =
+          true;
+
+
+        saveButton.textContent =
+          editingId
+            ? 'UPDATING...'
+            : 'SAVING...';
+
+
+        try {
+
+          let result;
+
+
+          /* -----------------------------------------------
+             UPDATE EXISTING RECORD
+             ----------------------------------------------- */
+
+          if (editingId) {
+
+            result =
+              await supabaseClient
+
+                .from('daily_sales')
+
+                .update(payload)
+
+                .eq(
+                  'id',
+                  editingId
+                )
+
+                .select();
+
+
+          }
+
+
+          /* -----------------------------------------------
+             INSERT NEW RECORD
+             ----------------------------------------------- */
+
+          else {
+
+            /*
+             * First check whether this date already exists.
+             * This gives staff a friendly message instead
+             * of a database error.
+             */
+
+            const {
+              data: existing,
+              error: existingError
+            } =
+              await supabaseClient
+
+                .from('daily_sales')
+
+                .select('id')
+
+                .eq(
+                  'business_date',
+                  businessDate
+                )
+
+                .maybeSingle();
+
+
+            if (existingError) {
+
+              throw existingError;
+
+            }
+
+
+            if (existing) {
+
+              showMessage(
+                'A record already exists for this date. Use EDIT to update it.',
+                'error'
+              );
+
+              saveButton.disabled =
+                false;
+
+              saveButton.textContent =
+                'SAVE DAILY RECORD';
+
+              return;
+
+            }
+
+
+            result =
+              await supabaseClient
+
+                .from('daily_sales')
+
+                .insert(payload)
+
+                .select();
+
+          }
+
+
+          if (result.error) {
+
+            throw result.error;
+
+          }
+
+
+          /* Success */
+
+          showMessage(
+            editingId
+              ? 'Daily record updated successfully.'
+              : 'Daily record saved successfully.',
+            'success'
+          );
+
+
+          resetForm();
+
+
+          await loadRecords();
+
+
+        } catch (error) {
+
+          console.error(
+            'Save/update error:',
+            error
+          );
+
+
+          showMessage(
+            'Unable to save the record. Please try again.',
+            'error'
+          );
+
+        }
+
+
+        saveButton.disabled =
+          false;
+
+
+        saveButton.textContent =
+          editingId
+            ? 'UPDATE DAILY RECORD'
+            : 'SAVE DAILY RECORD';
+
+      }
+    );
+
+
+    /* =======================================================
+       LOGOUT
+       ======================================================= */
+
+    logoutButton.addEventListener(
+      'click',
+      async function() {
+
+        logoutButton.disabled =
+          true;
+
+        logoutButton.textContent =
+          'Logging out...';
+
+
+        const {
+          error
+        } =
+          await supabaseClient.auth.signOut();
+
+
+        if (error) {
+
+          console.error(
+            'Logout error:',
+            error
+          );
+
+          logoutButton.disabled =
+            false;
+
+          logoutButton.textContent =
+            'Logout';
+
+          return;
+
+        }
+
+
+        window.location.href =
+          'index.html';
+
+      }
+    );
+
+
+    /* =======================================================
+       INITIALIZE
+       ======================================================= */
+
+    async function initializeDashboard() {
+
+      const loggedIn =
+        await checkLogin();
+
+
+      if (!loggedIn) {
+        return;
+      }
+
+
+      /* Set date to today */
+
+      dateInput.value =
+        getLocalDateString();
+
+
+      /* Calculate initial total */
+
+      calculateTotal();
+
+
+      /* Load database records */
+
+      await loadRecords();
+
+    }
+
+
+    initializeDashboard();
+
+  </script>
+
+</body>
+</html>

@@ -1961,7 +1961,7 @@
 
 
     const AUTH_STORAGE_KEY =
-      'suryodaya-staff-auth';
+      'suryodaya-auth';
 
 
     /*
@@ -3027,7 +3027,37 @@ const supabaseClient =
     'none';
 
   try {
+const freshManagementLogin =
+  sessionStorage.getItem(
+    'suryodaya_fresh_management_login'
+  );
 
+if (
+  freshManagementLogin !== 'true'
+) {
+
+  await supabaseClient.auth.signOut({
+    scope: 'local'
+  });
+
+  localStorage.removeItem(
+    'suryodaya-auth'
+  );
+
+  sessionStorage.removeItem(
+    'suryodaya_authenticated_role'
+  );
+
+  window.location.replace(
+    'index.html'
+  );
+
+  return;
+}
+
+sessionStorage.removeItem(
+  'suryodaya_fresh_management_login'
+);
     /*
      * =====================================================
      * 1. GET CURRENT SUPABASE SESSION

@@ -10,7 +10,7 @@
 .header{background:#173f35;color:#fff;padding:15px 22px}.head{max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}.brand{display:flex;gap:12px;align-items:center}.brand img{width:48px;height:48px;object-fit:contain;background:#fff;border-radius:50%;padding:4px}.brand h1{font:700 21px Georgia,serif;margin:0}.brand p{font-size:11px;margin:3px 0 0;opacity:.75}.back{color:#fff;text-decoration:none;border:1px solid #ffffff55;border-radius:7px;padding:9px 13px;font-size:12px;font-weight:700}
 .container{width:min(1180px,calc(100% - 32px));margin:auto}.main{padding:28px 0 50px}.eyebrow{color:#e85d04;font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase}.heading h2{font:700 30px Georgia,serif;margin:5px 0}.heading p{color:#64746e;font-size:13px;margin:0 0 20px}
 .layout{display:grid;grid-template-columns:minmax(430px,1fr) 390px;gap:22px;align-items:start}.card,.paper{background:#fff;border:1px solid #dde6e1;border-radius:14px;box-shadow:0 4px 16px #173f350d}.card-head{padding:18px 20px;border-bottom:1px solid #dde6e1}.card-head h3{font:700 19px Georgia,serif;margin:0}.card-head p{font-size:11px;color:#64746e;margin:4px 0 0}.body{padding:20px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:13px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}input,select{width:100%;height:42px;border:1px solid #dde6e1;border-radius:8px;padding:0 10px;font-size:13px;color:#173f35;background:#fff}input:focus,select:focus{outline:0;border-color:#1f5745;box-shadow:0 0 0 3px #1f57451c}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:13px}.field-note{display:block;color:#64746e;font-size:9px;line-height:1.35;margin-top:5px}.field input[readonly]{background:#f4f7f4;color:#64746e;font-weight:800;cursor:not-allowed}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}input,select{width:100%;height:42px;border:1px solid #dde6e1;border-radius:8px;padding:0 10px;font-size:13px;color:#173f35;background:#fff}input:focus,select:focus{outline:0;border-color:#1f5745;box-shadow:0 0 0 3px #1f57451c}
 .tax{background:#f4f8f5;border:1px solid #d6e5dc;border-radius:10px;padding:12px;margin:4px 0 16px}.tax strong{font-size:11px;text-transform:uppercase;letter-spacing:.7px}.tax p{font-size:10px;color:#64746e;line-height:1.45;margin:7px 0 0}
 .items{border:1px solid #dde6e1;border-radius:9px;overflow:hidden}.item-head,.item{display:grid;grid-template-columns:minmax(180px,1fr) 65px 90px 95px 34px;gap:7px;align-items:center;padding:8px}.item-head{background:#f4f7f4;font-size:9px;color:#64746e;font-weight:800;text-transform:uppercase}.item{border-top:1px solid #edf1ee}.item select,.item input{height:37px;font-size:12px}.amount{text-align:right;font-size:12px;font-weight:800}.remove{height:31px;border:1px solid #f1cbc7;background:#fff;color:#b42318;border-radius:6px;cursor:pointer;font-weight:800}.add{width:100%;height:38px;margin-top:9px;border:1px dashed #1f5745;background:#f4f8f5;color:#173f35;border-radius:7px;font-weight:800;cursor:pointer}
 .summary{background:#fdf9f1;border:1px solid #e8ddc8;border-radius:9px;padding:14px;margin-top:17px}.sum{display:flex;justify-content:space-between;padding:5px 0;font-size:12px}.grand{border-top:1px solid #e2d4bb;margin-top:5px;padding-top:10px;font-size:16px;font-weight:900;color:#e85d04}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.btn{height:45px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer}.primary{border:0;background:#e85d04;color:#fff}.secondary{border:1px solid #dde6e1;background:#fff;color:#173f35}
@@ -30,7 +30,7 @@
 <section class="card"><div class="card-head"><h3>Invoice Details</h3><p>Complete the customer details, items and payment method.</p></div><div class="body">
 <form id="form">
 <div class="grid2">
-<div class="field"><label>Invoice No.</label><input id="no" required></div>
+<div class="field"><label>Invoice No.</label><input id="no" value="Auto-generated on save" readonly aria-readonly="true"><small class="field-note">Invoice number is assigned automatically when the invoice is saved.</small></div>
 <div class="field"><label>Transaction / Invoice Date</label><input id="date" type="date" required></div>
 </div>
 <div class="grid2">
@@ -56,83 +56,377 @@
 <div class="sum"><span>Discount</span><b id="discOut">NPR 0.00</b></div>
 <div class="sum grand"><span>Net / Grand Total</span><b id="grand">NPR 0.00</b></div>
 </div>
-<div class="actions"><button type="button" class="btn primary" id="pdf">DOWNLOAD PDF</button><button type="button" class="btn secondary" id="email">EMAIL INVOICE</button></div>
+<div class="actions"><button type="button" class="btn primary" id="savePdf">SAVE &amp; DOWNLOAD PDF</button><button type="button" class="btn secondary" id="email">SAVE &amp; EMAIL INVOICE</button></div>
 </form>
 </div></section>
 
 <section class="preview"><div class="paper" id="paper">
-<div class="phead"><div class="seller"><img src="../Abhiyan%20Group%20Logo.png" alt=""><b>Abhiyan Group Pvt. Ltd.</b><span>Suryodaya Adventures</span><span>Ward No. 08, Shanti Chowk, Suryodaya Municipality, Ilam, Nepal</span><span>PAN: 609903667 · Inland Revenue Office / Taxpayer Service Office, Ilam</span></div><div class="meta"><strong id="ptitle">INVOICE</strong>No: <b id="pno"></b><br>Date: <b id="pdate"></b></div></div>
+<div class="phead"><div class="seller"><img src="../Abhiyan%20Group%20Logo.png" alt=""><b>Abhiyan Group Pvt. Ltd.</b><span>Suryodaya Adventures</span><span>Ward No. 08, Shanti Chowk, Suryodaya Municipality, Ilam, Nepal</span><span>PAN: 609903667 · Inland Revenue Office / Taxpayer Service Office, Ilam</span></div><div class="meta"><strong id="ptitle">INVOICE</strong>No: <b id="pno">Assigned on save</b><br>Date: <b id="pdate"></b></div></div>
 <div class="bill"><b id="pbuyer">Customer</b><br><span id="paddress"></span><span id="ppan"></span><span id="pphone"></span></div>
 <table class="ptable"><thead><tr><th>Details</th><th>Qty</th><th>Unit</th><th>Total</th></tr></thead><tbody id="pitems"></tbody></table>
 <div class="ptotal" id="ptotal">NPR 0.00</div>
-<div class="foot">VAT not applied. Seller: Abhiyan Group Pvt. Ltd. · Trade name: Suryodaya Adventures · PAN 609903667<br>Payment: <span id="ppayment"></span><br>Authorized Signature: __________________________</div>
+<div class="foot">Seller: Abhiyan Group Pvt. Ltd. · Trade name: Suryodaya Adventures · PAN 609903667<br>Payment: <span id="ppayment"></span><br><strong>This is a system-generated invoice and does not require a physical signature.</strong></div>
 </div></section>
 </div></div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 <script>
+const SUPABASE_URL="https://mvvdfwgjcyayopcsgwvy.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
+  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storage:window.localStorage,storageKey:"suryodaya-auth"}
+});
+
 const ACTIVITIES=[
 ["Classic Zipline",800],["Couple Zipline",1500],["Superman Zipline",1000],["Flying Fox",500],
 ["Sky Cycling",1000],["Mini Bungee",800],["Individual Dual Package",1500],["Individual Full Package",2000],
 ["Recreational Archery",50],["Wall Climbing",200],["Adventure Camping (Tent)",1000],
 ["Videography",250],["Camping Firewood",500]
 ];
+
 const $=id=>document.getElementById(id);
 const money=n=>"NPR "+(Number(n)||0).toLocaleString("en-NP",{minimumFractionDigits:2,maximumFractionDigits:2});
-function today(){let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function invoiceNo(){let d=new Date();return "SA-"+d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"-"+String(d.getHours()).padStart(2,"0")+String(d.getMinutes()).padStart(2,"0")+String(d.getSeconds()).padStart(2,"0")}
-function notice(t,c){$("notice").textContent=t;$("notice").className="notice show "+c}
-function addItem(){
- const row=document.createElement("div");row.className="item";
- const s=document.createElement("select");ACTIVITIES.forEach(a=>{let o=document.createElement("option");o.value=a[0];o.textContent=a[0];s.appendChild(o)});
- const q=document.createElement("input");q.type="number";q.min="0";q.step="1";q.value="1";
- const r=document.createElement("input");r.type="number";r.min="0";r.step=".01";r.value=ACTIVITIES[0][1];
- const a=document.createElement("div");a.className="amount";
- const x=document.createElement("button");x.type="button";x.className="remove";x.textContent="×";
- function rate(){let f=ACTIVITIES.find(v=>v[0]===s.value);r.value=f?f[1]:0;update()}
- s.onchange=rate;q.oninput=update;r.oninput=update;x.onclick=()=>{row.remove();update()};
- row.append(s,q,r,a,x);$("items").appendChild(row);update()
-}
-function calc(){
- let sub=0;
- document.querySelectorAll(".item").forEach(row=>{
-   let q=+row.children[1].value||0,r=+row.children[2].value||0;
-   sub+=q*r;
-   row.children[3].textContent=money(q*r);
- });
- let d=Math.min(Math.max(0,+$("discount").value||0),sub);
- return {sub,d,taxable:sub-d,vat:0,grand:sub-d};
-}
-function update(){
- let c=calc();$("subtotal").textContent=money(c.sub);$("discOut").textContent=money(c.d);$("grand").textContent=money(c.grand);
- $("ptitle").textContent="INVOICE";$("pno").textContent=$("no").value;$("pdate").textContent=$("date").value;
- $("pbuyer").textContent=$("buyer").value||"Customer";$("paddress").textContent=$("address").value?"Address: "+$("address").value+" · ":"";$("ppan").textContent=$("buyerPan").value?"PAN: "+$("buyerPan").value+" · ":"";$("pphone").textContent=$("phone").value?"Phone: "+$("phone").value:"";$("ppayment").textContent=$("payment").value;$("ptotal").textContent=money(c.grand);
- let tb=$("pitems");tb.innerHTML="";document.querySelectorAll(".item").forEach(row=>{let tr=document.createElement("tr"),q=+row.children[1].value||0,r=+row.children[2].value||0;tr.innerHTML="<td>"+row.children[0].value+"</td><td>"+q+"</td><td>"+money(r)+"</td><td>"+money(q*r)+"</td>";tb.appendChild(tr)})
-}
-["no","date","buyer","buyerPan","address","phone","discount","payment"].forEach(id=>$(id).addEventListener("input",update));
-$("add").onclick=addItem;$("no").value=invoiceNo();$("date").value=today();addItem();
 
-function buildPDF(){
- const {jsPDF}=window.jspdf,doc=new jsPDF({unit:"mm",format:"a4"}),c=calc(),green=[23,63,53],orange=[232,93,4];
- doc.setTextColor(...green);doc.setFont("helvetica","bold");doc.setFontSize(18);doc.text("Abhiyan Group Pvt. Ltd.",20,20);
- doc.setFontSize(10);doc.text("Suryodaya Adventures",20,26);doc.setFont("helvetica","normal");doc.setFontSize(8);
- doc.text("Ward No. 08, Shanti Chowk, Suryodaya Municipality, Ilam, Nepal",20,31);doc.text("PAN: 609903667 | Inland Revenue Office / Taxpayer Service Office, Ilam",20,35);
- doc.setFont("helvetica","bold");doc.setFontSize(15);doc.text("INVOICE",190,20,{align:"right"});doc.setFont("helvetica","normal");doc.setFontSize(9);
- doc.text("Invoice No: "+$("no").value,190,27,{align:"right"});doc.text("Transaction / Issue Date: "+$("date").value,190,32,{align:"right"});doc.line(20,40,190,40);
- doc.setFont("helvetica","bold");doc.text("Buyer",20,48);doc.setFont("helvetica","normal");doc.setFontSize(9);doc.text($("buyer").value||"Customer",20,54);
- if($("address").value)doc.text("Address: "+$("address").value,20,59);if($("buyerPan").value)doc.text("PAN Number: "+$("buyerPan").value,20,64);if($("phone").value)doc.text("Phone: "+$("phone").value,20,69);
- let rows=[];document.querySelectorAll(".item").forEach(row=>{let q=+row.children[1].value||0,r=+row.children[2].value||0;if(q>0)rows.push([row.children[0].value,q,r.toFixed(2),(q*r).toFixed(2)])});
- doc.autoTable({startY:76,head:[["S.N.","Details","Quantity","Per Unit (NPR)","Total (NPR)"]],body:rows.map((r,i)=>[i+1,...r]),theme:"grid",headStyles:{fillColor:green,textColor:255},styles:{fontSize:9,cellPadding:3},columnStyles:{0:{halign:"right"},2:{halign:"right"},3:{halign:"right"},4:{halign:"right"}});
- let y=doc.lastAutoTable.finalY+9;doc.setFontSize(9);doc.text("Total Amount",150,y,{align:"right"});doc.text(c.sub.toFixed(2),190,y,{align:"right"});y+=6;
- doc.text("Discount",150,y,{align:"right"});doc.text(c.d.toFixed(2),190,y,{align:"right"});y+=6;y+=8;
- doc.setTextColor(...orange);doc.setFont("helvetica","bold");doc.setFontSize(12);doc.text("Net / Grand Total (NPR)",150,y,{align:"right"});doc.text(c.grand.toFixed(2),190,y,{align:"right"});
- doc.setTextColor(...green);doc.setFont("helvetica","normal");doc.setFontSize(9);doc.text("Payment Method: "+$("payment").value,20,y+12);doc.text("Authorized Signature: ______________________________",20,y+21);
- doc.setTextColor(90,90,90);doc.setFontSize(8);doc.text("Seller: Abhiyan Group Pvt. Ltd. | Trade name: Suryodaya Adventures | PAN 609903667",20,270);
- return doc
+function today(){
+  const d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 }
-$("pdf").onclick=()=>{if(!$("form").reportValidity())return;buildPDF().save(($("no").value||"invoice")+".pdf");notice("PDF invoice downloaded successfully.","ok")};
-$("email").onclick=()=>{if(!$("form").reportValidity())return;let c=calc(),sub=encodeURIComponent(($("taxMode").value==="none"?"Invoice ":"Tax Invoice ")+$("no").value+" — Suryodaya Adventures"),body=encodeURIComponent("Dear "+($("buyer").value||"Customer")+",\n\nPlease find your invoice "+$("no").value+" from Suryodaya Adventures.\nGrand Total: "+money(c.grand)+"\nPayment Method: "+$("payment").value+"\n\nPlease attach the downloaded PDF invoice before sending.\n\nRegards,\nSuryodaya Adventures\nAbhiyan Group Pvt. Ltd.\nPAN: 609903667\n+977 9840823060");location.href="mailto:?subject="+sub+"&body="+body;notice("Your email app has been opened. Attach the downloaded PDF before sending.","ok")};
+
+function notice(text,type){
+  $("notice").textContent=text;
+  $("notice").className="notice show "+type;
+}
+
+function clearNotice(){
+  $("notice").textContent="";
+  $("notice").className="notice";
+}
+
+async function requireStaff(){
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error||!data?.session?.user){
+    window.location.replace("index.html");
+    return null;
+  }
+  const {data:roleData,error:roleError}=await supabaseClient
+    .from("user_roles")
+    .select("role")
+    .eq("user_id",data.session.user.id)
+    .maybeSingle();
+
+  if(roleError||!roleData||roleData.role!=="staff"){
+    await supabaseClient.auth.signOut({scope:"local"});
+    window.location.replace("index.html");
+    return null;
+  }
+  return data.session.user;
+}
+
+function addItem(){
+  const row=document.createElement("div");
+  row.className="item";
+
+  const select=document.createElement("select");
+  ACTIVITIES.forEach(([name])=>{
+    const option=document.createElement("option");
+    option.value=name;
+    option.textContent=name;
+    select.appendChild(option);
+  });
+
+  const qty=document.createElement("input");
+  qty.type="number";qty.min="0";qty.step="1";qty.value="1";qty.setAttribute("aria-label","Quantity");
+
+  const rate=document.createElement("input");
+  rate.type="number";rate.min="0";rate.step=".01";rate.value=ACTIVITIES[0][1];rate.setAttribute("aria-label","Unit rate");
+
+  const amount=document.createElement("div");
+  amount.className="amount";
+
+  const remove=document.createElement("button");
+  remove.type="button";remove.className="remove";remove.textContent="×";remove.title="Remove item";
+
+  select.addEventListener("change",()=>{
+    const selected=ACTIVITIES.find(([name])=>name===select.value);
+    rate.value=selected?selected[1]:0;
+    update();
+  });
+  qty.addEventListener("input",update);
+  rate.addEventListener("input",update);
+  remove.addEventListener("click",()=>{row.remove();update();});
+
+  row.append(select,qty,rate,amount,remove);
+  $("items").appendChild(row);
+  update();
+}
+
+function getItems(){
+  return Array.from(document.querySelectorAll(".item")).map(row=>({
+    description:row.children[0].value,
+    quantity:Number(row.children[1].value)||0,
+    unit_price:Number(row.children[2].value)||0,
+    total:(Number(row.children[1].value)||0)*(Number(row.children[2].value)||0)
+  })).filter(item=>item.quantity>0);
+}
+
+function calc(){
+  const items=getItems();
+  const subtotal=items.reduce((sum,item)=>sum+item.total,0);
+  const discount=Math.min(Math.max(0,Number($("discount").value)||0),subtotal);
+  return {items,subtotal,discount,total:subtotal-discount};
+}
+
+function update(){
+  const c=calc();
+  $("subtotal").textContent=money(c.subtotal);
+  $("discOut").textContent=money(c.discount);
+  $("grand").textContent=money(c.total);
+
+  $("pno").textContent=$("no").value||"Assigned on save";
+  $("pdate").textContent=$("date").value;
+  $("pbuyer").textContent=$("buyer").value||"Customer";
+  $("paddress").textContent=$("address").value?"Address: "+$("address").value+" · ":"";
+  $("ppan").textContent=$("buyerPan").value?"PAN: "+$("buyerPan").value+" · ":"";
+  $("pphone").textContent=$("phone").value?"Phone: "+$("phone").value:"";
+  $("ppayment").textContent=$("payment").value;
+  $("ptotal").textContent=money(c.total);
+
+  const tbody=$("pitems");
+  tbody.innerHTML="";
+  c.items.forEach(item=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML="<td>"+escapeHtml(item.description)+"</td><td>"+item.quantity+"</td><td>"+money(item.unit_price)+"</td><td>"+money(item.total)+"</td>";
+    tbody.appendChild(tr);
+  });
+}
+
+function escapeHtml(value){
+  return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[char]));
+}
+
+async function reserveInvoiceNumber(){
+  // The database creates the sequential number. We create the record first,
+  // then the returned invoice number is used for the PDF.
+  const user=await requireStaff();
+  if(!user)return null;
+
+  const c=calc();
+  const payload={
+    business_date:$("date").value,
+    customer_name:$("buyer").value.trim(),
+    customer_pan:$("buyerPan").value.trim()||null,
+    customer_address:$("address").value.trim()||null,
+    customer_phone:$("phone").value.trim()||null,
+    items:c.items,
+    subtotal:c.subtotal,
+    discount:c.discount,
+    total_amount:c.total,
+    payment_method:$("payment").value,
+    status:"issued",
+    created_by:user.id
+  };
+
+  const {data,error}=await supabaseClient
+    .from("invoices")
+    .insert(payload)
+    .select("id,invoice_number,created_at")
+    .single();
+
+  if(error)throw error;
+  return {record:data,payload,c};
+}
+
+async function loadLogo(){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>resolve(img);
+    img.onerror=()=>resolve(null);
+    img.src="../Abhiyan%20Group%20Logo.png";
+  });
+}
+
+async function buildPDF(record,c){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:"mm",format:"a4"});
+  const green=[23,63,53],orange=[232,93,4];
+  const logo=await loadLogo();
+  if(logo){doc.addImage(logo,"PNG",20,10,18,18);}
+
+  doc.setTextColor(...green);
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(18);
+  doc.text("Abhiyan Group Pvt. Ltd.",42,20);
+
+  doc.setFontSize(10);
+  doc.text("Suryodaya Adventures",20,26);
+
+  doc.setFont("helvetica","normal");
+  doc.setFontSize(8);
+  doc.text("Ward No. 08, Shanti Chowk, Suryodaya Municipality, Ilam, Nepal",20,31);
+  doc.text("PAN: 609903667 | Inland Revenue Office / Taxpayer Service Office, Ilam",20,35);
+
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(15);
+  doc.text("INVOICE",190,20,{align:"right"});
+
+  doc.setFont("helvetica","normal");
+  doc.setFontSize(9);
+  doc.text("Invoice No: "+record.invoice_number,190,27,{align:"right"});
+  doc.text("Transaction / Issue Date: "+$("date").value,190,32,{align:"right"});
+  doc.line(20,40,190,40);
+
+  doc.setFont("helvetica","bold");
+  doc.text("Customer",20,48);
+  doc.setFont("helvetica","normal");
+  doc.setFontSize(9);
+  doc.text($("buyer").value||"Customer",20,54);
+
+  let yCustomer=59;
+  if($("address").value){doc.text("Address: "+$("address").value,20,yCustomer);yCustomer+=5;}
+  if($("buyerPan").value){doc.text("PAN Number: "+$("buyerPan").value,20,yCustomer);yCustomer+=5;}
+  if($("phone").value){doc.text("Phone: "+$("phone").value,20,yCustomer);yCustomer+=5;}
+
+  const startY=Math.max(76,yCustomer+7);
+  const rows=c.items.map((item,i)=>[
+    i+1,item.description,item.quantity,item.unit_price.toFixed(2),item.total.toFixed(2)
+  ]);
+
+  doc.autoTable({
+    startY,
+    head:[["S.N.","Details","Quantity","Per Unit (NPR)","Total (NPR)"]],
+    body:rows,
+    theme:"grid",
+    headStyles:{fillColor:green,textColor:255},
+    styles:{fontSize:9,cellPadding:3},
+    columnStyles:{0:{halign:"right"},2:{halign:"right"},3:{halign:"right"},4:{halign:"right"}}
+  });
+
+  let y=doc.lastAutoTable.finalY+9;
+  doc.setFontSize(9);
+  doc.text("Total Amount",150,y,{align:"right"});
+  doc.text(c.subtotal.toFixed(2),190,y,{align:"right"});
+  y+=6;
+  doc.text("Discount",150,y,{align:"right"});
+  doc.text(c.discount.toFixed(2),190,y,{align:"right"});
+  y+=9;
+
+  doc.setTextColor(...orange);
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(12);
+  doc.text("Net / Grand Total (NPR)",150,y,{align:"right"});
+  doc.text(c.total.toFixed(2),190,y,{align:"right"});
+
+  doc.setTextColor(...green);
+  doc.setFont("helvetica","normal");
+  doc.setFontSize(9);
+  doc.text("Payment Method: "+$("payment").value,20,y+12);
+
+  doc.setTextColor(90,90,90);
+  doc.setFontSize(8);
+  doc.text("Seller: Abhiyan Group Pvt. Ltd. | Trade name: Suryodaya Adventures | PAN 609903667",20,267);
+  doc.text("This is a system-generated invoice and does not require a physical signature.",20,273);
+
+  return doc;
+}
+
+function resetForm(){
+  $("form").reset();
+  $("date").value=today();
+  $("no").value="Auto-generated on save";
+  $("items").innerHTML="";
+  $("discount").value="0";
+  addItem();
+  update();
+}
+
+async function saveInvoice(mode){
+  if(!$("form").reportValidity())return;
+
+  clearNotice();
+
+  const customer=$("buyer").value.trim();
+  const date=$("date").value;
+  const c=calc();
+
+  if(!customer){notice("Please enter the customer name.","err");return;}
+  if(!date){notice("Please select the invoice date.","err");return;}
+  if(c.items.length===0){notice("Please add at least one adventure item.","err");return;}
+
+  $("savePdf").disabled=true;
+  $("email").disabled=true;
+  $("savePdf").textContent="SAVING...";
+
+  try{
+    const result=await reserveInvoiceNumber();
+    if(!result)return;
+
+    $("no").value=result.record.invoice_number;
+    update();
+
+    const doc=buildPDF(result.record,result.c);
+    const filename=result.record.invoice_number+".pdf";
+
+    // Always download the saved invoice as a PDF.
+    doc.save(filename);
+
+    if(mode==="email"){
+      const subject=encodeURIComponent("Invoice "+result.record.invoice_number+" — Suryodaya Adventures");
+      const body=encodeURIComponent(
+        "Dear "+customer+",\n\n"+
+        "Please find your invoice "+result.record.invoice_number+" from Suryodaya Adventures.\n"+
+        "Grand Total: "+money(c.total)+"\n"+
+        "Payment Method: "+$("payment").value+"\n\n"+
+        "The invoice PDF has been downloaded to this computer. Please attach it to this email before sending.\n\n"+
+        "Regards,\nSuryodaya Adventures\nAbhiyan Group Pvt. Ltd.\nPAN: 609903667\n+977 9840823060"
+      );
+      window.location.href="mailto:?subject="+subject+"&body="+body;
+      notice("Invoice saved to history and PDF downloaded. Your email app has been opened; attach the PDF before sending.","ok");
+    }else{
+      notice("Invoice "+result.record.invoice_number+" saved to Invoice History and PDF downloaded.","ok");
+    }
+
+    // Keep the issued invoice number visible, then prepare a clean new form
+    // only after the user has seen the success message.
+    setTimeout(resetForm,2500);
+
+  }catch(error){
+    console.error("Invoice save error:",error);
+    notice(
+      error?.message
+        ? "Invoice could not be saved: "+error.message
+        : "Invoice could not be saved. Please try again.",
+      "err"
+    );
+  }finally{
+    $("savePdf").disabled=false;
+    $("email").disabled=false;
+    $("savePdf").textContent="SAVE & DOWNLOAD PDF";
+  }
+}
+
+["no","date","buyer","buyerPan","address","phone","discount","payment"].forEach(id=>{
+  const el=$(id);
+  el.addEventListener("input",update);
+  el.addEventListener("change",update);
+});
+
+$("add").addEventListener("click",event=>{
+  event.preventDefault();
+  addItem();
+});
+
+$("savePdf").addEventListener("click",()=>saveInvoice("download"));
+$("email").addEventListener("click",()=>saveInvoice("email"));
+
+(async function init(){
+  const user=await requireStaff();
+  if(!user)return;
+  $("date").value=today();
+  $("no").value="Auto-generated on save";
+  addItem();
+  update();
+})();
 </script>
 </body>
 </html>

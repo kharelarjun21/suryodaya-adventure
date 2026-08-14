@@ -178,40 +178,104 @@
     }
  
     .page-heading {
-      margin-bottom: 24px;
-    }
- 
-    .page-heading .eyebrow {
-      color: var(--orange);
- 
-      font-size: 11px;
-      font-weight: 800;
- 
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
- 
-      margin-bottom: 6px;
-    }
- 
-    .page-heading h2 {
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
- 
-      color: var(--forest);
- 
-      font-size: 30px;
-      line-height: 1.2;
-    }
- 
-    .page-heading p {
-      margin-top: 6px;
- 
-      color: var(--muted);
- 
-      font-size: 13px;
-    }
+  margin-bottom: 24px;
+  position: relative;
+  padding-right: 190px;
+}
+
+.page-heading .eyebrow {
+  color: var(--orange);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+
+  margin-bottom: 6px;
+}
+
+.page-heading h2 {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  color: var(--forest);
+
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+.page-heading p {
+  margin-top: 6px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   GENERATE INVOICE BUTTON
+   ========================================================= */
+
+.generate-invoice-button {
+  position: absolute;
+  right: 0;
+  top: 8px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-width: 165px;
+  height: 44px;
+
+  padding: 0 18px;
+
+  background: var(--orange);
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(232, 93, 4, 0.18);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.generate-invoice-button:hover {
+  background: #cf5003;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(232, 93, 4, 0.25);
+}
+
+.generate-invoice-button:active {
+  transform: translateY(0);
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+  .page-heading {
+    padding-right: 0;
+  }
+
+  .generate-invoice-button {
+    position: static;
+    margin-top: 15px;
+    width: 100%;
+  }
+}
  
     /* =========================================================
        STAT CARDS
@@ -1039,20 +1103,27 @@
       <!-- PAGE HEADING -->
  
       <section class="page-heading">
- 
-        <div class="eyebrow">
-          Staff Portal
-        </div>
- 
-        <h2>
-          Daily Sales & Footfall
-        </h2>
- 
-        <p>
-          Manage daily business records for the last 7 days.
-        </p>
- 
-      </section>
+
+  <div class="eyebrow">
+    Staff Portal
+  </div>
+
+  <h2>
+    Daily Sales & Footfall
+  </h2>
+
+  <p>
+    Manage daily business records for the last 7 days.
+  </p>
+
+  <a
+    href="invoice.html"
+    class="generate-invoice-button"
+  >
+    🧾 GENERATE INVOICE
+  </a>
+
+</section>
  
  
       <!-- ===================================================

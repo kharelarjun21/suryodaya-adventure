@@ -1,1517 +1,1680 @@
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
- 
+
   <meta charset="UTF-8">
- 
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
- 
+
   <meta
     name="robots"
     content="noindex, nofollow"
   >
- 
+
   <title>
     Management Dashboard | Suryodaya Adventures
   </title>
- 
+
   <link
     rel="icon"
     type="image/png"
     href="../Logo.png"
   >
- 
+
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- 
- 
+
+
   <style>
- 
+
     /* =========================================================
        GLOBAL
        ========================================================= */
- 
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
- 
- 
+
+
     :root {
- 
+
       --forest: #173F35;
       --forest-light: #1F5745;
- 
+
       --orange: #E85D04;
       --gold: #FFB703;
- 
+
       --cream: #FDF9F1;
       --white: #FFFFFF;
- 
+
       --text: #173F35;
       --muted: #64746E;
- 
+
       --border: #DDE6E1;
- 
+
       --success: #16794A;
       --danger: #B42318;
- 
+
       --soft-green: #EAF7F0;
       --soft-red: #FDECEC;
- 
+
       --background: #F4F7F4;
- 
+
     }
- 
- 
+
+
     body {
- 
+
       min-height: 100vh;
- 
+
       font-family:
         Arial,
         Helvetica,
         sans-serif;
- 
+
       background:
         var(--background);
- 
+
       color:
         var(--text);
- 
+
     }
- 
- 
+
+
     /* =========================================================
        HEADER
        ========================================================= */
- 
+
     .header {
- 
+
       background:
         var(--forest);
- 
+
       color:
         white;
- 
+
       padding:
         15px 24px;
- 
+
       box-shadow:
         0 3px 14px
         rgba(0,0,0,0.12);
- 
+
     }
- 
- 
+
+
     .header-inner {
- 
+
       width:
         min(
           1250px,
           calc(100% - 20px)
         );
- 
+
       margin:
         0 auto;
- 
+
       display:
         flex;
- 
+
       justify-content:
         space-between;
- 
+
       align-items:
         center;
- 
+
       gap:
         20px;
- 
+
     }
- 
- 
+
+
     .brand {
- 
+
       display:
         flex;
- 
+
       align-items:
         center;
- 
+
       gap:
         12px;
- 
+
     }
- 
- 
+
+
     .brand img {
- 
+
       width:
         48px;
- 
+
       height:
         48px;
- 
+
       object-fit:
         contain;
- 
+
       background:
         white;
- 
+
       border-radius:
         50%;
- 
+
       padding:
         4px;
- 
+
     }
- 
- 
+
+
     .brand h1 {
- 
+
       font-family:
         Georgia,
         "Times New Roman",
         serif;
- 
+
       font-size:
         22px;
- 
+
       line-height:
         1.1;
- 
+
     }
- 
- 
+
+
     .brand p {
- 
+
       font-size:
         10px;
- 
+
       opacity:
         0.75;
- 
+
       margin-top:
         4px;
- 
+
       letter-spacing:
         0.5px;
- 
+
     }
- 
- 
+
+
     .header-actions {
- 
+
       display:
         flex;
- 
+
       align-items:
         center;
- 
+
       gap:
         10px;
- 
+
     }
- 
- 
+
+
     .header-button {
- 
+
       border:
         1px solid
         rgba(255,255,255,0.3);
- 
+
       background:
         transparent;
- 
+
       color:
         white;
- 
+
       padding:
         9px 13px;
- 
+
       border-radius:
         7px;
- 
+
       font-size:
         12px;
- 
+
       font-weight:
         800;
- 
+
       cursor:
         pointer;
- 
+
       text-decoration:
         none;
- 
+
     }
- 
- 
+
+
     .header-button:hover {
- 
+
       background:
         white;
- 
+
       color:
         var(--forest);
- 
+
     }
- 
- 
+
+
     /* =========================================================
        MAIN
        ========================================================= */
- 
+
     .container {
- 
+
       width:
         min(
           1250px,
           calc(100% - 32px)
         );
- 
+
       margin:
         0 auto;
- 
+
     }
- 
- 
+
+
     main {
- 
+
       padding:
         30px 0 60px;
- 
+
     }
- 
- 
+
+
     /* =========================================================
        PAGE HEADING
        ========================================================= */
- 
+
     .page-heading {
- 
+
       margin-bottom:
         24px;
- 
+
     }
- 
- 
+
+
     .eyebrow {
- 
+
       color:
         var(--orange);
- 
+
       font-size:
         11px;
- 
+
       font-weight:
         900;
- 
+
       letter-spacing:
         1.5px;
- 
+
       text-transform:
         uppercase;
- 
+
       margin-bottom:
         6px;
- 
+
     }
- 
- 
+
+
     .page-heading h2 {
- 
+
       font-family:
         Georgia,
         "Times New Roman",
         serif;
- 
+
       font-size:
         31px;
- 
+
       line-height:
         1.2;
- 
+
       color:
         var(--forest);
- 
+
     }
- 
- 
+
+
     .page-heading p {
- 
+
       margin-top:
         6px;
- 
+
       color:
         var(--muted);
- 
+
       font-size:
         13px;
- 
+
     }
- 
- 
+
+
     /* =========================================================
        LOADING
        ========================================================= */
- 
+
     .loading {
- 
+
       background:
         white;
- 
+
       border:
         1px solid
         var(--border);
- 
+
       border-radius:
         12px;
- 
+
       padding:
         30px;
- 
+
       text-align:
         center;
- 
+
       color:
         var(--muted);
- 
+
       margin-bottom:
         20px;
- 
+
     }
- 
- 
+
+
     .spinner {
- 
+
       width:
         25px;
- 
+
       height:
         25px;
- 
+
       border:
         3px solid
         #DDE6E1;
- 
+
       border-top-color:
         var(--orange);
- 
+
       border-radius:
         50%;
- 
+
       animation:
         spin 0.8s linear infinite;
- 
+
       margin:
         0 auto 12px;
- 
+
     }
- 
- 
+
+
     @keyframes spin {
- 
+
       to {
         transform:
           rotate(360deg);
       }
- 
+
     }
- 
- 
+
+
     /* =========================================================
        MESSAGE
        ========================================================= */
- 
+
     .message {
- 
+
       display:
         none;
- 
+
       padding:
         13px 15px;
- 
+
       border-radius:
         9px;
- 
+
       margin-bottom:
         20px;
- 
+
       font-size:
         12px;
- 
+
       line-height:
         1.5;
- 
+
     }
- 
- 
+
+
     .message.show {
- 
+
       display:
         block;
- 
+
     }
- 
- 
+
+
     .message.error {
- 
+
       background:
         var(--soft-red);
- 
+
       border:
         1px solid
         #F5C7C4;
- 
+
       color:
         var(--danger);
- 
+
     }
- 
- 
+
+
     .message.success {
- 
+
       background:
         var(--soft-green);
- 
+
       border:
         1px solid
         #BFE3CD;
- 
+
       color:
         var(--success);
- 
+
     }
- 
- 
+
+
     .message.warning {
- 
+
       background:
         #FFF8E6;
- 
+
       border:
         1px solid
         #F3D58A;
- 
+
       color:
         #8A5A00;
- 
+
     }
- 
- 
+
+
     /* =========================================================
        STATS
        ========================================================= */
- 
+
     .stats {
- 
+
       display:
         grid;
- 
+
       grid-template-columns:
         repeat(4, 1fr);
- 
+
       gap:
         15px;
- 
+
       margin-bottom:
         24px;
- 
+
     }
- 
- 
+
+
     .stat-card {
- 
+
       background:
         white;
- 
+
       border:
         1px solid
         var(--border);
- 
+
       border-radius:
         12px;
- 
+
       padding:
         19px;
- 
+
       box-shadow:
         0 4px 16px
         rgba(23,63,53,0.05);
- 
+
     }
- 
- 
+
+
     .stat-label {
- 
+
       color:
         var(--muted);
- 
+
       font-size:
         10px;
- 
+
       font-weight:
         800;
- 
+
       text-transform:
         uppercase;
- 
+
       letter-spacing:
         0.7px;
- 
+
     }
- 
- 
+
+
     .stat-value {
- 
+
       margin-top:
         7px;
- 
+
       color:
         var(--forest);
- 
+
       font-size:
         25px;
- 
+
       font-weight:
         900;
- 
+
     }
- 
- 
+
+
     .stat-value.orange {
- 
+
       color:
         var(--orange);
- 
+
     }
- 
- 
+
+
     .stat-value.green {
- 
+
       color:
         var(--success);
- 
+
     }
- 
- 
+
+
     .stat-note {
- 
+
       margin-top:
         5px;
- 
+
       color:
         var(--muted);
- 
+
       font-size:
         10px;
- 
+
     }
- 
- 
+
+
     /* =========================================================
        CONTROLS
        ========================================================= */
- 
+
+    /* =======================================================
+       CATEGORY BREAKDOWN
+       ======================================================= */
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .breakdown-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+
+    .breakdown-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .breakdown-amount {
+      color: var(--forest);
+      font-size: 22px;
+      font-weight: 800;
+      font-family: Georgia, "Times New Roman", serif;
+      margin-bottom: 8px;
+    }
+
+    .breakdown-bar-track {
+      height: 6px;
+      border-radius: 6px;
+      background: var(--background);
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .breakdown-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      background: var(--orange);
+    }
+
+    .breakdown-percent {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* =======================================================
+       TREND CARD
+       ======================================================= */
+
+    .trend-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .trend-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .trend-detail {
+      color: var(--forest);
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .trend-badge {
+      font-size: 15px;
+      font-weight: 900;
+      padding: 8px 14px;
+      border-radius: 999px;
+    }
+
+    .trend-badge.trend-up {
+      color: var(--success);
+      background: var(--soft-green);
+    }
+
+    .trend-badge.trend-down {
+      color: var(--danger);
+      background: var(--soft-red);
+    }
+
+    .trend-badge.trend-flat {
+      color: var(--muted);
+      background: var(--background);
+    }
+
+    /* =======================================================
+       CUSTOM RANGE
+       ======================================================= */
+
+    .range-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .range-control label {
+      color: var(--forest);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    input[type="date"] {
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0 12px;
+      background: white;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+      outline: none;
+    }
+
+    input[type="date"]:focus {
+      border-color: var(--forest-light);
+    }
+
+    .range-active-note {
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 800;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .range-active-note.show {
+      display: block;
+    }
+
+    @media (max-width: 720px) {
+
+      .breakdown-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
     .control-card {
- 
+
       background:
         white;
- 
+
       border:
         1px solid
         var(--border);
- 
+
       border-radius:
         12px;
- 
+
       padding:
         17px;
- 
+
       margin-bottom:
         20px;
- 
+
       display:
         flex;
- 
+
       justify-content:
         space-between;
- 
+
       align-items:
         center;
- 
+
       gap:
         15px;
- 
+
       flex-wrap:
         wrap;
- 
+
     }
- 
- 
+
+
     .month-control {
- 
+
       display:
         flex;
- 
+
       align-items:
         center;
- 
+
       gap:
         10px;
- 
+
     }
- 
- 
+
+
     .month-control label {
- 
+
       color:
         var(--forest);
- 
+
       font-size:
         12px;
- 
+
       font-weight:
         800;
- 
+
     }
- 
- 
+
+
     select {
- 
+
       height:
         42px;
- 
+
       border:
         1px solid
         var(--border);
- 
+
       border-radius:
         8px;
- 
+
       padding:
         0 35px 0 12px;
- 
+
       background:
         white;
- 
+
       color:
         var(--text);
- 
+
       font-size:
         13px;
- 
+
       font-weight:
         700;
- 
+
       outline:
         none;
- 
+
     }
- 
- 
+
+
     select:focus {
- 
+
       border-color:
         var(--forest-light);
- 
+
     }
- 
- 
+
+
     .export-actions {
- 
+
       display:
         flex;
- 
+
       gap:
         9px;
- 
+
       flex-wrap:
         wrap;
- 
+
     }
- 
- 
+
+
     .button {
- 
+
       height:
         42px;
- 
+
       border:
         none;
- 
+
       border-radius:
         8px;
- 
+
       padding:
         0 15px;
- 
+
       font-size:
         11px;
- 
+
       font-weight:
         900;
- 
+
       cursor:
         pointer;
- 
+
     }
- 
- 
+
+
     .button-primary {
- 
+
       background:
         var(--orange);
- 
+
       color:
         white;
- 
+
     }
- 
- 
+
+
     .button-primary:hover {
- 
+
       background:
         #D94F00;
- 
+
     }
- 
- 
+
+
     .button-secondary {
- 
+
       background:
         var(--forest);
- 
+
       color:
         white;
- 
+
     }
- 
- 
+
+
     .button-secondary:hover {
- 
+
       background:
         var(--forest-light);
- 
+
     }
- 
- 
+
+
     .button-light {
- 
+
       background:
         white;
- 
+
       color:
         var(--forest);
- 
+
       border:
         1px solid
         var(--border);
- 
+
     }
- 
- 
+
+
     /* =========================================================
        CARDS
        ========================================================= */
- 
+
     .card {
- 
+
       background:
         white;
- 
+
       border:
         1px solid
         var(--border);
- 
+
       border-radius:
         13px;
- 
+
       overflow:
         hidden;
- 
+
       box-shadow:
         0 4px 16px
         rgba(23,63,53,0.05);
- 
+
       margin-bottom:
         22px;
- 
+
     }
- 
- 
+
+
     .card-header {
- 
+
       padding:
         18px 20px;
- 
+
       border-bottom:
         1px solid
         var(--border);
- 
+
       display:
         flex;
- 
+
       justify-content:
         space-between;
- 
+
       align-items:
         center;
- 
+
       gap:
         15px;
- 
+
     }
- 
- 
+
+
     .card-header h3 {
- 
+
       font-family:
         Georgia,
         "Times New Roman",
         serif;
- 
+
       color:
         var(--forest);
- 
+
       font-size:
         20px;
- 
+
     }
- 
- 
+
+
     .card-header p {
- 
+
       color:
         var(--muted);
- 
+
       font-size:
         11px;
- 
+
       margin-top:
         4px;
- 
+
     }
- 
- 
+
+
     /* =========================================================
        TABLE
        ========================================================= */
- 
+
     .table-wrapper {
- 
+
       overflow-x:
         auto;
- 
+
     }
- 
- 
+
+
     table {
- 
+
       width:
         100%;
- 
+
       border-collapse:
         collapse;
- 
+
       min-width:
         650px;
- 
+
     }
- 
- 
+
+
     th {
- 
+
       background:
         #F4F7F4;
- 
+
       color:
         var(--muted);
- 
+
       text-align:
         left;
- 
+
       padding:
         12px 15px;
- 
+
       font-size:
         10px;
- 
+
       font-weight:
         900;
- 
+
       text-transform:
         uppercase;
- 
+
       letter-spacing:
         0.5px;
- 
+
       border-bottom:
         1px solid
         var(--border);
- 
+
     }
- 
- 
+
+
     td {
- 
+
       padding:
         13px 15px;
- 
+
       border-bottom:
         1px solid
         #EDF1EE;
- 
+
       font-size:
         12px;
- 
+
       color:
         var(--text);
- 
+
     }
- 
- 
+
+
     tr:last-child td {
- 
+
       border-bottom:
         none;
- 
+
     }
- 
- 
+
+
     .amount {
- 
+
       font-weight:
         900;
- 
+
       color:
         var(--orange);
- 
+
     }
- 
- 
+
+
     .month-row {
- 
+
       cursor:
         pointer;
- 
+
     }
- 
- 
+
+
     .month-row:hover {
- 
+
       background:
         #FAFCFA;
- 
+
     }
- 
- 
+
+
     .selected-month {
- 
+
       background:
         var(--soft-green) !important;
- 
+
     }
- 
- 
+
+
     .sale-date {
- 
+
       font-weight:
         800;
- 
+
     }
- 
- 
+
+
     .footfall {
- 
+
       color:
         var(--success);
- 
+
       font-weight:
         800;
- 
+
     }
- 
- 
+
+
     .empty {
- 
+
       padding:
         45px 20px;
- 
+
       text-align:
         center;
- 
+
       color:
         var(--muted);
- 
+
       font-size:
         13px;
- 
+
     }
- 
- 
+
+
     .record-count {
- 
+
       color:
         var(--muted);
- 
+
       font-size:
         11px;
- 
+
     }
- 
- 
+
+
     /* =========================================================
        DETAILS BUTTON
        ========================================================= */
- 
+
     .details-button {
- 
+
       border:
         1px solid
         var(--border);
- 
+
       background:
         white;
- 
+
       color:
         var(--forest);
- 
+
       border-radius:
         6px;
- 
+
       padding:
         6px 9px;
- 
+
       font-size:
         10px;
- 
+
       font-weight:
         800;
- 
+
       cursor:
         pointer;
- 
+
     }
- 
- 
+
+
     .details-button:hover {
- 
+
       background:
         var(--forest);
- 
+
       color:
         white;
- 
+
     }
- 
- 
+
+
     /* =========================================================
        MODAL
        ========================================================= */
- 
+
     .modal {
- 
+
       position:
         fixed;
- 
+
       inset:
         0;
- 
+
       background:
         rgba(0,0,0,0.45);
- 
+
       display:
         none;
- 
+
       align-items:
         center;
- 
+
       justify-content:
         center;
- 
+
       padding:
         20px;
- 
+
       z-index:
         1000;
- 
+
     }
- 
- 
+
+
     .modal.show {
- 
+
       display:
         flex;
- 
+
     }
- 
- 
+
+
     .modal-card {
- 
+
       width:
         min(
           800px,
           100%
         );
- 
+
       max-height:
         85vh;
- 
+
       overflow:
         auto;
- 
+
       background:
         white;
- 
+
       border-radius:
         14px;
- 
+
     }
- 
- 
+
+
     .modal-header {
- 
+
       padding:
         18px;
- 
+
       border-bottom:
         1px solid
         var(--border);
- 
+
       display:
         flex;
- 
+
       justify-content:
         space-between;
- 
+
       align-items:
         center;
- 
+
     }
- 
- 
+
+
     .modal-header h3 {
- 
+
       color:
         var(--forest);
- 
+
       font-family:
         Georgia,
         "Times New Roman",
         serif;
- 
+
     }
- 
- 
+
+
     .close-modal {
- 
+
       border:
         none;
- 
+
       background:
         transparent;
- 
+
       font-size:
         22px;
- 
+
       cursor:
         pointer;
- 
+
       color:
         var(--muted);
- 
+
     }
- 
- 
+
+
     .modal-body {
- 
+
       padding:
         18px;
- 
+
     }
- 
- 
+
+
     .detail-grid {
- 
+
       display:
         grid;
- 
+
       grid-template-columns:
         repeat(2, 1fr);
- 
+
       gap:
         10px;
- 
+
     }
- 
- 
+
+
     .detail-item {
- 
+
       background:
         #F4F7F4;
- 
+
       border-radius:
         8px;
- 
+
       padding:
         11px;
- 
+
     }
- 
- 
+
+
     .detail-label {
- 
+
       color:
         var(--muted);
- 
+
       font-size:
         9px;
- 
+
       font-weight:
         900;
- 
+
       text-transform:
         uppercase;
- 
+
       margin-bottom:
         4px;
- 
+
     }
- 
- 
+
+
     .detail-value {
- 
+
       color:
         var(--text);
- 
+
       font-size:
         12px;
- 
+
       word-break:
         break-word;
- 
+
     }
- 
- 
+
+
     /* =========================================================
        RESPONSIVE
        ========================================================= */
- 
+
     @media (max-width: 900px) {
- 
+
       .stats {
- 
+
         grid-template-columns:
           repeat(2, 1fr);
- 
+
       }
- 
+
     }
- 
- 
+
+
     @media (max-width: 600px) {
- 
+
       .header {
- 
+
         padding:
           12px 15px;
- 
+
       }
- 
- 
+
+
       .header-inner {
- 
+
         align-items:
           flex-start;
- 
+
       }
- 
- 
+
+
       .brand h1 {
- 
+
         font-size:
           18px;
- 
+
       }
- 
- 
+
+
       .header-actions {
- 
+
         flex-direction:
           column;
- 
+
         align-items:
           stretch;
- 
+
       }
- 
- 
+
+
       .header-button {
- 
+
         padding:
           7px 10px;
- 
+
       }
- 
- 
+
+
       .container {
- 
+
         width:
           calc(100% - 22px);
- 
+
       }
- 
- 
+
+
       main {
- 
+
         padding-top:
           22px;
- 
+
       }
- 
- 
+
+
       .page-heading h2 {
- 
+
         font-size:
           26px;
- 
+
       }
- 
- 
+
+
       .stats {
- 
+
         grid-template-columns:
           1fr 1fr;
- 
+
         gap:
           10px;
- 
+
       }
- 
- 
+
+
       .stat-card {
- 
+
         padding:
           15px;
- 
+
       }
- 
- 
+
+
       .stat-value {
- 
+
         font-size:
           21px;
- 
+
       }
- 
- 
+
+
       .control-card {
- 
+
         align-items:
           stretch;
- 
+
       }
- 
- 
+
+
       .month-control {
- 
+
         width:
           100%;
- 
+
         justify-content:
           space-between;
- 
+
       }
- 
- 
+
+
       .month-control select {
- 
+
         flex:
           1;
- 
+
       }
- 
- 
+
+
       .export-actions {
- 
+
         width:
           100%;
- 
+
       }
- 
- 
+
+
       .export-actions .button {
- 
+
         flex:
           1;
- 
+
       }
- 
- 
+
+
       .detail-grid {
- 
+
         grid-template-columns:
           1fr;
- 
+
       }
- 
+
     }
- 
+
   </style>
- 
+
 </head>
- 
- 
+
+
 <body>
- 
- 
+
+
   <!-- =======================================================
        HEADER
        ======================================================= -->
- 
+
   <header class="header">
- 
+
     <div class="header-inner">
- 
- 
+
+
       <div class="brand">
- 
+
         <img
           src="../Logo.png"
           alt="Suryodaya Adventures"
         >
- 
+
         <div>
- 
+
           <h1>
             Suryodaya Adventures
           </h1>
- 
+
           <p>
             MANAGEMENT PORTAL
           </p>
- 
+
         </div>
- 
+
       </div>
- 
- 
+
+
       <div class="header-actions">
- 
+
         <a
           href="../index.html"
           class="header-button"
         >
           HOME
         </a>
- 
+
         <button
           type="button"
           class="header-button"
@@ -1519,199 +1682,238 @@
         >
           LOGOUT
         </button>
- 
+
       </div>
- 
- 
+
+
     </div>
- 
+
   </header>
- 
- 
- 
+
+
+
   <!-- =======================================================
        MAIN
        ======================================================= -->
- 
+
   <main>
- 
+
     <div class="container">
- 
- 
+
+
       <div class="page-heading">
- 
+
         <div class="eyebrow">
           Management Dashboard
         </div>
- 
+
         <h2>
           Sales Overview
         </h2>
- 
+
         <p>
           Monitor Suryodaya Adventures sales performance
           by month and cumulative till-date results.
         </p>
- 
+
       </div>
- 
- 
- 
+
+
+
       <!-- MESSAGE -->
- 
+
       <div
         id="message"
         class="message"
       ></div>
- 
- 
- 
+
+
+
       <!-- LOADING -->
- 
+
       <div
         id="loading"
         class="loading"
       >
- 
+
         <div class="spinner"></div>
- 
+
         <div id="loading-text">
           Verifying management access...
         </div>
- 
+
       </div>
- 
- 
- 
+
+
+
       <!-- ===================================================
            DASHBOARD
            =================================================== -->
- 
+
       <section
         id="dashboard"
         style="display:none;"
       >
- 
- 
+
+
         <!-- =================================================
              STAT CARDS
              ================================================= -->
- 
+
         <div class="stats">
- 
- 
+
+
           <div class="stat-card">
- 
+
             <div class="stat-label">
               Till Date Sales
             </div>
- 
+
             <div
               id="till-date-sales"
               class="stat-value orange"
             >
               Rs. 0
             </div>
- 
+
             <div class="stat-note">
               All recorded sales
             </div>
- 
+
           </div>
- 
- 
- 
+
+
+
           <div class="stat-card">
- 
+
             <div class="stat-label">
               Current Month Sales
             </div>
- 
+
             <div
               id="current-month-sales"
               class="stat-value"
             >
               Rs. 0
             </div>
- 
+
             <div
               id="current-month-label"
               class="stat-note"
             >
               Current month
             </div>
- 
+
           </div>
- 
- 
- 
+
+
+
           <div class="stat-card">
- 
+
             <div class="stat-label">
               Transactions
             </div>
- 
+
             <div
               id="transaction-count"
               class="stat-value green"
             >
               0
             </div>
- 
+
             <div class="stat-note">
               Total recorded sales entries
             </div>
- 
+
           </div>
- 
- 
- 
+
+
+
           <div class="stat-card">
- 
+
             <div class="stat-label">
               Current Month Entries
             </div>
- 
+
             <div
               id="current-month-count"
               class="stat-value"
             >
               0
             </div>
- 
+
             <div class="stat-note">
               Sales records this month
             </div>
- 
+
           </div>
- 
- 
+
+
         </div>
- 
- 
- 
+
+
+
         <!-- =================================================
              CONTROLS
              ================================================= -->
- 
+
         <div class="control-card">
- 
- 
+
+
           <div class="month-control">
- 
+
             <label for="month-select">
               VIEW MONTH
             </label>
- 
+
             <select
               id="month-select"
             ></select>
- 
+
           </div>
- 
- 
+
+
+          <div class="range-control">
+
+            <label for="range-from">
+              CUSTOM RANGE
+            </label>
+
+            <input
+              type="date"
+              id="range-from"
+            >
+
+            <label for="range-to">
+              to
+            </label>
+
+            <input
+              type="date"
+              id="range-to"
+            >
+
+            <button
+              type="button"
+              id="apply-range"
+              class="button button-primary"
+            >
+              APPLY RANGE
+            </button>
+
+            <button
+              type="button"
+              id="clear-range"
+              class="button button-light"
+            >
+              CLEAR
+            </button>
+
+          </div>
+
+
           <div class="export-actions">
- 
+
             <button
               type="button"
               id="export-month"
@@ -1719,8 +1921,8 @@
             >
               EXPORT SELECTED MONTH CSV
             </button>
- 
- 
+
+
             <button
               type="button"
               id="export-all"
@@ -1728,8 +1930,8 @@
             >
               EXPORT ALL SALES CSV
             </button>
- 
- 
+
+
             <button
               type="button"
               id="refresh-button"
@@ -1737,187 +1939,254 @@
             >
               REFRESH
             </button>
- 
+
           </div>
- 
- 
+
+
         </div>
- 
- 
- 
+
+
+        <div
+          id="range-active-note"
+          class="range-active-note"
+        >
+          Showing a custom date range — the month selector above is ignored while a range is applied.
+        </div>
+
+
+
+        <!-- =================================================
+             CATEGORY BREAKDOWN
+             ================================================= -->
+
+        <div class="breakdown-grid">
+
+          <div class="breakdown-card">
+            <div class="breakdown-label">Adventure Sales</div>
+            <div id="breakdown-adventure-amount" class="breakdown-amount">Rs. 0</div>
+            <div class="breakdown-bar-track">
+              <div id="breakdown-adventure-bar" class="breakdown-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div id="breakdown-adventure-percent" class="breakdown-percent">0% of period</div>
+          </div>
+
+          <div class="breakdown-card">
+            <div class="breakdown-label">Videography Sales</div>
+            <div id="breakdown-videography-amount" class="breakdown-amount">Rs. 0</div>
+            <div class="breakdown-bar-track">
+              <div id="breakdown-videography-bar" class="breakdown-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div id="breakdown-videography-percent" class="breakdown-percent">0% of period</div>
+          </div>
+
+          <div class="breakdown-card">
+            <div class="breakdown-label">Restaurant &amp; Camping Sales</div>
+            <div id="breakdown-restaurant-amount" class="breakdown-amount">Rs. 0</div>
+            <div class="breakdown-bar-track">
+              <div id="breakdown-restaurant-bar" class="breakdown-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div id="breakdown-restaurant-percent" class="breakdown-percent">0% of period</div>
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             TREND
+             ================================================= -->
+
+        <div class="trend-card">
+
+          <div>
+            <div class="trend-label" id="trend-label">
+              Vs Previous Month
+            </div>
+            <div class="trend-detail" id="trend-detail">
+              No comparison data yet
+            </div>
+          </div>
+
+          <div id="trend-badge" class="trend-badge trend-flat">
+            —
+          </div>
+
+        </div>
+
+
+
         <!-- =================================================
              MONTHLY SUMMARY
              ================================================= -->
- 
+
         <section class="card">
- 
- 
+
+
           <div class="card-header">
- 
+
             <div>
- 
+
               <h3>
                 Monthly Sales Summary
               </h3>
- 
+
               <p>
                 Complete sales performance by month.
               </p>
- 
+
             </div>
- 
+
           </div>
- 
- 
+
+
           <div class="table-wrapper">
- 
+
             <table>
- 
+
               <thead>
- 
+
                 <tr>
- 
+
                   <th>
                     Month
                   </th>
- 
+
                   <th>
                     Sales
                   </th>
- 
+
                   <th>
                     Entries
                   </th>
- 
+
                   <th>
                     Footfall
                   </th>
- 
+
                   <th>
                     Average Sale
                   </th>
- 
+
                 </tr>
- 
+
               </thead>
- 
- 
+
+
               <tbody
                 id="monthly-summary"
               ></tbody>
- 
+
             </table>
- 
+
           </div>
- 
- 
+
+
         </section>
- 
- 
- 
+
+
+
         <!-- =================================================
              SALES RECORDS
              ================================================= -->
- 
+
         <section class="card">
- 
- 
+
+
           <div
             class="card-header records-header"
           >
- 
+
             <div>
- 
+
               <h3 id="records-title">
                 Sales Records
               </h3>
- 
+
               <p>
                 Detailed records for the selected month.
               </p>
- 
+
             </div>
- 
- 
+
+
             <div
               id="record-count"
               class="record-count"
             >
               0 records
             </div>
- 
- 
+
+
           </div>
- 
- 
+
+
           <div class="table-wrapper">
- 
+
             <table>
- 
+
               <thead>
- 
+
                 <tr>
- 
+
                   <th>
                     Date
                   </th>
- 
+
                   <th>
                     Sale
                   </th>
- 
+
                   <th>
                     Footfall
                   </th>
- 
+
                   <th>
                     Record
                   </th>
- 
+
                 </tr>
- 
+
               </thead>
- 
- 
+
+
               <tbody
                 id="sales-records"
               ></tbody>
- 
+
             </table>
- 
+
           </div>
- 
- 
+
+
         </section>
- 
- 
+
+
       </section>
- 
- 
+
+
     </div>
- 
+
   </main>
- 
- 
- 
+
+
+
   <!-- =======================================================
        DETAILS MODAL
        ======================================================= -->
- 
+
   <div
     id="details-modal"
     class="modal"
   >
- 
+
     <div class="modal-card">
- 
- 
+
+
       <div class="modal-header">
- 
+
         <h3>
           Sales Record Details
         </h3>
- 
+
         <button
           type="button"
           id="close-modal"
@@ -1925,45 +2194,45 @@
         >
           ×
         </button>
- 
+
       </div>
- 
- 
+
+
       <div
         id="modal-body"
         class="modal-body"
       ></div>
- 
- 
+
+
     </div>
- 
+
   </div>
- 
- 
- 
+
+
+
   <!-- =======================================================
        JAVASCRIPT
        ======================================================= -->
- 
+
   <script>
- 
- 
+
+
     /* =======================================================
        SUPABASE
        ======================================================= */
- 
+
     const SUPABASE_URL =
       'https://mvvdfwgjcyayopcsgwvy.supabase.co';
- 
- 
+
+
     const SUPABASE_PUBLISHABLE_KEY =
       'sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4';
- 
- 
+
+
     const AUTH_STORAGE_KEY =
       'suryodaya-auth';
- 
- 
+
+
     /*
      * IMPORTANT:
      *
@@ -1980,16 +2249,16 @@
      *
      * /staff/management.html
      */
- 
+
     const LOGIN_PAGE =
       'index.html';
- 
- 
- 
+
+
+
     /* =======================================================
        SUPABASE CLIENT
        ======================================================= */
- 
+
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
@@ -2004,184 +2273,224 @@ const supabaseClient =
       }
     }
   );
- 
- 
- 
+
+
+
     /* =======================================================
        STATE
        ======================================================= */
- 
+
     let allSales = [];
- 
+
     let selectedMonth = '';
- 
+
+    let rangeFrom = '';
+
+    let rangeTo = '';
+
     let dateColumn = null;
- 
+
     let amountColumn = null;
- 
+
     let footfallColumn = null;
- 
+
     let isRedirecting = false;
- 
+
     let initialLoadComplete = false;
- 
- 
- 
+
+
+
     /* =======================================================
        ELEMENTS
        ======================================================= */
- 
+
     const loading =
       document.getElementById(
         'loading'
       );
- 
- 
+
+
     const loadingText =
       document.getElementById(
         'loading-text'
       );
- 
- 
+
+
     const dashboard =
       document.getElementById(
         'dashboard'
       );
- 
- 
+
+
     const message =
       document.getElementById(
         'message'
       );
- 
- 
+
+
     const monthSelect =
       document.getElementById(
         'month-select'
       );
- 
- 
+
+
     const monthlySummary =
       document.getElementById(
         'monthly-summary'
       );
- 
- 
+
+
     const salesRecords =
       document.getElementById(
         'sales-records'
       );
- 
- 
+
+
     const recordsTitle =
       document.getElementById(
         'records-title'
       );
- 
- 
+
+
     const recordCount =
       document.getElementById(
         'record-count'
       );
- 
- 
+
+
+    const rangeFromInput =
+      document.getElementById(
+        'range-from'
+      );
+
+
+    const rangeToInput =
+      document.getElementById(
+        'range-to'
+      );
+
+
+    const rangeActiveNote =
+      document.getElementById(
+        'range-active-note'
+      );
+
+
+    const applyRangeButton =
+      document.getElementById(
+        'apply-range'
+      );
+
+
+    const clearRangeButton =
+      document.getElementById(
+        'clear-range'
+      );
+
+
+    const exportMonthButton =
+      document.getElementById(
+        'export-month'
+      );
+
+
     const detailsModal =
       document.getElementById(
         'details-modal'
       );
- 
- 
+
+
     const modalBody =
       document.getElementById(
         'modal-body'
       );
- 
- 
- 
+
+
+
     /* =======================================================
        REDIRECT TO LOGIN
        ======================================================= */
- 
+
     function redirectToLogin() {
- 
+
       if (isRedirecting) {
         return;
       }
- 
+
       isRedirecting = true;
- 
- 
+
+
       /*
        * Hide dashboard immediately.
        */
- 
+
       dashboard.style.display =
         'none';
- 
- 
+
+
       loading.style.display =
         'block';
- 
- 
+
+
       loadingText.textContent =
         'Session expired. Returning to login...';
- 
- 
+
+
       /*
        * Explicitly go to staff/index.html.
        */
- 
+
       window.location.replace(
         LOGIN_PAGE
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        MESSAGE
        ======================================================= */
- 
+
     function showMessage(
       text,
       type = 'error'
     ) {
- 
+
       message.textContent =
         text;
- 
+
       message.className =
         'message show ' +
         type;
- 
+
     }
- 
- 
+
+
     function clearMessage() {
- 
+
       message.textContent =
         '';
- 
+
       message.className =
         'message';
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        MONEY
        ======================================================= */
- 
+
     function formatMoney(
       value
     ) {
- 
+
       const number =
         Number(value || 0);
- 
- 
+
+
       return (
         'Rs. ' +
         number.toLocaleString(
@@ -2189,164 +2498,164 @@ const supabaseClient =
           {
             minimumFractionDigits:
               0,
- 
+
             maximumFractionDigits:
               2
           }
         )
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        COLUMN DETECTION
        ======================================================= */
- 
+
     function findColumn(
       row,
       candidates
     ) {
- 
+
       if (!row) {
         return null;
       }
- 
- 
+
+
       const keys =
         Object.keys(row);
- 
- 
+
+
       const lowerMap =
         {};
- 
- 
+
+
       keys.forEach(
         key => {
- 
+
           lowerMap[
             key.toLowerCase()
           ] = key;
- 
+
         }
       );
- 
- 
+
+
       for (
         const candidate
         of candidates
       ) {
- 
+
         const found =
           lowerMap[
             candidate.toLowerCase()
           ];
- 
- 
+
+
         if (found) {
           return found;
         }
- 
+
       }
- 
- 
+
+
       return null;
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        SMART AMOUNT COLUMN DETECTION
        ======================================================= */
- 
+
     function detectAmountColumn(
       row
     ) {
- 
+
       if (!row) {
         return null;
       }
- 
- 
+
+
       /*
        * First try explicit names.
        */
- 
+
       const explicit =
         findColumn(
           row,
           [
- 
+
             'total_amount',
- 
+
             'total_sales',
- 
+
             'sales_amount',
- 
+
             'sale_amount',
- 
+
             'sales',
- 
+
             'sale',
- 
+
             'amount',
- 
+
             'grand_total',
- 
+
             'net_total',
- 
+
             'net_sales',
- 
+
             'total',
- 
+
             'revenue',
- 
+
             'total_revenue',
- 
+
             'sales_total',
- 
+
             'daily_sales',
- 
+
             'daily_sale'
- 
+
           ]
         );
- 
- 
+
+
       if (explicit) {
         return explicit;
       }
- 
- 
+
+
       /*
        * Second pass:
        *
        * Find numeric fields whose names
        * look like financial/sales fields.
        */
- 
+
       const keys =
         Object.keys(row);
- 
- 
+
+
       for (
         const key of keys
       ) {
- 
+
         const lower =
           key.toLowerCase();
- 
- 
+
+
         const value =
           row[key];
- 
- 
+
+
         const numeric =
           Number(value);
- 
- 
+
+
         const looksLikeAmount =
           (
             lower.includes('sale') ||
@@ -2356,20 +2665,20 @@ const supabaseClient =
             lower.includes('income') ||
             lower.includes('price')
           );
- 
- 
+
+
         if (
           looksLikeAmount &&
           Number.isFinite(numeric)
         ) {
- 
+
           return key;
- 
+
         }
- 
+
       }
- 
- 
+
+
       /*
        * Third pass:
        *
@@ -2377,23 +2686,23 @@ const supabaseClient =
        *
        * Avoid obvious IDs/counts.
        */
- 
+
       for (
         const key of keys
       ) {
- 
+
         const lower =
           key.toLowerCase();
- 
- 
+
+
         const value =
           row[key];
- 
- 
+
+
         const numeric =
           Number(value);
- 
- 
+
+
         const excluded =
           (
             lower === 'id' ||
@@ -2402,128 +2711,128 @@ const supabaseClient =
             lower.includes('number') ||
             lower.includes('phone')
           );
- 
- 
+
+
         if (
           !excluded &&
           Number.isFinite(numeric) &&
           numeric >= 0
         ) {
- 
+
           return key;
- 
+
         }
- 
+
       }
- 
- 
+
+
       return null;
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        DETECT ALL COLUMNS
        ======================================================= */
- 
+
     function detectColumns() {
- 
+
       if (!allSales.length) {
- 
+
         dateColumn =
           null;
- 
+
         amountColumn =
           null;
- 
+
         footfallColumn =
           null;
- 
+
         return;
- 
+
       }
- 
- 
+
+
       const first =
         allSales[0];
- 
- 
+
+
       /*
        * DATE
        */
- 
+
       dateColumn =
         findColumn(
           first,
           [
- 
+
             'sale_date',
- 
+
             'sales_date',
- 
+
             'date',
- 
+
             'business_date',
- 
+
             'record_date',
- 
+
             'transaction_date',
- 
+
             'created_at',
- 
+
             'created_date'
- 
+
           ]
         );
- 
- 
+
+
       /*
        * AMOUNT
        */
- 
+
       amountColumn =
         detectAmountColumn(
           first
         );
- 
- 
+
+
       /*
        * FOOTFALL
        */
- 
+
       footfallColumn =
         findColumn(
           first,
           [
- 
+
             'footfall',
- 
+
             'visitor_count',
- 
+
             'visitors',
- 
+
             'customers',
- 
+
             'customer_count',
- 
+
             'total_visitors',
- 
+
             'visitor',
- 
+
             'guest_count',
- 
+
             'guests'
- 
+
           ]
         );
- 
- 
+
+
       /*
        * Console information is useful
        * if the actual schema differs.
        */
- 
+
       console.log(
         'Management dashboard columns:',
         {
@@ -2534,244 +2843,116 @@ const supabaseClient =
             Object.keys(first)
         }
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        DATE
        ======================================================= */
- 
+
     function getSaleDate(
       row
     ) {
- 
-      if (!row) {
+
+      if (!row || !row.business_date) {
         return null;
       }
- 
- 
-      /*
-       * If detected date column exists.
-       */
- 
-      if (
-        dateColumn &&
-        row[dateColumn]
-      ) {
- 
-        const date =
-          new Date(
-            row[dateColumn]
-          );
- 
- 
-        if (
-          !Number.isNaN(
-            date.getTime()
-          )
-        ) {
- 
-          return date;
- 
-        }
- 
-      }
- 
- 
-      /*
-       * Fallback:
-       * inspect date-like fields.
-       */
- 
-      const keys =
-        Object.keys(row);
- 
- 
-      for (
-        const key of keys
-      ) {
- 
-        const lower =
-          key.toLowerCase();
- 
- 
-        if (
-          lower.includes('date') ||
-          lower.includes('created') ||
-          lower.includes('transaction')
-        ) {
- 
-          const date =
-            new Date(
-              row[key]
-            );
- 
- 
-          if (
-            !Number.isNaN(
-              date.getTime()
-            )
-          ) {
- 
-            return date;
- 
-          }
- 
-        }
- 
-      }
- 
- 
-      return null;
- 
+
+      const date =
+        new Date(
+          row.business_date
+        );
+
+      return Number.isNaN(date.getTime())
+        ? null
+        : date;
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        AMOUNT
        ======================================================= */
- 
+
     function getSaleAmount(
       row
     ) {
- 
+
       if (!row) {
         return 0;
       }
- 
- 
-      if (
-        amountColumn &&
-        row[amountColumn] !== null &&
-        row[amountColumn] !== undefined
-      ) {
- 
-        const number =
-          Number(
-            String(
-              row[amountColumn]
-            )
-              .replace(/,/g, '')
-              .replace(/[^\d.-]/g, '')
-          );
- 
- 
-        if (
-          Number.isFinite(number)
-        ) {
- 
-          return number;
- 
-        }
- 
-      }
- 
- 
+
       /*
-       * Dynamic fallback.
+       * There is no single "total_sales" column
+       * in daily_sales. The real total is always
+       * the sum of the three category columns —
+       * this must match staff/dashboard.html exactly.
        */
- 
-      const keys =
-        Object.keys(row);
- 
- 
-      for (
-        const key of keys
-      ) {
- 
-        const lower =
-          key.toLowerCase();
- 
- 
-        const looksLikeAmount =
-          (
-            lower.includes('sale') ||
-            lower.includes('amount') ||
-            lower.includes('revenue') ||
-            lower.includes('total')
-          );
- 
- 
-        if (!looksLikeAmount) {
-          continue;
-        }
- 
- 
-        const number =
-          Number(
-            String(
-              row[key]
-            )
-              .replace(/,/g, '')
-              .replace(/[^\d.-]/g, '')
-          );
- 
- 
-        if (
-          Number.isFinite(number)
-        ) {
- 
-          return number;
- 
-        }
- 
-      }
- 
- 
-      return 0;
- 
+
+      const adventure =
+        Number(row.adventure_sales) || 0;
+
+      const videography =
+        Number(row.videography_sales) || 0;
+
+      const restaurantCamping =
+        Number(row.restaurant_camping_sales) || 0;
+
+      return (
+        adventure +
+        videography +
+        restaurantCamping
+      );
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        FOOTFALL
        ======================================================= */
- 
+
     function getFootfall(
       row
     ) {
- 
-      if (
-        !row ||
-        !footfallColumn
-      ) {
- 
+
+      if (!row) {
+
         return 0;
- 
+
       }
- 
- 
+
+
       const value =
         Number(
-          row[footfallColumn]
+          row.total_footfall
         );
- 
- 
+
+
       return Number.isFinite(value)
         ? value
         : 0;
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        MONTH KEY
        ======================================================= */
- 
+
     function getMonthKey(
       date
     ) {
- 
+
       if (!date) {
         return '';
       }
- 
- 
+
+
       return (
         date.getFullYear() +
         '-' +
@@ -2779,92 +2960,420 @@ const supabaseClient =
           date.getMonth() + 1
         ).padStart(2, '0')
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        MONTH LABEL
        ======================================================= */
- 
+
     function getMonthLabel(
       monthKey
     ) {
- 
+
       if (!monthKey) {
         return 'Unknown';
       }
- 
- 
+
+
       const parts =
         monthKey.split('-');
- 
- 
+
+
       if (
         parts.length !== 2
       ) {
- 
+
         return 'Unknown';
- 
+
       }
- 
- 
+
+
       const year =
         Number(parts[0]);
- 
- 
+
+
       const month =
         Number(parts[1]);
- 
- 
+
+
       const date =
         new Date(
           year,
           month - 1,
           1
         );
- 
- 
+
+
       return date.toLocaleDateString(
         'en-US',
         {
           month:
             'long',
- 
+
           year:
             'numeric'
         }
       );
- 
+
     }
- 
- 
- 
+
+
+
+    /* =======================================================
+       DATE STRING (YYYY-MM-DD, LOCAL)
+       ======================================================= */
+
+    function toDateInputString(date) {
+
+      if (!date || Number.isNaN(date.getTime())) {
+        return '';
+      }
+
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+
+    }
+
+
+
+    /* =======================================================
+       PREVIOUS MONTH KEY
+       ======================================================= */
+
+    function getPreviousMonthKey(monthKey) {
+
+      const parts = (monthKey || '').split('-');
+
+      if (parts.length !== 2) {
+        return '';
+      }
+
+      const year = Number(parts[0]);
+      const month = Number(parts[1]);
+
+      const date = new Date(year, month - 2, 1);
+
+      return getMonthKey(date);
+
+    }
+
+
+
+    /* =======================================================
+       IS CUSTOM RANGE ACTIVE
+       ======================================================= */
+
+    function isRangeActive() {
+
+      return Boolean(rangeFrom && rangeTo);
+
+    }
+
+
+
+    /* =======================================================
+       ROWS FOR THE CURRENTLY ACTIVE PERIOD
+       (custom range takes priority over selected month)
+       ======================================================= */
+
+    function getRowsForActivePeriod() {
+
+      if (isRangeActive()) {
+
+        return getRowsInRange(rangeFrom, rangeTo);
+
+      }
+
+      if (!selectedMonth) {
+        return [];
+      }
+
+      return allSales.filter(
+        row =>
+          getMonthKey(getSaleDate(row)) === selectedMonth
+      );
+
+    }
+
+
+
+    /* =======================================================
+       ROWS IN A [FROM, TO] DATE RANGE (inclusive)
+       ======================================================= */
+
+    function getRowsInRange(fromStr, toStr) {
+
+      const from = new Date(fromStr + 'T00:00:00');
+      const to = new Date(toStr + 'T23:59:59');
+
+      if (
+        Number.isNaN(from.getTime()) ||
+        Number.isNaN(to.getTime())
+      ) {
+        return [];
+      }
+
+      return allSales.filter(row => {
+
+        const date = getSaleDate(row);
+
+        if (!date) {
+          return false;
+        }
+
+        return (
+          date.getTime() >= from.getTime() &&
+          date.getTime() <= to.getTime()
+        );
+
+      });
+
+    }
+
+
+
+    /* =======================================================
+       CATEGORY BREAKDOWN FOR A SET OF ROWS
+       ======================================================= */
+
+    function getCategoryBreakdown(rows) {
+
+      let adventure = 0;
+      let videography = 0;
+      let restaurantCamping = 0;
+      let footfall = 0;
+
+      rows.forEach(row => {
+
+        adventure += Number(row.adventure_sales) || 0;
+        videography += Number(row.videography_sales) || 0;
+        restaurantCamping += Number(row.restaurant_camping_sales) || 0;
+        footfall += getFootfall(row);
+
+      });
+
+      const total = adventure + videography + restaurantCamping;
+
+      return {
+        adventure,
+        videography,
+        restaurantCamping,
+        total,
+        footfall,
+        entries: rows.length
+      };
+
+    }
+
+
+
+    /* =======================================================
+       RENDER CATEGORY BREAKDOWN CARDS
+       ======================================================= */
+
+    function renderBreakdown(summary) {
+
+      const pct = amount =>
+        summary.total > 0
+          ? Math.round((amount / summary.total) * 100)
+          : 0;
+
+      const set = (amountId, barId, percentId, amount) => {
+
+        document.getElementById(amountId).textContent =
+          formatMoney(amount);
+
+        document.getElementById(barId).style.width =
+          pct(amount) + '%';
+
+        document.getElementById(percentId).textContent =
+          pct(amount) + '% of period';
+
+      };
+
+      set(
+        'breakdown-adventure-amount',
+        'breakdown-adventure-bar',
+        'breakdown-adventure-percent',
+        summary.adventure
+      );
+
+      set(
+        'breakdown-videography-amount',
+        'breakdown-videography-bar',
+        'breakdown-videography-percent',
+        summary.videography
+      );
+
+      set(
+        'breakdown-restaurant-amount',
+        'breakdown-restaurant-bar',
+        'breakdown-restaurant-percent',
+        summary.restaurantCamping
+      );
+
+    }
+
+
+
+    /* =======================================================
+       RENDER TREND CARD
+       ======================================================= */
+
+    function renderTrend(currentSummary) {
+
+      const trendLabel = document.getElementById('trend-label');
+      const trendDetail = document.getElementById('trend-detail');
+      const trendBadge = document.getElementById('trend-badge');
+
+      let previousSummary = null;
+      let labelText = '';
+
+      if (isRangeActive()) {
+
+        const from = new Date(rangeFrom + 'T00:00:00');
+        const to = new Date(rangeTo + 'T23:59:59');
+        const spanMs = to.getTime() - from.getTime();
+
+        const prevTo = new Date(from.getTime() - 1);
+        const prevFrom = new Date(prevTo.getTime() - spanMs);
+
+        previousSummary = getCategoryBreakdown(
+          getRowsInRange(
+            toDateInputString(prevFrom),
+            toDateInputString(prevTo)
+          )
+        );
+
+        labelText = 'Vs Previous Equal-Length Period';
+
+      } else if (selectedMonth) {
+
+        const previousMonth = getPreviousMonthKey(selectedMonth);
+
+        previousSummary = getCategoryBreakdown(
+          allSales.filter(
+            row => getMonthKey(getSaleDate(row)) === previousMonth
+          )
+        );
+
+        labelText = 'Vs ' + getMonthLabel(previousMonth);
+
+      }
+
+      trendLabel.textContent = labelText || 'Vs Previous Period';
+
+      if (!previousSummary) {
+
+        trendDetail.textContent = 'No comparison data yet';
+        trendBadge.textContent = '—';
+        trendBadge.className = 'trend-badge trend-flat';
+        return;
+
+      }
+
+      const current = currentSummary.total;
+      const previous = previousSummary.total;
+
+      trendDetail.textContent =
+        formatMoney(current) + ' vs ' + formatMoney(previous);
+
+      if (previous === 0 && current === 0) {
+
+        trendBadge.textContent = '—';
+        trendBadge.className = 'trend-badge trend-flat';
+        return;
+
+      }
+
+      if (previous === 0) {
+
+        trendBadge.textContent = '▲ NEW';
+        trendBadge.className = 'trend-badge trend-up';
+        return;
+
+      }
+
+      const growth = ((current - previous) / previous) * 100;
+      const rounded = Math.round(growth * 10) / 10;
+
+      if (rounded > 0) {
+
+        trendBadge.textContent = '▲ ' + rounded + '%';
+        trendBadge.className = 'trend-badge trend-up';
+
+      } else if (rounded < 0) {
+
+        trendBadge.textContent = '▼ ' + Math.abs(rounded) + '%';
+        trendBadge.className = 'trend-badge trend-down';
+
+      } else {
+
+        trendBadge.textContent = '— 0%';
+        trendBadge.className = 'trend-badge trend-flat';
+
+      }
+
+    }
+
+
+
+    /* =======================================================
+       RENDER BREAKDOWN + TREND FOR THE ACTIVE PERIOD
+       ======================================================= */
+
+    function renderBreakdownAndTrend() {
+
+      const rows = getRowsForActivePeriod();
+      const summary = getCategoryBreakdown(rows);
+
+      renderBreakdown(summary);
+      renderTrend(summary);
+
+      rangeActiveNote.className =
+        isRangeActive()
+          ? 'range-active-note show'
+          : 'range-active-note';
+
+      exportMonthButton.textContent =
+        isRangeActive()
+          ? 'EXPORT RANGE CSV'
+          : 'EXPORT SELECTED MONTH CSV';
+
+    }
+
+
+
     /* =======================================================
        LOAD ALL SALES
        ======================================================= */
- 
+
     async function loadAllSales() {
- 
+
       const pageSize =
         1000;
- 
- 
+
+
       let from =
         0;
- 
- 
+
+
       let finished =
         false;
- 
- 
+
+
       const combined =
         [];
- 
- 
+
+
       while (!finished) {
- 
+
         const {
           data,
           error
@@ -2883,76 +3392,76 @@ const supabaseClient =
               from,
               from + pageSize - 1
             );
- 
- 
+
+
         if (error) {
           throw error;
         }
- 
- 
+
+
         const rows =
           Array.isArray(data)
             ? data
             : [];
- 
- 
+
+
         combined.push(
           ...rows
         );
- 
- 
+
+
         /*
          * If fewer than pageSize
          * were returned, there are
          * no more rows.
          */
- 
+
         if (
           rows.length <
           pageSize
         ) {
- 
+
           finished =
             true;
- 
+
         }
- 
+
         else {
- 
+
           from +=
             pageSize;
- 
+
         }
- 
+
       }
- 
- 
+
+
       return combined;
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        VERIFY MANAGEMENT ROLE
        ======================================================= */
- 
+
     async function verifyManagement(
       session
     ) {
- 
+
       if (
         !session ||
         !session.user
       ) {
- 
+
         redirectToLogin();
- 
+
         return false;
- 
+
       }
- 
- 
+
+
       const {
         data,
         error
@@ -2965,112 +3474,112 @@ const supabaseClient =
             session.user.id
           )
           .maybeSingle();
- 
- 
+
+
       if (error) {
- 
+
         console.error(
           'Role verification error:',
           error
         );
- 
+
         throw error;
- 
+
       }
- 
- 
+
+
       if (
         !data ||
         data.role !== 'management'
       ) {
- 
+
         showMessage(
           'This account does not have management access.',
           'error'
         );
- 
- 
+
+
         setTimeout(
           () => {
             redirectToLogin();
           },
           1200
         );
- 
- 
+
+
         return false;
- 
+
       }
- 
- 
+
+
       return true;
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        LOAD SALES
        ======================================================= */
- 
+
     async function loadSales() {
- 
+
   clearMessage();
- 
+
   loading.style.display =
     'block';
- 
+
   dashboard.style.display =
     'none';
- 
+
   try {
     /*
      * =====================================================
      * 1. GET CURRENT SUPABASE SESSION
      * =====================================================
      */
- 
+
     const {
       data,
       error: sessionError
     } =
       await supabaseClient.auth.getSession();
- 
- 
+
+
     if (sessionError) {
       throw sessionError;
     }
- 
- 
+
+
     const session =
       data?.session;
- 
- 
+
+
     /*
      * =====================================================
      * 2. NO SESSION = BACK TO LOGIN
      * =====================================================
      */
- 
+
     if (
       !session ||
       !session.user
     ) {
- 
+
       window.location.replace(
         'index.html'
       );
- 
+
       return;
     }
- 
- 
+
+
     /*
      * =====================================================
      * 3. CHECK ROLE FOR THIS USER
      * =====================================================
      */
- 
+
     const {
       data: roleData,
       error: roleError
@@ -3083,59 +3592,59 @@ const supabaseClient =
           session.user.id
         )
         .maybeSingle();
- 
- 
+
+
     if (roleError) {
       throw roleError;
     }
- 
- 
+
+
     /*
      * =====================================================
      * 4. MANAGEMENT ONLY
      * =====================================================
      */
- 
+
     if (
       !roleData ||
       roleData.role !== 'management'
     ) {
- 
+
       /*
        * This user is authenticated but
        * is NOT management.
        *
        * Completely remove the session.
        */
- 
+
       await supabaseClient.auth.signOut({
         scope: 'local'
       });
- 
- 
+
+
       localStorage.removeItem(
         'suryodaya-auth'
       );
- 
+
       sessionStorage.removeItem(
         'suryodaya_authenticated_role'
       );
- 
- 
+
+
       window.location.replace(
         'index.html'
       );
- 
+
       return;
     }
- 
- 
+
+
     /*
      * =====================================================
      * 5. LOAD ALL SALES
      * =====================================================
      */
- 
+
     const {
       data: salesData,
       error: salesError
@@ -3149,101 +3658,100 @@ const supabaseClient =
             ascending: false
           }
         );
- 
- 
+
+
     if (salesError) {
       throw salesError;
     }
- 
- 
+
+
     allSales =
       Array.isArray(salesData)
         ? salesData
         : [];
- 
- 
+
+
     detectColumns();
- 
- 
+
+
     /*
      * =====================================================
-     * 6. VALIDATE SALES COLUMNS
+     * 6. VALIDATE SALES SCHEMA
      * =====================================================
+     * The actual columns are fixed and known
+     * (business_date, adventure_sales,
+     * videography_sales, restaurant_camping_sales,
+     * total_footfall) — see getSaleDate(),
+     * getSaleAmount(), getFootfall() above.
      */
- 
-    if (!dateColumn) {
- 
+
+    if (
+      allSales.length &&
+      allSales[0].business_date === undefined
+    ) {
+
       throw new Error(
-        'Could not find the sales date column in daily_sales.'
+        'daily_sales rows are missing the expected business_date column.'
       );
- 
+
     }
- 
- 
-    if (!amountColumn) {
- 
-      throw new Error(
-        'Could not find the sales amount column in daily_sales.'
-      );
- 
-    }
- 
- 
+
+
     /*
      * =====================================================
      * 7. RENDER
      * =====================================================
      */
- 
+
     renderDashboard();
- 
- 
+
+
     loading.style.display =
       'none';
- 
+
     dashboard.style.display =
       'block';
- 
+
   }
- 
+
   catch (error) {
- 
+
     console.error(
       'Management dashboard error:',
       error
     );
- 
- 
+
+
     loading.style.display =
       'none';
- 
- 
+
+
     /*
      * Authentication/authorization
      * failure → login page.
      */
- 
+
     if (
       error.message ===
       'Management access required.'
     ) {
- 
+
       await supabaseClient.auth.signOut({
         scope: 'local'
       });
- 
+
       localStorage.removeItem(
         'suryodaya-auth'
       );
- 
+
       window.location.replace(
         'index.html'
       );
- 
+
       return;
     }
- 
- 
+
+
     showMessage(
       'Unable to load management dashboard: ' +
       (
@@ -3252,42 +3760,42 @@ const supabaseClient =
       ),
       'error'
     );
- 
+
   }
- 
+
 }
- 
- 
+
+
     /* =======================================================
        EMPTY DASHBOARD
        ======================================================= */
- 
+
     function renderEmptyDashboard() {
- 
+
       document.getElementById(
         'till-date-sales'
       ).textContent =
         'Rs. 0';
- 
- 
+
+
       document.getElementById(
         'current-month-sales'
       ).textContent =
         'Rs. 0';
- 
- 
+
+
       document.getElementById(
         'transaction-count'
       ).textContent =
         '0';
- 
- 
+
+
       document.getElementById(
         'current-month-count'
       ).textContent =
         '0';
- 
- 
+
+
       document.getElementById(
         'current-month-label'
       ).textContent =
@@ -3296,12 +3804,12 @@ const supabaseClient =
             new Date()
           )
         );
- 
- 
+
+
       monthSelect.innerHTML =
         '<option value="">No sales recorded</option>';
- 
- 
+
+
       monthlySummary.innerHTML =
         `
           <tr>
@@ -3312,8 +3820,8 @@ const supabaseClient =
             </td>
           </tr>
         `;
- 
- 
+
+
       salesRecords.innerHTML =
         `
           <tr>
@@ -3324,88 +3832,91 @@ const supabaseClient =
             </td>
           </tr>
         `;
- 
- 
+
+
       recordsTitle.textContent =
         'Sales Records';
- 
- 
+
+
       recordCount.textContent =
         '0 records';
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        RENDER DASHBOARD
        ======================================================= */
- 
+
     function renderDashboard() {
- 
+
       renderStats();
- 
- 
+
+
       buildMonthSelector();
- 
- 
+
+
       renderMonthlySummary();
- 
- 
+
+
       const currentMonth =
         getMonthKey(
           new Date()
         );
- 
- 
+
+
       const availableMonths =
         getAvailableMonths();
- 
- 
+
+
       if (
         availableMonths.includes(
           currentMonth
         )
       ) {
- 
+
         selectedMonth =
           currentMonth;
- 
+
       }
- 
+
       else if (
         availableMonths.length
       ) {
- 
+
         selectedMonth =
           availableMonths[0];
- 
+
       }
- 
+
       else {
- 
+
         selectedMonth =
           '';
- 
+
       }
- 
- 
+
+
       monthSelect.value =
         selectedMonth;
- 
- 
+
+
       renderSelectedMonth();
- 
+
+
+      renderBreakdownAndTrend();
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        STATS
        ======================================================= */
- 
+
     function renderStats() {
- 
+
       const tillDateSales =
         allSales.reduce(
           (
@@ -3416,18 +3927,18 @@ const supabaseClient =
             getSaleAmount(row),
           0
         );
- 
- 
+
+
       const transactionCount =
         allSales.length;
- 
- 
+
+
       const currentMonth =
         getMonthKey(
           new Date()
         );
- 
- 
+
+
       const currentMonthRows =
         allSales.filter(
           row =>
@@ -3436,8 +3947,8 @@ const supabaseClient =
             ) ===
             currentMonth
         );
- 
- 
+
+
       const currentMonthSales =
         currentMonthRows.reduce(
           (
@@ -3448,226 +3959,226 @@ const supabaseClient =
             getSaleAmount(row),
           0
         );
- 
- 
+
+
       document.getElementById(
         'till-date-sales'
       ).textContent =
         formatMoney(
           tillDateSales
         );
- 
- 
+
+
       document.getElementById(
         'current-month-sales'
       ).textContent =
         formatMoney(
           currentMonthSales
         );
- 
- 
+
+
       document.getElementById(
         'transaction-count'
       ).textContent =
         transactionCount.toLocaleString();
- 
- 
+
+
       document.getElementById(
         'current-month-count'
       ).textContent =
         currentMonthRows.length.toLocaleString();
- 
- 
+
+
       document.getElementById(
         'current-month-label'
       ).textContent =
         getMonthLabel(
           currentMonth
         );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        AVAILABLE MONTHS
        ======================================================= */
- 
+
     function getAvailableMonths() {
- 
+
       const months =
         new Set();
- 
- 
+
+
       allSales.forEach(
         row => {
- 
+
           const date =
             getSaleDate(row);
- 
- 
+
+
           if (date) {
- 
+
             months.add(
               getMonthKey(date)
             );
- 
+
           }
- 
+
         }
       );
- 
- 
+
+
       return Array
         .from(months)
         .sort()
         .reverse();
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        MONTH SELECTOR
        ======================================================= */
- 
+
     function buildMonthSelector() {
- 
+
       const months =
         getAvailableMonths();
- 
- 
+
+
       monthSelect.innerHTML =
         '';
- 
- 
+
+
       if (!months.length) {
- 
+
         const option =
           document.createElement(
             'option'
           );
- 
- 
+
+
         option.value =
           '';
- 
- 
+
+
         option.textContent =
           'No sales recorded';
- 
- 
+
+
         monthSelect.appendChild(
           option
         );
- 
- 
+
+
         return;
- 
+
       }
- 
- 
+
+
       months.forEach(
         month => {
- 
+
           const option =
             document.createElement(
               'option'
             );
- 
- 
+
+
           option.value =
             month;
- 
- 
+
+
           option.textContent =
             getMonthLabel(
               month
             );
- 
- 
+
+
           monthSelect.appendChild(
             option
           );
- 
+
         }
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        MONTHLY SUMMARY
        ======================================================= */
- 
+
     function renderMonthlySummary() {
- 
+
       monthlySummary.innerHTML =
         '';
- 
- 
+
+
       const grouped =
         {};
- 
- 
+
+
       allSales.forEach(
         row => {
- 
+
           const date =
             getSaleDate(row);
- 
- 
+
+
           const month =
             getMonthKey(date);
- 
- 
+
+
           if (!month) {
             return;
           }
- 
- 
+
+
           if (!grouped[month]) {
- 
+
             grouped[month] = {
- 
+
               sales:
                 0,
- 
+
               entries:
                 0,
- 
+
               footfall:
                 0
- 
+
             };
- 
+
           }
- 
- 
+
+
           grouped[month].sales +=
             getSaleAmount(row);
- 
- 
+
+
           grouped[month].entries +=
             1;
- 
- 
+
+
           grouped[month].footfall +=
             getFootfall(row);
- 
+
         }
       );
- 
- 
+
+
       const months =
         Object.keys(grouped)
           .sort()
           .reverse();
- 
- 
+
+
       if (!months.length) {
- 
+
         monthlySummary.innerHTML =
           `
             <tr>
@@ -3678,40 +4189,40 @@ const supabaseClient =
               </td>
             </tr>
           `;
- 
+
         return;
- 
+
       }
- 
- 
+
+
       months.forEach(
         month => {
- 
+
           const item =
             grouped[month];
- 
- 
+
+
           const average =
             item.entries
               ? item.sales /
                 item.entries
               : 0;
- 
- 
+
+
           const tr =
             document.createElement(
               'tr'
             );
- 
- 
+
+
           tr.className =
             'month-row';
- 
- 
+
+
           tr.dataset.month =
             month;
- 
- 
+
+
           tr.innerHTML =
             `
               <td>
@@ -3721,70 +4232,66 @@ const supabaseClient =
                   )}
                 </strong>
               </td>
- 
+
               <td class="amount">
                 ${formatMoney(
                   item.sales
                 )}
               </td>
- 
+
               <td>
                 ${item.entries.toLocaleString()}
               </td>
- 
+
               <td class="footfall">
-                ${
-                  footfallColumn
-                    ? item.footfall.toLocaleString()
-                    : '—'
-                }
+                ${item.footfall.toLocaleString()}
               </td>
- 
+
               <td>
                 ${formatMoney(
                   average
                 )}
               </td>
             `;
- 
- 
+
+
           tr.addEventListener(
             'click',
             function () {
- 
+
               selectedMonth =
                 month;
- 
- 
+
+
               monthSelect.value =
                 month;
- 
- 
+
+
               renderSelectedMonth();
- 
+
             }
           );
- 
- 
+
+
           monthlySummary.appendChild(
             tr
           );
- 
+
         }
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        SELECTED MONTH
        ======================================================= */
- 
+
     function renderSelectedMonth() {
- 
+
       if (!selectedMonth) {
- 
+
         salesRecords.innerHTML =
           `
             <tr>
@@ -3795,21 +4302,21 @@ const supabaseClient =
               </td>
             </tr>
           `;
- 
- 
+
+
         recordsTitle.textContent =
           'Sales Records';
- 
- 
+
+
         recordCount.textContent =
           '0 records';
- 
- 
+
+
         return;
- 
+
       }
- 
- 
+
+
       const rows =
         allSales
           .filter(
@@ -3824,50 +4331,50 @@ const supabaseClient =
               a,
               b
             ) => {
- 
+
               const dateA =
                 getSaleDate(a);
- 
+
               const dateB =
                 getSaleDate(b);
- 
- 
+
+
               if (
                 !dateA &&
                 !dateB
               ) {
- 
+
                 return 0;
- 
+
               }
- 
- 
+
+
               if (!dateA) {
                 return 1;
               }
- 
- 
+
+
               if (!dateB) {
                 return -1;
               }
- 
- 
+
+
               return (
                 dateB.getTime() -
                 dateA.getTime()
               );
- 
+
             }
           );
- 
- 
+
+
       recordsTitle.textContent =
         getMonthLabel(
           selectedMonth
         ) +
         ' — Sales Records';
- 
- 
+
+
       recordCount.textContent =
         rows.length.toLocaleString() +
         (
@@ -3875,14 +4382,14 @@ const supabaseClient =
             ? ' record'
             : ' records'
         );
- 
- 
+
+
       salesRecords.innerHTML =
         '';
- 
- 
+
+
       if (!rows.length) {
- 
+
         salesRecords.innerHTML =
           `
             <tr>
@@ -3898,46 +4405,42 @@ const supabaseClient =
               </td>
             </tr>
           `;
- 
- 
+
+
         return;
- 
+
       }
- 
- 
+
+
       rows.forEach(
         row => {
- 
+
           const date =
             getSaleDate(row);
- 
- 
+
+
           const tr =
             document.createElement(
               'tr'
             );
- 
- 
+
+
           tr.innerHTML =
             `
               <td class="sale-date">
                 ${formatDate(date)}
               </td>
- 
+
               <td class="amount">
                 ${formatMoney(
                   getSaleAmount(row)
                 )}
               </td>
- 
+
               <td class="footfall">
-                ${
-                  footfallColumn
-                    ? getFootfall(row).toLocaleString()
-                    : '—'
-                }
+                ${getFootfall(row).toLocaleString()}
               </td>
- 
+
               <td>
                 <button
                   type="button"
@@ -3947,261 +4450,261 @@ const supabaseClient =
                 </button>
               </td>
             `;
- 
- 
+
+
           const button =
             tr.querySelector(
               '.details-button'
             );
- 
- 
+
+
           button.addEventListener(
             'click',
             function (event) {
- 
+
               event.stopPropagation();
- 
- 
+
+
               showDetails(
                 row
               );
- 
+
             }
           );
- 
- 
+
+
           salesRecords.appendChild(
             tr
           );
- 
+
         }
       );
- 
- 
+
+
       /*
        * Highlight selected month.
        */
- 
+
       document
         .querySelectorAll(
           '.month-row'
         )
         .forEach(
           row => {
- 
+
             row.classList.toggle(
               'selected-month',
               row.dataset.month ===
               selectedMonth
             );
- 
+
           }
         );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        DATE FORMAT
        ======================================================= */
- 
+
     function formatDate(
       date
     ) {
- 
+
       if (!date) {
         return 'Unknown';
       }
- 
- 
+
+
       return date.toLocaleDateString(
         'en-GB',
         {
           day:
             '2-digit',
- 
+
           month:
             'short',
- 
+
           year:
             'numeric'
         }
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        DETAILS MODAL
        ======================================================= */
- 
+
     function showDetails(
       row
     ) {
- 
+
       modalBody.innerHTML =
         '';
- 
- 
+
+
       const grid =
         document.createElement(
           'div'
         );
- 
- 
+
+
       grid.className =
         'detail-grid';
- 
- 
+
+
       Object.keys(row)
         .forEach(
           key => {
- 
+
             const item =
               document.createElement(
                 'div'
               );
- 
- 
+
+
             item.className =
               'detail-item';
- 
- 
+
+
             const label =
               document.createElement(
                 'div'
               );
- 
- 
+
+
             label.className =
               'detail-label';
- 
- 
+
+
             label.textContent =
               key.replace(
                 /_/g,
                 ' '
               );
- 
- 
+
+
             const value =
               document.createElement(
                 'div'
               );
- 
- 
+
+
             value.className =
               'detail-value';
- 
- 
+
+
             let displayValue =
               row[key];
- 
- 
+
+
             if (
               displayValue ===
                 null ||
               displayValue ===
                 undefined
             ) {
- 
+
               displayValue =
                 '—';
- 
+
             }
- 
- 
+
+
             if (
               typeof displayValue ===
               'object'
             ) {
- 
+
               displayValue =
                 JSON.stringify(
                   displayValue
                 );
- 
+
             }
- 
- 
+
+
             value.textContent =
               displayValue;
- 
- 
+
+
             item.appendChild(
               label
             );
- 
- 
+
+
             item.appendChild(
               value
             );
- 
- 
+
+
             grid.appendChild(
               item
             );
- 
+
           }
         );
- 
- 
+
+
       modalBody.appendChild(
         grid
       );
- 
- 
+
+
       detailsModal.classList.add(
         'show'
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        CSV ESCAPE
        ======================================================= */
- 
+
     function csvEscape(
       value
     ) {
- 
+
       if (
         value === null ||
         value === undefined
       ) {
- 
+
         return '';
- 
+
       }
- 
- 
+
+
       let text;
- 
- 
+
+
       if (
         typeof value ===
         'object'
       ) {
- 
+
         text =
           JSON.stringify(
             value
           );
- 
+
       }
- 
+
       else {
- 
+
         text =
           String(value);
- 
+
       }
- 
- 
+
+
       return (
         '"' +
         text.replace(
@@ -4210,72 +4713,72 @@ const supabaseClient =
         ) +
         '"'
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        EXPORT CSV
        ======================================================= */
- 
+
     function exportCSV(
       rows,
       filename
     ) {
- 
+
       if (
         !rows ||
         !rows.length
       ) {
- 
+
         showMessage(
           'There are no sales records to export.',
           'warning'
         );
- 
- 
+
+
         return;
- 
+
       }
- 
- 
+
+
       const columnSet =
         new Set();
- 
- 
+
+
       rows.forEach(
         row => {
- 
+
           Object.keys(row)
             .forEach(
               key => {
- 
+
                 columnSet.add(
                   key
                 );
- 
+
               }
             );
- 
+
         }
       );
- 
- 
+
+
       const columns =
         Array.from(
           columnSet
         );
- 
- 
+
+
       const header =
         columns
           .map(
             csvEscape
           )
           .join(',');
- 
- 
+
+
       const body =
         rows
           .map(
@@ -4290,15 +4793,15 @@ const supabaseClient =
                 .join(',')
           )
           .join('\n');
- 
- 
+
+
       const csv =
         '\uFEFF' +
         header +
         '\n' +
         body;
- 
- 
+
+
       const blob =
         new Blob(
           [csv],
@@ -4307,41 +4810,41 @@ const supabaseClient =
               'text/csv;charset=utf-8;'
           }
         );
- 
- 
+
+
       const url =
         URL.createObjectURL(
           blob
         );
- 
- 
+
+
       const link =
         document.createElement(
           'a'
         );
- 
- 
+
+
       link.href =
         url;
- 
- 
+
+
       link.download =
         filename;
- 
- 
+
+
       document.body.appendChild(
         link
       );
- 
- 
+
+
       link.click();
- 
- 
+
+
       document.body.removeChild(
         link
       );
- 
- 
+
+
       setTimeout(
         () => {
           URL.revokeObjectURL(
@@ -4350,36 +4853,53 @@ const supabaseClient =
         },
         100
       );
- 
- 
+
+
       showMessage(
         'CSV export completed successfully.',
         'success'
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        EXPORT SELECTED MONTH
        ======================================================= */
- 
+
     function exportSelectedMonth() {
- 
+
+      if (isRangeActive()) {
+
+        const rows = getRowsInRange(rangeFrom, rangeTo);
+
+        exportCSV(
+          rows,
+          'suryodaya-sales-' +
+          rangeFrom +
+          '-to-' +
+          rangeTo +
+          '.csv'
+        );
+
+        return;
+
+      }
+
       if (!selectedMonth) {
- 
+
         showMessage(
           'Please select a month first.',
           'warning'
         );
- 
- 
+
+
         return;
- 
+
       }
- 
- 
+
+
       const rows =
         allSales.filter(
           row =>
@@ -4388,77 +4908,141 @@ const supabaseClient =
             ) ===
             selectedMonth
         );
- 
- 
+
+
       exportCSV(
         rows,
         'suryodaya-sales-' +
         selectedMonth +
         '.csv'
       );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        ESCAPE HTML
        ======================================================= */
- 
+
     function escapeHtml(
       value
     ) {
- 
+
       return String(value)
- 
+
         .replace(
           /&/g,
           '&amp;'
         )
- 
+
         .replace(
           /</g,
           '&lt;'
         )
- 
+
         .replace(
           />/g,
           '&gt;'
         )
- 
+
         .replace(
           /"/g,
           '&quot;'
         )
- 
+
         .replace(
           /'/g,
           '&#039;'
         );
- 
+
     }
- 
- 
- 
+
+
+
     /* =======================================================
        EVENTS
        ======================================================= */
- 
+
     monthSelect.addEventListener(
       'change',
       function () {
- 
+
         selectedMonth =
           this.value;
- 
- 
+
+        rangeFrom = '';
+        rangeTo = '';
+        rangeFromInput.value = '';
+        rangeToInput.value = '';
+
+
         renderSelectedMonth();
- 
+
+        renderBreakdownAndTrend();
+
       }
     );
- 
- 
- 
+
+
+
+    applyRangeButton.addEventListener(
+      'click',
+      function () {
+
+        const from = rangeFromInput.value;
+        const to = rangeToInput.value;
+
+        if (!from || !to) {
+
+          showMessage(
+            'Pick both a start and end date to apply a custom range.',
+            'error'
+          );
+
+          return;
+
+        }
+
+        if (from > to) {
+
+          showMessage(
+            'The start date must be before the end date.',
+            'error'
+          );
+
+          return;
+
+        }
+
+        clearMessage();
+
+        rangeFrom = from;
+        rangeTo = to;
+
+        renderBreakdownAndTrend();
+
+      }
+    );
+
+
+
+    clearRangeButton.addEventListener(
+      'click',
+      function () {
+
+        rangeFrom = '';
+        rangeTo = '';
+        rangeFromInput.value = '';
+        rangeToInput.value = '';
+
+        renderBreakdownAndTrend();
+
+      }
+    );
+
+
+
     document
       .getElementById(
         'export-month'
@@ -4467,9 +5051,9 @@ const supabaseClient =
         'click',
         exportSelectedMonth
       );
- 
- 
- 
+
+
+
     document
       .getElementById(
         'export-all'
@@ -4477,17 +5061,17 @@ const supabaseClient =
       .addEventListener(
         'click',
         function () {
- 
+
           exportCSV(
             allSales,
             'suryodaya-all-sales.csv'
           );
- 
+
         }
       );
- 
- 
- 
+
+
+
     document
       .getElementById(
         'refresh-button'
@@ -4495,87 +5079,87 @@ const supabaseClient =
       .addEventListener(
         'click',
         function () {
- 
+
           loadSales();
- 
+
         }
       );
- 
- 
- 
+
+
+
 async function completelyLogout() {
- 
+
   try {
- 
+
     /*
      * Tell Supabase to terminate the
      * current local session.
      */
- 
+
     await supabaseClient.auth.signOut({
       scope: 'local'
     });
- 
+
   } catch (error) {
- 
+
     console.warn(
       'Supabase logout warning:',
       error
     );
- 
+
   }
- 
- 
+
+
   /*
    * Remove authentication storage.
    */
- 
+
   localStorage.removeItem(
     'suryodaya-auth'
   );
- 
+
   localStorage.removeItem(
     'suryodaya-staff-auth'
   );
- 
- 
+
+
   /*
    * Remove role/session markers.
    */
- 
+
   sessionStorage.removeItem(
     'suryodaya_authenticated_role'
   );
- 
+
   sessionStorage.removeItem(
     'suryodaya_fresh_staff_login'
   );
- 
- 
+
+
   /*
    * Replace instead of normal navigation.
    */
- 
+
   window.location.replace(
     'index.html'
   );
- 
+
 }
- 
- 
+
+
 document
   .getElementById('logout-button')
   .addEventListener(
     'click',
     completelyLogout
   );
- 
- 
- 
+
+
+
     /* =======================================================
        CLOSE MODAL
        ======================================================= */
- 
+
     document
       .getElementById(
         'close-modal'
@@ -4583,60 +5167,60 @@ document
       .addEventListener(
         'click',
         function () {
- 
+
           detailsModal.classList.remove(
             'show'
           );
- 
+
         }
       );
- 
- 
- 
+
+
+
     detailsModal.addEventListener(
       'click',
       function (event) {
- 
+
         if (
           event.target ===
           detailsModal
         ) {
- 
+
           detailsModal.classList.remove(
             'show'
           );
- 
+
         }
- 
+
       }
     );
- 
- 
- 
+
+
+
     document.addEventListener(
       'keydown',
       function (event) {
- 
+
         if (
           event.key ===
           'Escape'
         ) {
- 
+
           detailsModal.classList.remove(
             'show'
           );
- 
+
         }
- 
+
       }
     );
- 
- 
- 
+
+
+
     /* =======================================================
        AUTH STATE CHANGE
        ======================================================= */
- 
+
     supabaseClient
       .auth
       .onAuthStateChange(
@@ -4644,35 +5228,35 @@ document
           event,
           session
         ) {
- 
+
           console.log(
             'Auth event:',
             event
           );
- 
- 
+
+
           /*
            * If Supabase tells us the user
            * signed out, immediately return
            * to staff login.
            */
- 
+
           if (
             event ===
             'SIGNED_OUT'
           ) {
- 
+
             redirectToLogin();
- 
+
             return;
- 
+
           }
- 
- 
+
+
           /*
            * Token/session has disappeared.
            */
- 
+
           if (
             (
               event ===
@@ -4683,34 +5267,34 @@ document
             !session &&
             initialLoadComplete
           ) {
- 
+
             redirectToLogin();
- 
+
           }
- 
+
         }
       );
- 
- 
- 
+
+
+
     /* =======================================================
        HANDLE BROWSER TAB / PAGE RETURN
        ======================================================= */
- 
+
     window.addEventListener(
       'pageshow',
       async function () {
- 
+
         /*
          * Re-check the session whenever
          * browser restores this page.
          */
- 
+
         if (
           initialLoadComplete &&
           !isRedirecting
         ) {
- 
+
           const {
             data:
               {
@@ -4720,54 +5304,54 @@ document
             await supabaseClient
               .auth
               .getSession();
- 
- 
+
+
           if (
             !session ||
             !session.user
           ) {
- 
+
             redirectToLogin();
- 
+
           }
- 
+
         }
- 
+
       }
     );
- 
- 
- 
+
+
+
     /* =======================================================
        HANDLE TAB VISIBILITY
        ======================================================= */
- 
+
     document.addEventListener(
       'visibilitychange',
       async function () {
- 
+
         if (
           document.visibilityState !==
           'visible'
         ) {
- 
+
           return;
- 
+
         }
- 
- 
+
+
         if (
           !initialLoadComplete ||
           isRedirecting
         ) {
- 
+
           return;
- 
+
         }
- 
- 
+
+
         try {
- 
+
           const {
             data:
               {
@@ -4777,43 +5361,43 @@ document
             await supabaseClient
               .auth
               .getSession();
- 
- 
+
+
           if (
             !session ||
             !session.user
           ) {
- 
+
             redirectToLogin();
- 
+
           }
- 
+
         }
- 
+
         catch (error) {
- 
+
           console.error(
             'Session check failed:',
             error
           );
- 
+
         }
- 
+
       }
     );
- 
- 
- 
+
+
+
     /* =======================================================
        START
        ======================================================= */
- 
+
     loadSales();
- 
- 
+
+
   </script>
- 
- 
+
+
 </body>
- 
+
 </html>

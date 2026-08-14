@@ -2,40 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
+ 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
-
+ 
   <meta
     name="robots"
     content="noindex, nofollow"
   >
-
+ 
   <title>Staff Dashboard | Suryodaya Adventures</title>
-
+ 
   <link
     rel="icon"
     type="image/png"
     href="../Logo.png"
   >
-
+ 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+ 
   <style>
-
+ 
     /* =========================================================
        SURYODAYA ADVENTURES — STAFF DASHBOARD
        ========================================================= */
-
+ 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
+ 
     :root {
       --forest: #173F35;
       --forest-light: #1F5745;
@@ -50,738 +50,738 @@
       --danger: #B42318;
       --soft-green: #EAF7F0;
       --soft-red: #FDECEC;
-
+ 
       --footfall-bg: #EAF7F0;
       --footfall-border: #BFE3CD;
       --warning-bg: #FFF8E6;
       --warning-border: #F2D48A;
       --warning-text: #7A5A00;
     }
-
+ 
     body {
       min-height: 100vh;
-
+ 
       font-family:
         "Plus Jakarta Sans",
         Arial,
         Helvetica,
         sans-serif;
-
+ 
       background: #F4F7F4;
       color: var(--text);
     }
-
+ 
     /* =========================================================
        HEADER
        ========================================================= */
-
+ 
     .dashboard-header {
       background: var(--forest);
       color: white;
-
+ 
       padding: 16px 24px;
-
+ 
       box-shadow:
         0 3px 12px rgba(0,0,0,0.12);
     }
-
+ 
     .header-inner {
       max-width: 1180px;
       margin: 0 auto;
-
+ 
       display: flex;
       align-items: center;
       justify-content: space-between;
-
+ 
       gap: 20px;
     }
-
+ 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-
+ 
     .brand img {
       width: 48px;
       height: 48px;
-
+ 
       object-fit: contain;
-
+ 
       background: white;
       border-radius: 50%;
       padding: 4px;
     }
-
+ 
     .brand-text h1 {
       font-family:
         Georgia,
         "Times New Roman",
         serif;
-
+ 
       font-size: 22px;
       line-height: 1.1;
     }
-
+ 
     .brand-text p {
       margin-top: 3px;
-
+ 
       font-size: 11px;
       opacity: 0.75;
     }
-
+ 
     .header-actions {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-
+ 
     .home-link,
     .logout-button {
       border: 1px solid rgba(255,255,255,0.3);
-
+ 
       background: transparent;
       color: white;
-
+ 
       padding: 9px 13px;
-
+ 
       border-radius: 7px;
-
+ 
       font-size: 12px;
       font-weight: 700;
-
+ 
       text-decoration: none;
       cursor: pointer;
     }
-
+ 
     .home-link:hover,
     .logout-button:hover {
       background: white;
       color: var(--forest);
     }
-
+ 
     /* =========================================================
        MAIN
        ========================================================= */
-
+ 
     .container {
       width: min(
         1180px,
         calc(100% - 32px)
       );
-
+ 
       margin: 0 auto;
     }
-
+ 
     .main {
       padding: 30px 0 50px;
     }
-
+ 
     .page-heading {
       margin-bottom: 24px;
     }
-
+ 
     .page-heading .eyebrow {
       color: var(--orange);
-
+ 
       font-size: 11px;
       font-weight: 800;
-
+ 
       letter-spacing: 1.5px;
       text-transform: uppercase;
-
+ 
       margin-bottom: 6px;
     }
-
+ 
     .page-heading h2 {
       font-family:
         Georgia,
         "Times New Roman",
         serif;
-
+ 
       color: var(--forest);
-
+ 
       font-size: 30px;
       line-height: 1.2;
     }
-
+ 
     .page-heading p {
       margin-top: 6px;
-
+ 
       color: var(--muted);
-
+ 
       font-size: 13px;
     }
-
+ 
     /* =========================================================
        STAT CARDS
        ========================================================= */
-
+ 
     .stats-grid {
       display: grid;
-
+ 
       grid-template-columns:
         repeat(3, 1fr);
-
+ 
       gap: 16px;
-
+ 
       margin-bottom: 24px;
     }
-
+ 
     .stat-card {
       background: white;
-
+ 
       border: 1px solid var(--border);
-
+ 
       border-radius: 12px;
-
+ 
       padding: 20px;
-
+ 
       box-shadow:
         0 4px 16px rgba(23,63,53,0.05);
     }
-
+ 
     .stat-label {
       color: var(--muted);
-
+ 
       font-size: 11px;
       font-weight: 700;
-
+ 
       text-transform: uppercase;
-
+ 
       letter-spacing: 0.6px;
     }
-
+ 
     .stat-value {
       margin-top: 7px;
-
+ 
       color: var(--forest);
-
+ 
       font-size: 26px;
       font-weight: 800;
     }
-
+ 
     .stat-value.orange {
       color: var(--orange);
     }
-
+ 
     .stat-value.green {
       color: var(--success);
     }
-
+ 
     /* =========================================================
        CONTENT
        ========================================================= */
-
+ 
     .content-grid {
       display: grid;
-
+ 
       grid-template-columns:
         430px 1fr;
-
+ 
       gap: 22px;
-
+ 
       align-items: start;
     }
-
+ 
     .card {
       background: white;
-
+ 
       border: 1px solid var(--border);
-
+ 
       border-radius: 14px;
-
+ 
       box-shadow:
         0 4px 16px rgba(23,63,53,0.05);
-
+ 
       overflow: hidden;
     }
-
+ 
     .card-header {
       padding: 19px 21px;
-
+ 
       border-bottom:
         1px solid var(--border);
     }
-
+ 
     .card-header h3 {
       color: var(--forest);
-
+ 
       font-family:
         Georgia,
         "Times New Roman",
         serif;
-
+ 
       font-size: 20px;
     }
-
+ 
     .card-header p {
       color: var(--muted);
-
+ 
       font-size: 11px;
-
+ 
       margin-top: 4px;
     }
-
+ 
     .card-body {
       padding: 21px;
     }
-
+ 
     /* =========================================================
        FORM
        ========================================================= */
-
+ 
     .form-group {
       margin-bottom: 17px;
     }
-
+ 
     label {
       display: block;
-
+ 
       color: var(--forest);
-
+ 
       font-size: 12px;
       font-weight: 800;
-
+ 
       margin-bottom: 7px;
     }
-
+ 
     input {
       width: 100%;
       height: 46px;
-
+ 
       border:
         1px solid var(--border);
-
+ 
       border-radius: 8px;
-
+ 
       background: white;
       color: var(--text);
-
+ 
       padding: 0 12px;
-
+ 
       font-family: inherit;
       font-size: 14px;
-
+ 
       outline: none;
-
+ 
       transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease;
     }
-
+ 
     input:focus {
       border-color:
         var(--forest-light);
-
+ 
       box-shadow:
         0 0 0 3px
         rgba(31,87,69,0.11);
     }
-
+ 
     input[type="number"] {
       font-variant-numeric:
         tabular-nums;
     }
-
+ 
     /* =========================================================
        FOOTFALL
        ========================================================= */
-
+ 
     .footfall-box {
       background: var(--footfall-bg);
-
+ 
       border:
         1px solid var(--footfall-border);
-
+ 
       border-radius: 10px;
-
+ 
       padding: 15px;
-
+ 
       margin-bottom: 19px;
     }
-
+ 
     .footfall-heading {
       color: var(--forest);
-
+ 
       font-size: 11px;
       font-weight: 900;
-
+ 
       letter-spacing: 1px;
     }
-
+ 
     .footfall-description {
       color: var(--muted);
-
+ 
       font-size: 11px;
-
+ 
       margin-top: 3px;
       margin-bottom: 12px;
     }
-
+ 
     .footfall-box .form-group {
       margin-bottom: 0;
     }
-
+ 
     .footfall-box input {
       background: white;
-
+ 
       border-color:
         var(--footfall-border);
     }
-
+ 
     /* =========================================================
        DUPLICATE DATE WARNING
        ========================================================= */
-
+ 
     .duplicate-warning {
       display: none;
-
+ 
       margin-bottom: 17px;
-
+ 
       padding: 12px 14px;
-
+ 
       border-radius: 9px;
-
+ 
       background:
         var(--warning-bg);
-
+ 
       border:
         1px solid var(--warning-border);
-
+ 
       color:
         var(--warning-text);
-
+ 
       font-size: 12px;
-
+ 
       line-height: 1.5;
     }
-
+ 
     .duplicate-warning.show {
       display: block;
     }
-
+ 
     .duplicate-warning strong {
       display: block;
-
+ 
       margin-bottom: 3px;
-
+ 
       font-size: 12px;
     }
-
+ 
     .duplicate-warning span {
       display: block;
     }
-
+ 
     /* =========================================================
        TOTAL
        ========================================================= */
-
+ 
     .total-preview {
       background: var(--cream);
-
+ 
       border:
         1px solid #E8DDC8;
-
+ 
       border-radius: 9px;
-
+ 
       padding: 14px;
-
+ 
       display: flex;
-
+ 
       justify-content: space-between;
       align-items: center;
-
+ 
       margin: 5px 0 18px;
     }
-
+ 
     .total-preview span:first-child {
       color: var(--muted);
-
+ 
       font-size: 12px;
       font-weight: 700;
     }
-
+ 
     .total-preview strong {
       color: var(--orange);
-
+ 
       font-size: 21px;
     }
-
+ 
     /* =========================================================
        BUTTONS
        ========================================================= */
-
+ 
     .save-button {
       width: 100%;
       height: 48px;
-
+ 
       border: none;
-
+ 
       border-radius: 8px;
-
+ 
       background:
         var(--orange);
-
+ 
       color: white;
-
+ 
       font-family: inherit;
-
+ 
       font-size: 13px;
       font-weight: 800;
-
+ 
       cursor: pointer;
-
+ 
       box-shadow:
         0 7px 18px
         rgba(232,93,4,0.2);
-
+ 
       transition:
         background 0.2s ease,
         transform 0.2s ease;
     }
-
+ 
     .save-button:hover {
       background: #D94F00;
-
+ 
       transform:
         translateY(-1px);
     }
-
+ 
     .save-button:disabled {
       opacity: 0.65;
-
+ 
       cursor: not-allowed;
-
+ 
       transform: none;
     }
-
+ 
     .cancel-button {
       width: 100%;
       height: 43px;
-
+ 
       margin-top: 9px;
-
+ 
       border:
         1px solid var(--border);
-
+ 
       border-radius: 8px;
-
+ 
       background: white;
-
+ 
       color: var(--forest);
-
+ 
       font-family: inherit;
-
+ 
       font-size: 12px;
       font-weight: 800;
-
+ 
       cursor: pointer;
-
+ 
       display: none;
     }
-
+ 
     .cancel-button.show {
       display: block;
     }
-
+ 
     /* =========================================================
        MESSAGE
        ========================================================= */
-
+ 
     .message {
       display: none;
-
+ 
       margin-bottom: 17px;
-
+ 
       padding: 11px 13px;
-
+ 
       border-radius: 8px;
-
+ 
       font-size: 12px;
-
+ 
       line-height: 1.5;
     }
-
+ 
     .message.show {
       display: block;
     }
-
+ 
     .message.success {
       background:
         var(--soft-green);
-
+ 
       border:
         1px solid #BFE3CD;
-
+ 
       color:
         var(--success);
     }
-
+ 
     .message.error {
       background:
         var(--soft-red);
-
+ 
       border:
         1px solid #F5C7C4;
-
+ 
       color:
         var(--danger);
     }
-
+ 
     /* =========================================================
        7 DAY RECORDS
        ========================================================= */
-
+ 
     .records-container {
       padding: 18px;
     }
-
+ 
     .day-group {
       border:
         1px solid var(--border);
-
+ 
       border-radius: 11px;
-
+ 
       margin-bottom: 14px;
-
+ 
       overflow: hidden;
-
+ 
       background: white;
     }
-
+ 
     .day-group:last-child {
       margin-bottom: 0;
     }
-
+ 
     .day-header {
       background:
         #F4F7F4;
-
+ 
       padding: 13px 15px;
-
+ 
       display: flex;
-
+ 
       justify-content: space-between;
       align-items: center;
-
+ 
       gap: 15px;
-
+ 
       border-bottom:
         1px solid var(--border);
     }
-
+ 
     .day-title {
       color: var(--forest);
-
+ 
       font-size: 14px;
       font-weight: 900;
     }
-
+ 
     .day-subtitle {
       color: var(--muted);
-
+ 
       font-size: 10px;
-
+ 
       margin-top: 3px;
     }
-
+ 
     .day-total {
       text-align: right;
     }
-
+ 
     .day-total-label {
       color: var(--muted);
-
+ 
       font-size: 9px;
-
+ 
       text-transform: uppercase;
-
+ 
       letter-spacing: 0.5px;
     }
-
+ 
     .day-total-value {
       color: var(--orange);
-
+ 
       font-size: 15px;
       font-weight: 900;
     }
-
+ 
     .day-footfall {
       margin-top: 2px;
-
+ 
       color: var(--success);
-
+ 
       font-size: 10px;
       font-weight: 800;
     }
-
+ 
     /* =========================================================
        ENTRY ROW
        ========================================================= */
-
+ 
     .entry-row {
       padding: 13px 15px;
-
+ 
       border-bottom:
         1px solid #EDF1EE;
     }
-
+ 
     .entry-row:last-child {
       border-bottom: none;
     }
-
+ 
     .entry-top {
       display: flex;
-
+ 
       justify-content: space-between;
       align-items: center;
-
+ 
       gap: 12px;
-
+ 
       margin-bottom: 10px;
     }
-
+ 
     .entry-number {
       color: var(--muted);
-
+ 
       font-size: 10px;
       font-weight: 800;
-
+ 
       text-transform: uppercase;
-
+ 
       letter-spacing: 0.5px;
     }
-
+ 
     .edit-button {
       border:
         1px solid var(--border);
-
+ 
       background: white;
-
+ 
       color: var(--forest);
-
+ 
       border-radius: 6px;
-
+ 
       padding: 6px 9px;
-
+ 
       font-family: inherit;
-
+ 
       font-size: 10px;
       font-weight: 800;
-
+ 
       cursor: pointer;
     }
-
+ 
     .edit-button:hover {
       background: var(--forest);
-
+ 
       color: white;
     }
-
+ 
     .edit-button:disabled {
       opacity: 0.5;
-
+ 
       cursor: not-allowed;
     }
 .add-entry-button {
@@ -798,221 +798,221 @@
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
-
+ 
 .add-entry-button:hover {
   background: var(--soft-green);
   border-color: var(--forest);
 }
     .entry-grid {
       display: grid;
-
+ 
       grid-template-columns:
         repeat(4, 1fr);
-
+ 
       gap: 8px;
     }
-
+ 
     .entry-item {
       background:
         #FAFCFA;
-
+ 
       border-radius: 7px;
-
+ 
       padding: 9px;
     }
-
+ 
     .entry-label {
       color: var(--muted);
-
+ 
       font-size: 9px;
       font-weight: 700;
-
+ 
       text-transform: uppercase;
     }
-
+ 
     .entry-value {
       margin-top: 3px;
-
+ 
       color: var(--forest);
-
+ 
       font-size: 11px;
       font-weight: 800;
     }
-
+ 
     .entry-value.sales-total {
       color: var(--orange);
     }
-
+ 
     .entry-value.footfall-value {
       color: var(--success);
     }
-
+ 
     /* =========================================================
        EMPTY / LOADING
        ========================================================= */
-
+ 
     .empty-state {
       padding: 35px 20px;
-
+ 
       text-align: center;
-
+ 
       color: var(--muted);
-
+ 
       font-size: 12px;
     }
-
+ 
     .loading {
       padding: 35px 20px;
-
+ 
       text-align: center;
-
+ 
       color: var(--muted);
-
+ 
       font-size: 12px;
     }
-
+ 
     .seven-day-note {
       margin-bottom: 15px;
-
+ 
       padding: 10px 12px;
-
+ 
       background:
         #F4F7F4;
-
+ 
       border:
         1px solid var(--border);
-
+ 
       border-radius: 8px;
-
+ 
       color: var(--muted);
-
+ 
       font-size: 10px;
-
+ 
       line-height: 1.5;
     }
-
+ 
     /* =========================================================
        MOBILE
        ========================================================= */
-
+ 
     @media (max-width: 900px) {
-
+ 
       .content-grid {
         grid-template-columns: 1fr;
       }
-
+ 
       .stats-grid {
         grid-template-columns:
           repeat(3, 1fr);
       }
-
+ 
     }
-
+ 
     @media (max-width: 650px) {
-
+ 
       .dashboard-header {
         padding: 13px 16px;
       }
-
+ 
       .header-inner {
         align-items: flex-start;
       }
-
+ 
       .brand-text h1 {
         font-size: 18px;
       }
-
+ 
       .brand-text p {
         display: none;
       }
-
+ 
       .brand img {
         width: 40px;
         height: 40px;
       }
-
+ 
       .home-link {
         display: none;
       }
-
+ 
       .main {
         padding-top: 22px;
       }
-
+ 
       .page-heading h2 {
         font-size: 26px;
       }
-
+ 
       .stats-grid {
         grid-template-columns: 1fr;
       }
-
+ 
       .stat-card {
         padding: 16px;
       }
-
+ 
       .stat-value {
         font-size: 23px;
       }
-
+ 
       .card-body {
         padding: 17px;
       }
-
+ 
       .day-header {
         align-items: flex-start;
       }
-
+ 
       .entry-grid {
         grid-template-columns:
           repeat(2, 1fr);
       }
-
+ 
     }
-
+ 
   </style>
 </head>
-
+ 
 <body>
-
+ 
   <!-- =======================================================
        HEADER
        ======================================================= -->
-
+ 
   <header class="dashboard-header">
-
+ 
     <div class="header-inner">
-
+ 
       <div class="brand">
-
+ 
         <img
           src="../Logo.png"
           alt="Suryodaya Adventures"
         >
-
+ 
         <div class="brand-text">
-
+ 
           <h1>
             Suryodaya Adventures
           </h1>
-
+ 
           <p>
             Staff Management Portal
           </p>
-
+ 
         </div>
-
+ 
       </div>
-
+ 
       <div class="header-actions">
-
+ 
         <a
           href="../index.html"
           class="home-link"
         >
           ← Website
         </a>
-
+ 
         <button
           type="button"
           id="logout-button"
@@ -1020,190 +1020,190 @@
         >
           Logout
         </button>
-
+ 
       </div>
-
+ 
     </div>
-
+ 
   </header>
-
-
+ 
+ 
   <!-- =======================================================
        MAIN
        ======================================================= -->
-
+ 
   <main class="main">
-
+ 
     <div class="container">
-
+ 
       <!-- PAGE HEADING -->
-
+ 
       <section class="page-heading">
-
+ 
         <div class="eyebrow">
           Staff Portal
         </div>
-
+ 
         <h2>
           Daily Sales & Footfall
         </h2>
-
+ 
         <p>
           Manage daily business records for the last 7 days.
         </p>
-
+ 
       </section>
-
-
+ 
+ 
       <!-- ===================================================
            STAT CARDS
            =================================================== -->
-
+ 
       <section class="stats-grid">
-
+ 
         <div class="stat-card">
-
+ 
           <div class="stat-label">
             Today's Sales
           </div>
-
+ 
           <div
             class="stat-value orange"
             id="today-sales"
           >
             NPR 0
           </div>
-
+ 
         </div>
-
-
+ 
+ 
         <div class="stat-card">
-
+ 
           <div class="stat-label">
             Today's Footfall
           </div>
-
+ 
           <div
             class="stat-value green"
             id="today-footfall"
           >
             0
           </div>
-
+ 
         </div>
-
-
+ 
+ 
         <div class="stat-card">
-
+ 
           <div class="stat-label">
             7-Day Sales
           </div>
-
+ 
           <div
             class="stat-value orange"
             id="seven-day-sales"
           >
             NPR 0
           </div>
-
+ 
         </div>
-
+ 
       </section>
-
-
+ 
+ 
       <!-- ===================================================
            CONTENT
            =================================================== -->
-
+ 
       <section class="content-grid">
-
-
+ 
+ 
         <!-- ================================================
              DAILY ENTRY FORM
              ================================================ -->
-
+ 
         <div class="card">
-
+ 
           <div class="card-header">
-
+ 
             <h3 id="form-title">
               Add Daily Record
             </h3>
-
+ 
             <p>
               Enter sales and visitor footfall.
             </p>
-
+ 
           </div>
-
-
+ 
+ 
           <div class="card-body">
-
+ 
             <div
               id="message"
               class="message"
               role="alert"
             ></div>
-
-
+ 
+ 
             <form id="sales-form">
-
-
+ 
+ 
               <!-- DUPLICATE WARNING -->
-
+ 
               <div
                 id="duplicate-warning"
                 class="duplicate-warning"
               >
-
+ 
                 <strong>
                   ⚠️ Existing entry found for this date.
                 </strong>
-
+ 
                 <span>
                   You are creating an additional entry
                   for the same day. Use this only for a
                   separate shift/session or correction.
                 </span>
-
+ 
               </div>
-
-
+ 
+ 
               <!-- DATE -->
-
+ 
               <div class="form-group">
-
+ 
                 <label for="business-date">
                   Date
                 </label>
-
+ 
                 <input
                   type="date"
                   id="business-date"
                   required
                 >
-
+ 
               </div>
-
-
+ 
+ 
               <!-- FOOTFALL -->
-
+ 
               <div class="footfall-box">
-
+ 
                 <div class="footfall-heading">
                   VISITOR FOOTFALL
                 </div>
-
+ 
                 <div class="footfall-description">
                   Total visitors for this entry
                 </div>
-
+ 
                 <div class="form-group">
-
+ 
                   <label for="total-footfall">
                     Total Visitors
                   </label>
-
+ 
                   <input
                     type="number"
                     id="total-footfall"
@@ -1212,20 +1212,20 @@
                     placeholder="0"
                     required
                   >
-
+ 
                 </div>
-
+ 
               </div>
-
-
+ 
+ 
               <!-- ADVENTURE SALES -->
-
+ 
               <div class="form-group">
-
+ 
                 <label for="adventure-sales">
                   Adventures Sales (NPR)
                 </label>
-
+ 
                 <input
                   type="number"
                   id="adventure-sales"
@@ -1234,18 +1234,18 @@
                   placeholder="0"
                   required
                 >
-
+ 
               </div>
-
-
+ 
+ 
               <!-- VIDEOGRAPHY SALES -->
-
+ 
               <div class="form-group">
-
+ 
                 <label for="videography-sales">
                   Videography Sales (NPR)
                 </label>
-
+ 
                 <input
                   type="number"
                   id="videography-sales"
@@ -1254,18 +1254,18 @@
                   placeholder="0"
                   required
                 >
-
+ 
               </div>
-
-
+ 
+ 
               <!-- RESTAURANT + CAMPING -->
-
+ 
               <div class="form-group">
-
+ 
                 <label for="restaurant-camping-sales">
                   Restaurant & Camping Sales (NPR)
                 </label>
-
+ 
                 <input
                   type="number"
                   id="restaurant-camping-sales"
@@ -1274,27 +1274,27 @@
                   placeholder="0"
                   required
                 >
-
+ 
               </div>
-
-
+ 
+ 
               <!-- TOTAL -->
-
+ 
               <div class="total-preview">
-
+ 
                 <span>
                   Total Sales
                 </span>
-
+ 
                 <strong id="total-preview">
                   NPR 0
                 </strong>
-
+ 
               </div>
-
-
+ 
+ 
               <!-- SAVE -->
-
+ 
               <button
                 type="submit"
                 id="save-button"
@@ -1302,10 +1302,10 @@
               >
                 SAVE DAILY RECORD
               </button>
-
-
+ 
+ 
               <!-- CANCEL EDIT -->
-
+ 
               <button
                 type="button"
                 id="cancel-button"
@@ -1313,58 +1313,58 @@
               >
                 CANCEL EDIT
               </button>
-
+ 
             </form>
-
+ 
           </div>
-
+ 
         </div>
-
-
+ 
+ 
         <!-- ================================================
              LAST 7 DAYS
              ================================================ -->
-
+ 
         <div class="card">
-
+ 
           <div class="card-header">
-
+ 
             <h3>
               Last 7 Days
             </h3>
-
+ 
             <p>
               Records are grouped by business date.
             </p>
-
+ 
           </div>
-
-
+ 
+ 
           <div class="records-container">
-
+ 
             <div class="seven-day-note">
-
+ 
               Only today and the previous 6 days are
               shown here. Older records remain safely
               stored in the database but are not shown
               to staff.
-
+ 
             </div>
-
-
+ 
+ 
             <div
               id="table-loading"
               class="loading"
             >
               Loading records...
             </div>
-
-
+ 
+ 
             <div
               id="records-body"
             ></div>
-
-
+ 
+ 
             <div
               id="empty-state"
               class="empty-state"
@@ -1372,37 +1372,37 @@
             >
               No records have been entered for the
               last 7 days.
-
+ 
             </div>
-
+ 
           </div>
-
+ 
         </div>
-
+ 
       </section>
-
+ 
     </div>
-
+ 
   </main>
-
-
+ 
+ 
   <!-- =======================================================
        SUPABASE + DASHBOARD LOGIC
        ======================================================= -->
-
+ 
   <script>
-
+ 
     /* =======================================================
        SUPABASE CONFIGURATION
        ======================================================= */
-
+ 
     const SUPABASE_URL =
       'https://mvvdfwgjcyayopcsgwvy.supabase.co';
-
+ 
     const SUPABASE_PUBLISHABLE_KEY =
       'sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4';
-
-
+ 
+ 
     /* =======================================================
        CREATE SUPABASE CLIENT
        ======================================================= */
@@ -1420,202 +1420,202 @@ const supabaseClient =
       }
     }
   );
-
+ 
     /* =======================================================
        ELEMENTS
        ======================================================= */
-
+ 
     const salesForm =
       document.getElementById(
         'sales-form'
       );
-
+ 
     const dateInput =
       document.getElementById(
         'business-date'
       );
-
+ 
     const adventureInput =
       document.getElementById(
         'adventure-sales'
       );
-
+ 
     const videographyInput =
       document.getElementById(
         'videography-sales'
       );
-
+ 
     const restaurantCampingInput =
       document.getElementById(
         'restaurant-camping-sales'
       );
-
+ 
     const footfallInput =
       document.getElementById(
         'total-footfall'
       );
-
+ 
     const totalPreview =
       document.getElementById(
         'total-preview'
       );
-
+ 
     const saveButton =
       document.getElementById(
         'save-button'
       );
-
+ 
     const cancelButton =
       document.getElementById(
         'cancel-button'
       );
-
+ 
     const formTitle =
       document.getElementById(
         'form-title'
       );
-
+ 
     const messageBox =
       document.getElementById(
         'message'
       );
-
+ 
     const recordsBody =
       document.getElementById(
         'records-body'
       );
-
+ 
     const tableLoading =
       document.getElementById(
         'table-loading'
       );
-
+ 
     const emptyState =
       document.getElementById(
         'empty-state'
       );
-
+ 
     const logoutButton =
       document.getElementById(
         'logout-button'
       );
-
+ 
     const todaySales =
       document.getElementById(
         'today-sales'
       );
-
+ 
     const todayFootfall =
       document.getElementById(
         'today-footfall'
       );
-
+ 
     const sevenDaySales =
       document.getElementById(
         'seven-day-sales'
       );
-
+ 
     const duplicateWarning =
       document.getElementById(
         'duplicate-warning'
       );
-
-
+ 
+ 
     /* =======================================================
        STATE
        ======================================================= */
-
+ 
     let editingId = null;
-
+ 
     let records = [];
-
-
+ 
+ 
     /* =======================================================
        DATE HELPERS
        ======================================================= */
-
+ 
     function getLocalDateString() {
-
+ 
       const now = new Date();
-
+ 
       const year =
         now.getFullYear();
-
+ 
       const month =
         String(
           now.getMonth() + 1
         ).padStart(2, '0');
-
+ 
       const day =
         String(
           now.getDate()
         ).padStart(2, '0');
-
+ 
       return `${year}-${month}-${day}`;
-
+ 
     }
-
-
+ 
+ 
     function getDateDaysAgo(days) {
-
+ 
       const date = new Date();
-
+ 
       date.setHours(
         0,
         0,
         0,
         0
       );
-
+ 
       date.setDate(
         date.getDate() - days
       );
-
+ 
       const year =
         date.getFullYear();
-
+ 
       const month =
         String(
           date.getMonth() + 1
         ).padStart(2, '0');
-
+ 
       const day =
         String(
           date.getDate()
         ).padStart(2, '0');
-
+ 
       return `${year}-${month}-${day}`;
-
+ 
     }
-
-
+ 
+ 
     function isWithinLastSevenDays(
       dateString
     ) {
-
+ 
       const today =
         getLocalDateString();
-
+ 
       const oldest =
         getDateDaysAgo(6);
-
+ 
       return (
         dateString >= oldest &&
         dateString <= today
       );
-
+ 
     }
-
-
+ 
+ 
     /* =======================================================
        FORMAT MONEY
        ======================================================= */
-
+ 
     function formatMoney(value) {
-
+ 
       const number =
         Number(value) || 0;
-
+ 
       return (
         'NPR ' +
         number.toLocaleString(
@@ -1625,43 +1625,43 @@ const supabaseClient =
           }
         )
       );
-
+ 
     }
-
-
+ 
+ 
     /* =======================================================
        FORMAT NUMBER
        ======================================================= */
-
+ 
     function formatNumber(value) {
-
+ 
       return (
         Number(value) || 0
       ).toLocaleString(
         'en-NP'
       );
-
+ 
     }
-
-
+ 
+ 
     /* =======================================================
        FORMAT DATE
        ======================================================= */
-
+ 
     function formatDate(
       dateString
     ) {
-
+ 
       if (!dateString) {
         return '-';
       }
-
+ 
       const date =
         new Date(
           dateString +
           'T00:00:00'
         );
-
+ 
       return date.toLocaleDateString(
         'en-GB',
         {
@@ -1671,129 +1671,97 @@ const supabaseClient =
           year: 'numeric'
         }
       );
-
+ 
     }
-
-
+ 
+ 
     /* =======================================================
        CALCULATE TOTAL
        ======================================================= */
-
+ 
     function calculateTotal() {
-
+ 
       const adventure =
         Number(
           adventureInput.value
         ) || 0;
-
+ 
       const videography =
         Number(
           videographyInput.value
         ) || 0;
-
+ 
       const restaurantCamping =
         Number(
           restaurantCampingInput.value
         ) || 0;
-
+ 
       const total =
         adventure +
         videography +
         restaurantCamping;
-
+ 
       totalPreview.textContent =
         formatMoney(total);
-
+ 
       return total;
-
+ 
     }
-
-
+ 
+ 
     adventureInput.addEventListener(
       'input',
       calculateTotal
     );
-
+ 
     videographyInput.addEventListener(
       'input',
       calculateTotal
     );
-
+ 
     restaurantCampingInput.addEventListener(
       'input',
       calculateTotal
     );
-
-
+ 
+ 
     /* =======================================================
        MESSAGE
        ======================================================= */
-
+ 
     function showMessage(
       text,
       type
     ) {
-
+ 
       messageBox.textContent =
         text;
-
+ 
       messageBox.className =
         'message show ' +
         type;
-
+ 
     }
-
-
+ 
+ 
     function clearMessage() {
-
+ 
       messageBox.textContent =
         '';
-
+ 
       messageBox.className =
         'message';
-
+ 
     }
-
+ 
 /* =======================================================
    CHECK LOGIN + VERIFY STAFF ROLE
    ======================================================= */
-
+ 
 async function checkLogin() {
-
+ 
   try {
-
-    /*
-     * Dashboard must only open immediately after
-     * a successful STAFF login.
-     */
-    const freshLogin =
-      sessionStorage.getItem(
-        'suryodaya_fresh_staff_login'
-      );
-
-    if (freshLogin !== 'true') {
-
-      await supabaseClient.auth.signOut({
-        scope: 'local'
-      });
-
-      window.location.replace(
-        'index.html'
-      );
-
-      return false;
-    }
-
-    /*
-     * Consume the fresh-login marker.
-     *
-     * Therefore refreshing dashboard.html
-     * will require login again.
-     */
-    sessionStorage.removeItem(
-      'suryodaya_fresh_staff_login'
-    );
-
+ 
     /*
      * Get current Supabase session.
      */
@@ -1802,47 +1770,47 @@ async function checkLogin() {
       error: sessionError
     } =
       await supabaseClient.auth.getSession();
-
+ 
     if (sessionError) {
-
+ 
       console.error(
         'Session check error:',
         sessionError
       );
-
+ 
       await supabaseClient.auth.signOut({
         scope: 'local'
       });
-
+ 
       window.location.replace(
         'index.html'
       );
-
+ 
       return false;
     }
-
+ 
     if (
       !sessionData ||
       !sessionData.session ||
       !sessionData.session.user
     ) {
-
+ 
       window.location.replace(
         'index.html'
       );
-
+ 
       return false;
     }
-
+ 
     /*
      * =====================================================
      * VERIFY USER ROLE
      * =====================================================
      */
-
+ 
     const userId =
       sessionData.session.user.id;
-
+ 
     const {
       data: roleData,
       error: roleError
@@ -1855,279 +1823,279 @@ async function checkLogin() {
           userId
         )
         .maybeSingle();
-
+ 
     if (roleError) {
-
+ 
       console.error(
         'Role verification error:',
         roleError
       );
-
+ 
       await supabaseClient.auth.signOut({
         scope: 'local'
       });
-
+ 
       window.location.replace(
         'index.html'
       );
-
+ 
       return false;
     }
-
+ 
     /*
      * THIS is the role === 'staff' check
      */
-
+ 
     if (
       !roleData ||
       roleData.role !== 'staff'
     ) {
-
+ 
       console.error(
         'Unauthorized role:',
         roleData
           ? roleData.role
           : 'none'
       );
-
+ 
       await supabaseClient.auth.signOut({
         scope: 'local'
       });
-
+ 
       window.location.replace(
         'index.html'
       );
-
+ 
       return false;
     }
-
+ 
     /*
      * Staff authentication + role confirmed.
      */
     document.body.classList.remove(
       'auth-pending'
     );
-
+ 
     return true;
-
+ 
   } catch (error) {
-
+ 
     console.error(
       'Authentication check failed:',
       error
     );
-
+ 
     try {
-
+ 
       await supabaseClient.auth.signOut({
         scope: 'local'
       });
-
+ 
     } catch (signOutError) {
-
+ 
       console.error(
         'Sign-out error:',
         signOutError
       );
-
+ 
     }
-
+ 
     window.location.replace(
       'index.html'
     );
-
+ 
     return false;
   }
 }
     /* =======================================================
        CHECK EXISTING DATE
        ======================================================= */
-
+ 
     function checkDuplicateDate() {
-
+ 
       if (
         !dateInput.value ||
         editingId
       ) {
-
+ 
         duplicateWarning
           .classList
           .remove('show');
-
+ 
         return;
-
+ 
       }
-
-
+ 
+ 
       const exists =
         records.some(
           function(record) {
-
+ 
             return (
               record.business_date ===
               dateInput.value
             );
-
+ 
           }
         );
-
-
+ 
+ 
       if (exists) {
-
+ 
         duplicateWarning
           .classList
           .add('show');
-
+ 
       } else {
-
+ 
         duplicateWarning
           .classList
           .remove('show');
-
+ 
       }
-
+ 
     }
-
-
+ 
+ 
     dateInput.addEventListener(
       'change',
       checkDuplicateDate
     );
-
-
+ 
+ 
     /* =======================================================
        LOAD LAST 7 DAYS
        ======================================================= */
-
+ 
     async function loadRecords() {
-
+ 
       tableLoading.style.display =
         'block';
-
+ 
       recordsBody.innerHTML =
         '';
-
+ 
       emptyState.style.display =
         'none';
-
-
+ 
+ 
       const oldestDate =
         getDateDaysAgo(6);
-
+ 
       const today =
         getLocalDateString();
-
-
+ 
+ 
       const {
         data,
         error
       } =
         await supabaseClient
-
+ 
           .from(
             'daily_sales'
           )
-
+ 
           .select('*')
-
+ 
           .gte(
             'business_date',
             oldestDate
           )
-
+ 
           .lte(
             'business_date',
             today
           )
-
+ 
           .order(
             'business_date',
             {
               ascending: false
             }
           )
-
+ 
           .order(
             'created_at',
             {
               ascending: false
             }
           );
-
-
+ 
+ 
       tableLoading.style.display =
         'none';
-
-
+ 
+ 
       if (error) {
-
+ 
         console.error(
           'Load records error:',
           error
         );
-
+ 
         showMessage(
           'Unable to load records. Please refresh the page.',
           'error'
         );
-
+ 
         return;
-
+ 
       }
-
-
+ 
+ 
       records =
         data || [];
-
-
+ 
+ 
       updateStats();
-
+ 
       renderGroupedRecords();
-
+ 
       checkDuplicateDate();
-
+ 
     }
-
-
+ 
+ 
     /* =======================================================
        RENDER GROUPED RECORDS
        ======================================================= */
 function renderGroupedRecords() {
   recordsBody.innerHTML = '';
   emptyState.style.display = 'none';
-
+ 
   if (records.length === 0) {
     emptyState.style.display = 'block';
     return;
   }
-
+ 
   /*
    * Group records by business date.
    */
   const grouped = {};
-
+ 
   records.forEach(function(record) {
     const date = record.business_date;
-
+ 
     if (!grouped[date]) {
       grouped[date] = [];
     }
-
+ 
     grouped[date].push(record);
   });
-
+ 
   const dates = Object.keys(grouped)
     .sort()
     .reverse();
-
+ 
   dates.forEach(function(date) {
-
+ 
     const dayRecords = grouped[date];
-
+ 
     let dayAdventure = 0;
     let dayVideography = 0;
     let dayRestaurant = 0;
-
+ 
     /*
      * IMPORTANT:
      * Footfall is a DAILY figure.
@@ -2139,112 +2107,112 @@ function renderGroupedRecords() {
      * for that date.
      */
     let dayFootfall = 0;
-
+ 
     dayRecords.forEach(function(record) {
-
+ 
       dayAdventure +=
         Number(record.adventure_sales) || 0;
-
+ 
       dayVideography +=
         Number(record.videography_sales) || 0;
-
+ 
       dayRestaurant +=
         Number(record.restaurant_camping_sales) || 0;
-
+ 
       const recordFootfall =
         Number(record.total_footfall) || 0;
-
+ 
       if (recordFootfall > dayFootfall) {
         dayFootfall = recordFootfall;
       }
     });
-
+ 
     const daySales =
       dayAdventure +
       dayVideography +
       dayRestaurant;
-
+ 
     const dayGroup =
       document.createElement('div');
-
+ 
     dayGroup.className = 'day-group';
-
+ 
     /* =====================================================
        DAY HEADER
        ===================================================== */
-
+ 
     const dayHeader =
       document.createElement('div');
-
+ 
     dayHeader.className = 'day-header';
-
+ 
     dayHeader.innerHTML = `
       <div>
         <div class="day-title">
           ${formatDate(date)}
         </div>
-
+ 
         <div class="day-subtitle">
           ${dayRecords.length}
           ${dayRecords.length === 1 ? 'entry' : 'entries'}
         </div>
       </div>
-
+ 
       <div class="day-total">
         <div class="day-total-label">
           Daily Sales
         </div>
-
+ 
         <div class="day-total-value">
           ${formatMoney(daySales)}
         </div>
-
+ 
         <div class="day-footfall">
           ${formatNumber(dayFootfall)}
           visitors
         </div>
       </div>
     `;
-
+ 
     dayGroup.appendChild(dayHeader);
-
+ 
     /* =====================================================
        INDIVIDUAL ENTRIES
        ===================================================== */
-
+ 
     dayRecords.forEach(function(record, index) {
-
+ 
       const adventure =
         Number(record.adventure_sales) || 0;
-
+ 
       const videography =
         Number(record.videography_sales) || 0;
-
+ 
       const restaurantCamping =
         Number(record.restaurant_camping_sales) || 0;
-
+ 
       const total =
         adventure +
         videography +
         restaurantCamping;
-
+ 
       const entryRow =
         document.createElement('div');
-
+ 
       entryRow.className = 'entry-row';
-
+ 
       const canEdit =
         isWithinLastSevenDays(
           record.business_date
         );
-
+ 
       entryRow.innerHTML = `
         <div class="entry-top">
-
+ 
           <div class="entry-number">
             Entry ${index + 1}
           </div>
-
+ 
           <button
             type="button"
             class="edit-button"
@@ -2253,61 +2221,61 @@ function renderGroupedRecords() {
           >
             ${canEdit ? 'EDIT' : 'LOCKED'}
           </button>
-
+ 
         </div>
-
+ 
         <div class="entry-grid">
-
+ 
           <div class="entry-item">
             <div class="entry-label">
               Adventure
             </div>
-
+ 
             <div class="entry-value">
               ${formatMoney(adventure)}
             </div>
           </div>
-
+ 
           <div class="entry-item">
             <div class="entry-label">
               Videography
             </div>
-
+ 
             <div class="entry-value">
               ${formatMoney(videography)}
             </div>
           </div>
-
+ 
           <div class="entry-item">
             <div class="entry-label">
               Restaurant/Camping
             </div>
-
+ 
             <div class="entry-value">
               ${formatMoney(restaurantCamping)}
             </div>
           </div>
-
+ 
           <div class="entry-item">
             <div class="entry-label">
               Total Sales
             </div>
-
+ 
             <div class="entry-value sales-total">
               ${formatMoney(total)}
             </div>
           </div>
-
+ 
         </div>
       `;
-
+ 
       dayGroup.appendChild(entryRow);
-
+ 
       const editButton =
         entryRow.querySelector('.edit-button');
-
+ 
       if (editButton && canEdit) {
-
+ 
         editButton.addEventListener(
           'click',
           function() {
@@ -2316,61 +2284,61 @@ function renderGroupedRecords() {
         );
       }
     });
-
+ 
     /* =====================================================
        ADD ANOTHER ENTRY BUTTON
        ===================================================== */
-
+ 
     if (
       isWithinLastSevenDays(date)
     ) {
-
+ 
       const addButton =
         document.createElement('button');
-
+ 
       addButton.type = 'button';
-
+ 
       addButton.className =
         'add-entry-button';
-
+ 
       addButton.textContent =
         '+ ADD ANOTHER ENTRY';
-
+ 
       addButton.addEventListener(
         'click',
         function() {
-
+ 
           startAddingAnotherEntry(
             date,
             dayFootfall
           );
-
+ 
         }
       );
-
+ 
       dayGroup.appendChild(addButton);
     }
-
+ 
     recordsBody.appendChild(dayGroup);
   });
 }
 /* =======================================================
    ADD ANOTHER ENTRY FOR EXISTING DATE
    ======================================================= */
-
+ 
 function startAddingAnotherEntry(
   date,
   existingFootfall
 ) {
-
+ 
   /*
    * Make sure we are not accidentally editing
    * an existing record.
    */
   editingId = null;
-
+ 
   dateInput.value = date;
-
+ 
   /*
    * Keep the existing daily footfall visible.
    * It is stored again with the new row, but the
@@ -2379,39 +2347,39 @@ function startAddingAnotherEntry(
    */
   footfallInput.value =
     existingFootfall || 0;
-
+ 
   /*
    * Start the new sales entry at zero.
    */
   adventureInput.value = 0;
-
+ 
   videographyInput.value = 0;
-
+ 
   restaurantCampingInput.value = 0;
-
+ 
   calculateTotal();
-
+ 
   formTitle.textContent =
     'Add Another Entry';
-
+ 
   saveButton.textContent =
     'SAVE ADDITIONAL ENTRY';
-
+ 
   cancelButton.classList.add(
     'show'
   );
-
+ 
   duplicateWarning.classList.add(
     'show'
   );
-
+ 
   clearMessage();
-
+ 
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
   });
-
+ 
   /*
    * Put the cursor into Adventure Sales
    * so staff can immediately start entering
@@ -2421,80 +2389,80 @@ function startAddingAnotherEntry(
     adventureInput.focus();
   }, 400);
 } 
-
+ 
     /* =======================================================
        UPDATE STAT CARDS
        ======================================================= */
 function updateStats() {
-
+ 
   const today =
     getLocalDateString();
-
+ 
   let todaySalesTotal = 0;
-
+ 
   let todayFootfallTotal = 0;
-
+ 
   let sevenDaySalesTotal = 0;
-
+ 
   /*
    * Group today's records so footfall is counted
    * once for the day, even when there are
    * multiple sales entries.
    */
-
+ 
   const todayRecords =
     records.filter(function(record) {
       return record.business_date === today;
     });
-
+ 
   records.forEach(function(record) {
-
+ 
     const sales =
       (
         Number(record.adventure_sales) || 0
       ) +
-
+ 
       (
         Number(record.videography_sales) || 0
       ) +
-
+ 
       (
         Number(record.restaurant_camping_sales) || 0
       );
-
+ 
     sevenDaySalesTotal += sales;
   });
-
+ 
   /*
    * Today's sales = all entries for today.
    */
-
+ 
   todayRecords.forEach(function(record) {
-
+ 
     const sales =
       (
         Number(record.adventure_sales) || 0
       ) +
-
+ 
       (
         Number(record.videography_sales) || 0
       ) +
-
+ 
       (
         Number(record.restaurant_camping_sales) || 0
       );
-
+ 
     todaySalesTotal += sales;
-
+ 
     /*
      * Footfall is a daily number.
      * Use the highest value rather than
      * adding duplicate entries.
      */
-
+ 
     const footfall =
       Number(record.total_footfall) || 0;
-
+ 
     if (
       footfall > todayFootfallTotal
     ) {
@@ -2502,17 +2470,17 @@ function updateStats() {
         footfall;
     }
   });
-
+ 
   todaySales.textContent =
     formatMoney(
       todaySalesTotal
     );
-
+ 
   todayFootfall.textContent =
     formatNumber(
       todayFootfallTotal
     );
-
+ 
   sevenDaySales.textContent =
     formatMoney(
       sevenDaySalesTotal
@@ -2521,325 +2489,325 @@ function updateStats() {
     /* =======================================================
        START EDITING
        ======================================================= */
-
+ 
     function startEditing(id) {
-
+ 
       const record =
         records.find(
           function(item) {
-
+ 
             return (
               String(item.id) ===
               String(id)
             );
-
+ 
           }
         );
-
-
+ 
+ 
       if (!record) {
         return;
       }
-
-
+ 
+ 
       /*
        * Safety check:
        * Editing is allowed only within
        * the last 7 days.
        */
-
+ 
       if (
         !isWithinLastSevenDays(
           record.business_date
         )
       ) {
-
+ 
         showMessage(
           'This record is older than 7 days and cannot be edited.',
           'error'
         );
-
+ 
         return;
-
+ 
       }
-
-
+ 
+ 
       editingId =
         record.id;
-
-
+ 
+ 
       dateInput.value =
         record.business_date || '';
-
-
+ 
+ 
       adventureInput.value =
         record.adventure_sales || 0;
-
-
+ 
+ 
       videographyInput.value =
         record.videography_sales || 0;
-
-
+ 
+ 
       restaurantCampingInput.value =
         record.restaurant_camping_sales || 0;
-
-
+ 
+ 
       footfallInput.value =
         record.total_footfall || 0;
-
-
+ 
+ 
       calculateTotal();
-
-
+ 
+ 
       formTitle.textContent =
         'Edit Daily Record';
-
-
+ 
+ 
       saveButton.textContent =
         'UPDATE DAILY RECORD';
-
-
+ 
+ 
       cancelButton.classList.add(
         'show'
       );
-
-
+ 
+ 
       duplicateWarning
         .classList
         .remove('show');
-
-
+ 
+ 
       clearMessage();
-
-
+ 
+ 
       window.scrollTo(
         {
           top: 0,
           behavior: 'smooth'
         }
       );
-
+ 
     }
-
-
+ 
+ 
     /* =======================================================
        CANCEL EDIT
        ======================================================= */
-
+ 
     cancelButton.addEventListener(
       'click',
       function() {
-
+ 
         resetForm();
-
+ 
       }
     );
-
-
+ 
+ 
     function resetForm() {
-
+ 
       editingId =
         null;
-
-
+ 
+ 
       salesForm.reset();
-
-
+ 
+ 
       dateInput.value =
         getLocalDateString();
-
-
+ 
+ 
       formTitle.textContent =
         'Add Daily Record';
-
-
+ 
+ 
       saveButton.textContent =
         'SAVE DAILY RECORD';
-
-
+ 
+ 
       cancelButton.classList.remove(
         'show'
       );
-
-
+ 
+ 
       totalPreview.textContent =
         'NPR 0';
-
-
+ 
+ 
       duplicateWarning
         .classList
         .remove('show');
-
-
+ 
+ 
       clearMessage();
-
+ 
     }
-
-
+ 
+ 
     /* =======================================================
        SAVE / UPDATE RECORD
        ======================================================= */
-
+ 
     salesForm.addEventListener(
       'submit',
       async function(event) {
-
+ 
         event.preventDefault();
-
+ 
         clearMessage();
-
-
+ 
+ 
         const businessDate =
           dateInput.value;
-
-
+ 
+ 
         const adventureSales =
           Number(
             adventureInput.value
           ) || 0;
-
-
+ 
+ 
         const videographySales =
           Number(
             videographyInput.value
           ) || 0;
-
-
+ 
+ 
         const restaurantCampingSales =
           Number(
             restaurantCampingInput.value
           ) || 0;
-
-
+ 
+ 
         const totalFootfall =
           Number(
             footfallInput.value
           ) || 0;
-
-
+ 
+ 
         /* ===================================================
            VALIDATION
            =================================================== */
-
+ 
         if (!businessDate) {
-
+ 
           showMessage(
             'Please select a date.',
             'error'
           );
-
+ 
           return;
-
+ 
         }
-
-
+ 
+ 
         /*
          * Staff can only create/edit records
          * for the last 7 days.
          */
-
+ 
         if (
           !isWithinLastSevenDays(
             businessDate
           )
         ) {
-
+ 
           showMessage(
             'Staff can only enter or edit records from today and the previous 6 days.',
             'error'
           );
-
+ 
           return;
-
+ 
         }
-
-
+ 
+ 
         if (
           adventureSales < 0 ||
           videographySales < 0 ||
           restaurantCampingSales < 0 ||
           totalFootfall < 0
         ) {
-
+ 
           showMessage(
             'Values cannot be negative.',
             'error'
           );
-
+ 
           return;
-
+ 
         }
-
-
+ 
+ 
         const payload = {
-
+ 
           business_date:
             businessDate,
-
+ 
           adventure_sales:
             adventureSales,
-
+ 
           videography_sales:
             videographySales,
-
+ 
           restaurant_camping_sales:
             restaurantCampingSales,
-
+ 
           total_footfall:
             totalFootfall
-
+ 
         };
-
-
+ 
+ 
         saveButton.disabled =
           true;
-
-
+ 
+ 
         saveButton.textContent =
           editingId
             ? 'UPDATING...'
             : 'SAVING...';
-
-
+ 
+ 
         try {
-
+ 
           let result;
-
-
+ 
+ 
           /* ===============================================
              UPDATE EXISTING RECORD
              =============================================== */
-
+ 
           if (editingId) {
-
+ 
             result =
               await supabaseClient
-
+ 
                 .from(
                   'daily_sales'
                 )
-
+ 
                 .update(
                   payload
                 )
-
+ 
                 .eq(
                   'id',
                   editingId
                 )
-
+ 
                 .select();
-
-
+ 
+ 
           }
-
-
+ 
+ 
           /* ===============================================
              INSERT NEW RECORD
              =============================================== */
-
+ 
           else {
-
+ 
             /*
              * IMPORTANT:
              *
@@ -2849,171 +2817,171 @@ function updateStats() {
              * Multiple entries for the same
              * date are allowed.
              */
-
+ 
             result =
               await supabaseClient
-
+ 
                 .from(
                   'daily_sales'
                 )
-
+ 
                 .insert(
                   payload
                 )
-
+ 
                 .select();
-
+ 
           }
-
-
+ 
+ 
           if (result.error) {
-
+ 
             throw result.error;
-
+ 
           }
-
-
+ 
+ 
           /* ===============================================
              SUCCESS
              =============================================== */
-
+ 
           showMessage(
-
+ 
             editingId
-
+ 
               ? 'Daily record updated successfully.'
-
+ 
               : 'Daily record saved successfully.',
-
+ 
             'success'
-
+ 
           );
-
-
+ 
+ 
           resetForm();
-
-
+ 
+ 
           await loadRecords();
-
-
+ 
+ 
         }
-
-
+ 
+ 
         catch (error) {
-
+ 
           console.error(
             'Save/update error:',
             error
           );
-
-
+ 
+ 
           showMessage(
-
+ 
             error.message
               ? 'Unable to save: ' +
                 error.message
-
+ 
               : 'Unable to save the record. Please try again.',
-
+ 
             'error'
-
+ 
           );
-
+ 
         }
-
-
+ 
+ 
         finally {
-
+ 
           saveButton.disabled =
             false;
-
-
+ 
+ 
           saveButton.textContent =
             editingId
               ? 'UPDATE DAILY RECORD'
               : 'SAVE DAILY RECORD';
-
+ 
         }
-
+ 
       }
     );
-
-
+ 
+ 
     /* =======================================================
        LOGOUT
        ======================================================= */
-
+ 
     logoutButton.addEventListener(
   'click',
   async function () {
-
+ 
     try {
-
+ 
       /*
        * Completely sign out from Supabase.
        */
       await supabaseClient.auth.signOut({
         scope: 'local'
       });
-
+ 
     } catch (error) {
-
+ 
       console.error(
         'Logout error:',
         error
       );
-
+ 
     }
-
+ 
     /*
      * Remove ALL portal/session markers.
      */
     sessionStorage.removeItem(
       'suryodaya_fresh_staff_login'
     );
-
+ 
     sessionStorage.removeItem(
       'suryodaya_fresh_management_login'
     );
-
+ 
     sessionStorage.removeItem(
       'suryodaya_authenticated_role'
     );
-
+ 
     /*
      * Remove authentication storage.
      */
     localStorage.removeItem(
       'suryodaya-auth'
     );
-
+ 
     localStorage.removeItem(
       'suryodaya-staff-auth'
     );
-
+ 
     /*
      * Return to authentication page.
      */
     window.location.replace(
       'index.html'
     );
-
+ 
   }
 );
-
-
+ 
+ 
     /* =======================================================
        AUTH STATE CHANGE
        ======================================================= */
-
+ 
     supabaseClient.auth.onAuthStateChange(
       function(event, session) {
-
+ 
         if (
           event === 'SIGNED_OUT' ||
           !session
         ) {
-
+ 
           /*
            * Do not redirect immediately during
            * the initial page load.
@@ -3021,90 +2989,90 @@ function updateStats() {
            * initializeDashboard() handles
            * the initial authentication check.
            */
-
+ 
           return;
-
+ 
         }
-
+ 
       }
     );
-
-
+ 
+ 
     /* =======================================================
        INITIALIZE
        ======================================================= */
-
+ 
     async function initializeDashboard() {
-
+ 
       const loggedIn =
         await checkLogin();
-
-
+ 
+ 
       if (!loggedIn) {
-
+ 
         return;
-
+ 
       }
-
-
+ 
+ 
       /* Set date to today */
-
+ 
       dateInput.value =
         getLocalDateString();
-
-
+ 
+ 
       /*
        * Restrict date picker to
        * the last 7 days.
        */
-
+ 
       dateInput.min =
         getDateDaysAgo(6);
-
-
+ 
+ 
       dateInput.max =
         getLocalDateString();
-
-
+ 
+ 
       /* Calculate initial total */
-
+ 
       calculateTotal();
-
-
+ 
+ 
       /* Load last 7 days */
-
+ 
       await loadRecords();
-
+ 
     }
-
-
+ 
+ 
     /* =======================================================
        START
        ======================================================= */
-
+ 
     initializeDashboard();
     
 /* =======================================================
    BROWSER BACK/FORWARD CACHE PROTECTION
    ======================================================= */
-
+ 
 window.addEventListener(
   'pageshow',
   async function(event) {
-
+ 
     if (event.persisted) {
-
+ 
       await supabaseClient.auth.signOut();
-
+ 
       window.location.replace(
         'index.html'
       );
     }
-
+ 
   }
 );
-
+ 
 </script>
-
+ 
 </body>
 </html>

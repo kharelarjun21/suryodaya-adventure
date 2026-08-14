@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Invoice History | Suryodaya Adventures</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f7f4;color:#173f35;font-family:Arial,Helvetica,sans-serif}
+.header{background:#173f35;color:#fff;padding:15px 22px}.head{max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}.brand{display:flex;gap:12px;align-items:center}.brand img{width:48px;height:48px;object-fit:contain;background:#fff;border-radius:50%;padding:4px}.brand h1{font:700 21px Georgia,serif;margin:0}.brand p{font-size:11px;margin:3px 0 0;opacity:.75}.links{display:flex;gap:8px}.back{color:#fff;text-decoration:none;border:1px solid #ffffff55;border-radius:7px;padding:9px 13px;font-size:12px;font-weight:700}
+.container{width:min(1180px,calc(100% - 32px));margin:auto}.main{padding:28px 0 50px}.eyebrow{color:#e85d04;font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase}.heading{margin-bottom:20px}.heading h2{font:700 30px Georgia,serif;margin:5px 0}.heading p{color:#64746e;font-size:13px;margin:0}
+.card{background:#fff;border:1px solid #dde6e1;border-radius:14px;box-shadow:0 4px 16px #173f350d;overflow:hidden}.toolbar{padding:16px;border-bottom:1px solid #dde6e1;display:grid;grid-template-columns:1fr 170px 150px;gap:10px}.toolbar input,.toolbar select{width:100%;height:42px;border:1px solid #dde6e1;border-radius:8px;padding:0 10px;font-size:13px;color:#173f35;background:#fff}.toolbar input:focus,.toolbar select:focus{outline:0;border-color:#1f5745;box-shadow:0 0 0 3px #1f57451c}
+.notice{display:none;margin-bottom:14px;padding:10px 13px;border-radius:8px;font-size:12px}.notice.show{display:block}.ok{background:#eaf7f0;border:1px solid #bfe3cd;color:#16794a}.err{background:#fdecec;border:1px solid #f5c7c4;color:#b42318}
+.table-wrap{overflow-x:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th{background:#f4f7f4;color:#64746e;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:12px 14px}.table td{padding:13px 14px;border-top:1px solid #edf1ee;font-size:12px;vertical-align:middle}.invoice-no{font-weight:900;color:#173f35}.amount{font-weight:900;color:#e85d04}.status{display:inline-block;padding:5px 8px;border-radius:999px;font-size:9px;font-weight:900;text-transform:uppercase}.issued{background:#eaf7f0;color:#16794a}.cancelled{background:#fdecec;color:#b42318}.action{border:1px solid #dde6e1;background:#fff;color:#173f35;border-radius:6px;padding:7px 9px;font-size:10px;font-weight:800;cursor:pointer}.action:hover{background:#173f35;color:#fff}.empty,.loading{text-align:center;padding:45px 20px;color:#64746e;font-size:12px}.footer-note{padding:12px 16px;border-top:1px solid #dde6e1;background:#fafcfa;color:#64746e;font-size:10px;line-height:1.5}
+@media(max-width:700px){.toolbar{grid-template-columns:1fr}.heading h2{font-size:26px}.links .back:last-child{display:none}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="head">
+    <div class="brand">
+      <img src="../Abhiyan%20Group%20Logo.png" alt="Abhiyan Group">
+      <div><h1>Suryodaya Adventures</h1><p>Staff Invoice History</p></div>
+    </div>
+    <div class="links">
+      <a class="back" href="invoice.html">+ Generate Invoice</a>
+      <a class="back" href="dashboard.html">← Dashboard</a>
+    </div>
+  </div>
+</header>
+
+<main class="main"><div class="container">
+  <div class="heading">
+    <div class="eyebrow">Staff Portal</div>
+    <h2>Invoice History</h2>
+    <p>Issued invoices are stored separately from daily sales records. PDFs are generated when needed.</p>
+  </div>
+
+  <div id="notice" class="notice"></div>
+
+  <section class="card">
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Search invoice number or customer name">
+      <input id="from" type="date" aria-label="From date">
+      <input id="to" type="date" aria-label="To date">
+    </div>
+
+    <div id="loading" class="loading">Loading invoice history...</div>
+    <div id="empty" class="empty" style="display:none">No invoices found.</div>
+
+    <div class="table-wrap" id="tableWrap" style="display:none">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Invoice No.</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>PDF</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+
+    <div class="footer-note">
+      Invoice records are stored in the separate <strong>invoices</strong> table. This page does not read from or modify <strong>daily_sales</strong>.
+    </div>
+  </section>
+</div></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
+<script>
+const SUPABASE_URL="https://mvvdfwgjcyayopcsgwvy.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
+  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storage:window.localStorage,storageKey:"suryodaya-auth"}
+});
+const $=id=>document.getElementById(id);
+const money=n=>"NPR "+(Number(n)||0).toLocaleString("en-NP",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+let allInvoices=[];
+
+async function requireStaff(){
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error||!data?.session?.user){window.location.replace("index.html");return null;}
+  const {data:roleData,error:roleError}=await supabaseClient.from("user_roles").select("role").eq("user_id",data.session.user.id).maybeSingle();
+  if(roleError||!roleData||roleData.role!=="staff"){
+    await supabaseClient.auth.signOut({scope:"local"});
+    window.location.replace("index.html");
+    return null;
+  }
+  return data.session.user;
+}
+
+function formatDate(value){
+  if(!value)return "-";
+  return new Date(value+"T00:00:00").toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+}
+
+function showNotice(text,type){
+  $("notice").textContent=text;
+  $("notice").className="notice show "+type;
+}
+
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[char]));
+}
+
+function filteredInvoices(){
+  const term=$("search").value.trim().toLowerCase();
+  const from=$("from").value;
+  const to=$("to").value;
+  return allInvoices.filter(row=>{
+    const text=(row.invoice_number+" "+row.customer_name).toLowerCase();
+    if(term&&!text.includes(term))return false;
+    if(from&&row.business_date<from)return false;
+    if(to&&row.business_date>to)return false;
+    return true;
+  });
+}
+
+function render(){
+  const rows=filteredInvoices();
+  $("rows").innerHTML="";
+  $("tableWrap").style.display=rows.length?"block":"none";
+  $("empty").style.display=rows.length?"none":"block";
+
+  rows.forEach(row=>{
+    const tr=document.createElement("tr");
+    const statusClass=row.status==="cancelled"?"cancelled":"issued";
+    tr.innerHTML=`
+      <td class="invoice-no">${escapeHtml(row.invoice_number)}</td>
+      <td>${formatDate(row.business_date)}</td>
+      <td>${escapeHtml(row.customer_name)}</td>
+      <td class="amount">${money(row.total_amount)}</td>
+      <td>${escapeHtml(row.payment_method)}</td>
+      <td><span class="status ${statusClass}">${escapeHtml(row.status)}</span></td>
+      <td><button class="action" type="button">VIEW / PDF</button></td>
+    `;
+    tr.querySelector(".action").addEventListener("click",()=>downloadPDF(row));
+    $("rows").appendChild(tr);
+  });
+}
+
+async function loadLogo(){
+  return new Promise(resolve=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src="../Abhiyan%20Group%20Logo.png";});
+}
+
+async function buildPDF(row){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:"mm",format:"a4"});
+  const green=[23,63,53],orange=[232,93,4];
+  const items=Array.isArray(row.items)?row.items:[];
+  const logo=await loadLogo();
+  if(logo){doc.addImage(logo,"PNG",20,10,18,18);}
+
+  doc.setTextColor(...green);
+  doc.setFont("helvetica","bold");doc.setFontSize(18);
+  doc.text("Abhiyan Group Pvt. Ltd.",42,20);
+  doc.setFontSize(10);doc.text("Suryodaya Adventures",42,26);
+  doc.setFont("helvetica","normal");doc.setFontSize(8);
+  doc.text("Ward No. 08, Shanti Chowk, Suryodaya Municipality, Ilam, Nepal",42,31);
+  doc.text("PAN: 609903667 | Inland Revenue Office / Taxpayer Service Office, Ilam",42,35);
+
+  doc.setFont("helvetica","bold");doc.setFontSize(15);doc.text("INVOICE",190,20,{align:"right"});
+  doc.setFont("helvetica","normal");doc.setFontSize(9);
+  doc.text("Invoice No: "+row.invoice_number,190,27,{align:"right"});
+  doc.text("Transaction / Issue Date: "+row.business_date,190,32,{align:"right"});
+  doc.line(20,40,190,40);
+
+  doc.setFont("helvetica","bold");doc.text("Customer",20,48);
+  doc.setFont("helvetica","normal");doc.setFontSize(9);doc.text(row.customer_name||"Customer",20,54);
+  let yCustomer=59;
+  if(row.customer_address){doc.text("Address: "+row.customer_address,20,yCustomer);yCustomer+=5;}
+  if(row.customer_pan){doc.text("PAN Number: "+row.customer_pan,20,yCustomer);yCustomer+=5;}
+  if(row.customer_phone){doc.text("Phone: "+row.customer_phone,20,yCustomer);yCustomer+=5;}
+
+  const tableRows=items.map((item,i)=>[i+1,item.description,item.quantity,Number(item.unit_price||0).toFixed(2),Number(item.total||0).toFixed(2)]);
+  doc.autoTable({
+    startY:Math.max(76,yCustomer+7),
+    head:[["S.N.","Details","Quantity","Per Unit (NPR)","Total (NPR)"]],
+    body:tableRows,
+    theme:"grid",
+    headStyles:{fillColor:green,textColor:255},
+    styles:{fontSize:9,cellPadding:3},
+    columnStyles:{0:{halign:"right"},2:{halign:"right"},3:{halign:"right"},4:{halign:"right"}}
+  });
+
+  let y=doc.lastAutoTable.finalY+9;
+  doc.setFontSize(9);
+  doc.text("Total Amount",150,y,{align:"right"});doc.text(Number(row.subtotal||0).toFixed(2),190,y,{align:"right"});y+=6;
+  doc.text("Discount",150,y,{align:"right"});doc.text(Number(row.discount||0).toFixed(2),190,y,{align:"right"});y+=9;
+  doc.setTextColor(...orange);doc.setFont("helvetica","bold");doc.setFontSize(12);
+  doc.text("Net / Grand Total (NPR)",150,y,{align:"right"});doc.text(Number(row.total_amount||0).toFixed(2),190,y,{align:"right"});
+
+  doc.setTextColor(...green);doc.setFont("helvetica","normal");doc.setFontSize(9);
+  doc.text("Payment Method: "+(row.payment_method||"Cash"),20,y+12);
+  doc.setTextColor(90,90,90);doc.setFontSize(8);
+  doc.text("Seller: Abhiyan Group Pvt. Ltd. | Trade name: Suryodaya Adventures | PAN 609903667",20,267);
+  doc.text("This is a system-generated invoice and does not require a physical signature.",20,273);
+
+  if(row.status==="cancelled"){
+    doc.setTextColor(180,35,24);doc.setFont("helvetica","bold");doc.setFontSize(18);
+    doc.text("CANCELLED",105,145,{align:"center",angle:0});
+  }
+  return doc;
+}
+
+async function downloadPDF(row){
+  (await buildPDF(row)).save(row.invoice_number+".pdf");
+}
+
+async function loadInvoices(){
+  $("loading").style.display="block";
+  $("tableWrap").style.display="none";
+  $("empty").style.display="none";
+
+  const {data,error}=await supabaseClient.from("invoices")
+    .select("id,invoice_number,business_date,customer_name,customer_pan,customer_address,customer_phone,items,subtotal,discount,total_amount,payment_method,status,created_at")
+    .order("created_at",{ascending:false})
+    .limit(500);
+
+  $("loading").style.display="none";
+
+  if(error){
+    console.error(error);
+    showNotice("Unable to load invoice history: "+(error.message||"Unknown error"),"err");
+    $("empty").style.display="block";
+    $("empty").textContent="Invoice history could not be loaded.";
+    return;
+  }
+
+  allInvoices=data||[];
+  render();
+}
+
+$("search").addEventListener("input",render);
+$("from").addEventListener("change",render);
+$("to").addEventListener("change",render);
+
+(async function init(){
+  const user=await requireStaff();
+  if(!user)return;
+  await loadInvoices();
+})();
+</script>
+</body>
+</html>

@@ -616,6 +616,12 @@
        CREATE SUPABASE CLIENT
        ======================================================= */
 
+const SUPABASE_URL =
+  'https://mvvdfwgjcyayopcsgwvy.supabase.co';
+
+const SUPABASE_PUBLISHABLE_KEY =
+  'sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4';
+
 const AUTH_STORAGE_KEY =
   'suryodaya-auth';
 
@@ -649,32 +655,54 @@ async function clearPreviousAuthentication() {
   } catch (error) {
 
     console.warn(
-      'Previous session cleanup:',
+      'Previous authentication cleanup:',
       error
     );
 
   }
 
   /*
-   * Remove old authentication keys used
-   * by previous versions of the application.
+   * Remove authentication keys used
+   * by previous versions.
    */
-
-  localStorage.removeItem(
-    'suryodaya-staff-auth'
-  );
 
   localStorage.removeItem(
     'suryodaya-auth'
   );
 
+  localStorage.removeItem(
+    'suryodaya-staff-auth'
+  );
+
+  /*
+   * Remove portal routing markers.
+   */
+
   sessionStorage.removeItem(
     'suryodaya_fresh_staff_login'
   );
 
+  sessionStorage.removeItem(
+    'suryodaya_fresh_management_login'
+  );
+
+  sessionStorage.removeItem(
+    'suryodaya_authenticated_role'
+  );
+
 }
     
-clearPreviousAuthentication();
+async function initializeLoginPage() {
+
+  loginButton.disabled = true;
+
+  await clearPreviousAuthentication();
+
+  loginButton.disabled = false;
+
+}
+
+initializeLoginPage();
     /* =======================================================
        ELEMENTS
        ======================================================= */
@@ -790,24 +818,95 @@ async function getUserRole(userId) {
        ROUTE USER BASED ON ROLE
        ======================================================= */
 
-    async function routeUser(session) {
+async function routeUser(session) {
 
-      if (
-        !session ||
-        !session.user
-      ) {
+  if (
+    !session ||
+    !session.user
+  ) {
 
-        throw new Error(
-          'No authenticated session.'
-        );
+    throw new Error(
+      'No authenticated user found.'
+    );
 
-      }
+  }
 
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from('user_roles')
+      .select('role')
+      .eq(
+        'user_id',
+        session.user.id
+      )
+      .maybeSingle();
 
-      const role =
-        await getUserRole(
-          session.user.id
-        );
+  if (error) {
+    throw error;
+  }
+
+  if (!data) {
+
+    throw new Error(
+      'No role assigned to this account.'
+    );
+
+  }
+
+  if (
+    data.role ===
+    'management'
+  ) {
+
+    sessionStorage.setItem(
+      'suryodaya_fresh_management_login',
+      'true'
+    );
+
+    sessionStorage.setItem(
+      'suryodaya_authenticated_role',
+      'management'
+    );
+
+    window.location.replace(
+      'management.html'
+    );
+
+    return;
+
+  }
+
+  if (
+    data.role ===
+    'staff'
+  ) {
+
+    sessionStorage.setItem(
+      'suryodaya_fresh_staff_login',
+      'true'
+    );
+
+    sessionStorage.setItem(
+      'suryodaya_authenticated_role',
+      'staff'
+    );
+
+    window.location.replace(
+      'dashboard.html'
+    );
+
+    return;
+
+  }
+
+  throw new Error(
+    'Invalid user role.'
+  );
+
+}
 
 
       /* -----------------------------------------------------
@@ -873,82 +972,7 @@ async function getUserRole(userId) {
     }
 
 
-    /* =======================================================
-       CHECK EXISTING LOGIN SESSION
-       ======================================================= */
-
-    async function checkExistingSession() {
-
-      try {
-
-        const {
-          data: {
-            session
-          }
-        } =
-          await supabaseClient.auth.getSession();
-
-
-        if (!session) {
-
-          return;
-
-        }
-
-
-        /*
-         * A valid existing session exists.
-         *
-         * Do not automatically assume Staff.
-         *
-         * Look up the actual role and route
-         * accordingly.
-         */
-
-        await routeUser(session);
-
-      } catch (error) {
-
-        console.error(
-          'Existing session / role check error:',
-          error
-        );
-
-
-        /*
-         * If a session exists but the account
-         * has no valid role, remove the session.
-         */
-
-        try {
-
-          await supabaseClient.auth.signOut();
-
-        } catch (signOutError) {
-
-          console.error(
-            'Sign-out error:',
-            signOutError
-          );
-
-        }
-
-
-        showMessage(
-          'Your account does not have valid portal access. Please contact management.',
-          'error'
-        );
-
-      }
-
-    }
-
-
-    /*
-     * Run session check after the page has loaded.
-     */
-
-    checkExistingSession();
+    
 
 /* =======================================================
    NORMALIZE LOGIN INPUT
@@ -996,165 +1020,6 @@ function getSupabaseLoginEmail(loginInput) {
        LOGIN
        ======================================================= */
 
-    loginForm.addEventListener(
-  'submit',
-  async function (event) {
-
-    event.preventDefault();
-
-    clearMessage();
-
-    loginButton.disabled = true;
-
-    loginButton.textContent =
-      'AUTHENTICATING...';
-
-    try {
-
-      const email =
-        emailInput.value
-          .trim()
-          .toLowerCase();
-
-      const password =
-        passwordInput.value;
-
-      if (!email || !password) {
-
-        throw new Error(
-          'Please enter your User ID/email and password.'
-        );
-
-      }
-
-
-      /*
-       * IMPORTANT:
-       *
-       * Remove any previous session before
-       * starting a new explicit login.
-       */
-
-      await supabaseClient.auth.signOut({
-        scope: 'local'
-      });
-
-
-      /*
-       * Explicit login.
-       */
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      if (
-        !data ||
-        !data.session ||
-        !data.user
-      ) {
-
-        throw new Error(
-          'Login succeeded but no authenticated session was created.'
-        );
-
-      }
-
-
-      /*
-       * Get the role belonging to THIS
-       * authenticated user.
-       */
-
-      const role =
-        await getUserRole(
-          data.user.id
-        );
-
-
-      /*
-       * STAFF
-       */
-
-      if (role === 'staff') {
-
-        sessionStorage.setItem(
-          'suryodaya_fresh_staff_login',
-          'true'
-        );
-
-        sessionStorage.setItem(
-          'suryodaya_authenticated_role',
-          'staff'
-        );
-
-        window.location.replace(
-          'dashboard.html'
-        );
-
-        return;
-      }
-
-
-      /*
-       * MANAGEMENT
-       */
-
-      if (role === 'management') {
-
-        sessionStorage.setItem(
-          'suryodaya_authenticated_role',
-          'management'
-        );
-
-        window.location.replace(
-          'management.html'
-        );
-
-        return;
-      }
-
-
-      /*
-       * Unknown role
-       */
-
-      await supabaseClient.auth.signOut({
-        scope: 'local'
-      });
-
-      throw new Error(
-        'This account does not have a valid staff or management role.'
-      );
-
-    }
-
-    catch (error) {
-
-      console.error(
-        'Login error:',
-        error
-      );
-
-      showMessage(
-        error.message ||
-        'Unable to login. Please check your credentials.',
-        'error'
-      );
-
-    }
-
     finally {
 
       loginButton.disabled = false;
@@ -1168,186 +1033,129 @@ function getSupabaseLoginEmail(loginInput) {
 );
 
 
-/* ---------------------------------------------------
-   BASIC VALIDATION
-   --------------------------------------------------- */
+loginForm.addEventListener(
+  'submit',
+  async function (event) {
 
-if (!loginInput || !password) {
+    event.preventDefault();
 
-  showMessage(
-    'Please enter your User ID and password.',
-    'error'
-  );
+    const email =
+      emailInput.value.trim();
 
-  return;
+    const password =
+      passwordInput.value;
 
-}
+    if (!email || !password) {
 
+      showMessage(
+        'Please enter your email and password.',
+        'error'
+      );
 
-/* ---------------------------------------------------
-   CONVERT USER ID TO SUPABASE EMAIL
-   --------------------------------------------------- */
+      return;
+    }
 
-const email =
-  getSupabaseLoginEmail(loginInput);
+    loginButton.disabled = true;
 
+    loginButton.textContent =
+      'SIGNING IN...';
 
-if (!email) {
+    try {
 
-  showMessage(
-    'Please enter Staff or a valid email address.',
-    'error'
-  );
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
 
-  return;
+      if (error) {
 
-}
+        console.error(
+          'Login error:',
+          error
+        );
 
+        showMessage(
+          'Login failed. Please check your User ID and password.',
+          'error'
+        );
 
-
-        /* ---------------------------------------------------
-           DISABLE LOGIN BUTTON
-           --------------------------------------------------- */
-
-        loginButton.disabled = true;
+        loginButton.disabled = false;
 
         loginButton.textContent =
-          'SIGNING IN...';
+          'LOGIN';
 
+        return;
+      }
 
-        try {
+      if (
+        data &&
+        data.session
+      ) {
 
-          /* -------------------------------------------------
-             SUPABASE AUTHENTICATION
-             ------------------------------------------------- */
+        showMessage(
+          'Login successful. Checking access...',
+          'success'
+        );
 
-          const {
-            data,
-            error
-          } =
-            await supabaseClient.auth.signInWithPassword({
+        loginButton.textContent =
+          'OPENING...';
 
-              email: email,
+        await routeUser(
+          data.session
+        );
 
-              password: password
+      } else {
 
-            });
-
-
-          /* -------------------------------------------------
-             LOGIN FAILED
-             ------------------------------------------------- */
-
-          if (error) {
-
-            console.error(
-              'Login error:',
-              error
-            );
-
-
-            showMessage(
-              'Login failed. Please check your User ID and password.',
-              'error'
-            );
-
-
-            loginButton.disabled = false;
-
-            loginButton.textContent =
-              'LOGIN';
-
-            return;
-
-          }
-
-
-          /* -------------------------------------------------
-             LOGIN SUCCESSFUL
-             ------------------------------------------------- */
-
-          if (
-            data &&
-            data.session
-          ) {
-
-            showMessage(
-              'Login successful. Checking access...',
-              'success'
-            );
-
-
-            loginButton.textContent =
-              'OPENING...';
-
-
-            /*
-             * IMPORTANT:
-             *
-             * We do NOT decide Staff vs Management
-             * from the email entered into the form.
-             *
-             * We use the authenticated Supabase user's
-             * UUID and look up its role in user_roles.
-             */
-
-            await routeUser(
-              data.session
-            );
-
-          } else {
-
-            throw new Error(
-              'Authentication succeeded but no session was returned.'
-            );
-
-          }
-
-        } catch (error) {
-
-          console.error(
-            'Unexpected login / role error:',
-            error
-          );
-
-
-          /*
-           * If role lookup failed after authentication,
-           * sign the user out so an authenticated account
-           * without a valid role cannot remain logged in.
-           */
-
-          try {
-
-            await supabaseClient.auth.signOut();
-
-          } catch (signOutError) {
-
-            console.error(
-              'Sign-out error:',
-              signOutError
-            );
-
-          }
-
-
-showMessage(
-  'Access verification failed: ' +
-  (error.message || 'Unknown error'),
-  'error'
-);
-
-
-          loginButton.disabled = false;
-
-          loginButton.textContent =
-            'LOGIN';
-
-        }
+        throw new Error(
+          'Authentication succeeded but no session was returned.'
+        );
 
       }
-    );
-getSession()
+
+    } catch (error) {
+
+      console.error(
+        'Unexpected login / role error:',
+        error
+      );
+
+      try {
+
+        await supabaseClient.auth.signOut({
+          scope: 'local'
+        });
+
+      } catch (signOutError) {
+
+        console.error(
+          'Sign-out error:',
+          signOutError
+        );
+
+      }
+
+      showMessage(
+        'Access verification failed: ' +
+        (
+          error.message ||
+          'Unknown error'
+        ),
+        'error'
+      );
+
+      loginButton.disabled = false;
+
+      loginButton.textContent =
+        'LOGIN';
+
+    }
+
+  }
+);
   </script>
 
 </body>

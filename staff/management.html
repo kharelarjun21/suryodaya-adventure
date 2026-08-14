@@ -1990,31 +1990,23 @@
        SUPABASE CLIENT
        ======================================================= */
 
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY,
-        {
-          auth: {
+const AUTH_STORAGE_KEY =
+  'suryodaya-auth';
 
-            persistSession:
-              true,
-
-            autoRefreshToken:
-              true,
-
-            detectSessionInUrl:
-              false,
-
-            storage:
-              window.localStorage,
-
-            storageKey:
-              AUTH_STORAGE_KEY
-
-          }
-        }
-      );
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: false,
+        storage: window.localStorage,
+        storageKey: AUTH_STORAGE_KEY
+      }
+    }
+  );
 
 
 
@@ -3026,227 +3018,248 @@
 
     async function loadSales() {
 
-      if (isRedirecting) {
-        return;
-      }
+  clearMessage();
+
+  loading.style.display =
+    'block';
+
+  dashboard.style.display =
+    'none';
+
+  try {
+
+    /*
+     * =====================================================
+     * 1. GET CURRENT SUPABASE SESSION
+     * =====================================================
+     */
+
+    const {
+      data,
+      error: sessionError
+    } =
+      await supabaseClient.auth.getSession();
 
 
-      clearMessage();
+    if (sessionError) {
+      throw sessionError;
+    }
 
 
-      dashboard.style.display =
-        'none';
+    const session =
+      data?.session;
 
 
-      loading.style.display =
-        'block';
+    /*
+     * =====================================================
+     * 2. NO SESSION = BACK TO LOGIN
+     * =====================================================
+     */
+
+    if (
+      !session ||
+      !session.user
+    ) {
+
+      window.location.replace(
+        'index.html'
+      );
+
+      return;
+    }
 
 
-      loadingText.textContent =
-        'Verifying management access...';
+    /*
+     * =====================================================
+     * 3. CHECK ROLE FOR THIS USER
+     * =====================================================
+     */
+
+    const {
+      data: roleData,
+      error: roleError
+    } =
+      await supabaseClient
+        .from('user_roles')
+        .select('role')
+        .eq(
+          'user_id',
+          session.user.id
+        )
+        .maybeSingle();
 
 
-      try {
+    if (roleError) {
+      throw roleError;
+    }
 
 
-        /*
-         * Get current session.
-         */
+    /*
+     * =====================================================
+     * 4. MANAGEMENT ONLY
+     * =====================================================
+     */
 
-        const {
-          data:
-            {
-              session
-            }
-        } =
-          await supabaseClient
-            .auth
-            .getSession();
+    if (
+      !roleData ||
+      roleData.role !== 'management'
+    ) {
 
+      /*
+       * This user is authenticated but
+       * is NOT management.
+       *
+       * Completely remove the session.
+       */
 
-        /*
-         * No session.
-         */
-
-        if (
-          !session ||
-          !session.user
-        ) {
-
-          redirectToLogin();
-
-          return;
-
-        }
+      await supabaseClient.auth.signOut({
+        scope: 'local'
+      });
 
 
-        /*
-         * Verify role.
-         */
+      localStorage.removeItem(
+        'suryodaya-auth'
+      );
 
-        const authorized =
-          await verifyManagement(
-            session
-          );
-
-
-        if (!authorized) {
-          return;
-        }
+      sessionStorage.removeItem(
+        'suryodaya_authenticated_role'
+      );
 
 
-        /*
-         * Load ALL sales.
-         */
+      window.location.replace(
+        'index.html'
+      );
 
-        loadingText.textContent =
-          'Loading complete sales history...';
-
-
-        allSales =
-          await loadAllSales();
+      return;
+    }
 
 
-        /*
-         * Detect actual database columns.
-         */
+    /*
+     * =====================================================
+     * 5. LOAD ALL SALES
+     * =====================================================
+     */
 
-        detectColumns();
-
-
-        console.log(
-          'Sales records loaded:',
-          allSales.length
+    const {
+      data: salesData,
+      error: salesError
+    } =
+      await supabaseClient
+        .from('daily_sales')
+        .select('*')
+        .order(
+          'created_at',
+          {
+            ascending: false
+          }
         );
 
 
-        /*
-         * IMPORTANT:
-         *
-         * Do NOT throw an error merely
-         * because the table is empty.
-         */
-
-        if (
-          allSales.length === 0
-        ) {
-
-          dateColumn =
-            null;
-
-          amountColumn =
-            null;
-
-          footfallColumn =
-            null;
-
-          renderEmptyDashboard();
-
-          loading.style.display =
-            'none';
-
-          dashboard.style.display =
-            'block';
-
-          initialLoadComplete =
-            true;
-
-          return;
-
-        }
+    if (salesError) {
+      throw salesError;
+    }
 
 
-        /*
-         * Date is required for monthly
-         * reporting.
-         */
-
-        if (!dateColumn) {
-
-          /*
-           * Instead of killing the whole
-           * dashboard, show the actual
-           * available columns in console.
-           */
-
-          console.error(
-            'No date column detected.',
-            Object.keys(
-              allSales[0]
-            )
-          );
+    allSales =
+      Array.isArray(salesData)
+        ? salesData
+        : [];
 
 
-          throw new Error(
-            'The daily_sales table does not contain a recognized date column. Check the browser console for the actual column names.'
-          );
-
-        }
+    detectColumns();
 
 
-        /*
-         * If amount was not detected,
-         * continue loading the dashboard.
-         *
-         * This prevents the previous
-         * "content not visible" problem.
-         */
+    /*
+     * =====================================================
+     * 6. VALIDATE SALES COLUMNS
+     * =====================================================
+     */
 
-        if (!amountColumn) {
+    if (!dateColumn) {
 
-          showMessage(
-            'Sales records loaded, but the sales amount column could not be identified. The dashboard is showing Rs. 0 until the amount field is mapped.',
-            'warning'
-          );
-
-        }
-
-
-        renderDashboard();
-
-
-        loading.style.display =
-          'none';
-
-
-        dashboard.style.display =
-          'block';
-
-
-        initialLoadComplete =
-          true;
-
-
-      }
-
-      catch (error) {
-
-        console.error(
-          'Management dashboard error:',
-          error
-        );
-
-
-        loading.style.display =
-          'none';
-
-
-        dashboard.style.display =
-          'none';
-
-
-        showMessage(
-          error &&
-          error.message
-            ? error.message
-            : 'Unable to load management dashboard.',
-          'error'
-        );
-
-      }
+      throw new Error(
+        'Could not find the sales date column in daily_sales.'
+      );
 
     }
 
+
+    if (!amountColumn) {
+
+      throw new Error(
+        'Could not find the sales amount column in daily_sales.'
+      );
+
+    }
+
+
+    /*
+     * =====================================================
+     * 7. RENDER
+     * =====================================================
+     */
+
+    renderDashboard();
+
+
+    loading.style.display =
+      'none';
+
+    dashboard.style.display =
+      'block';
+
+  }
+
+  catch (error) {
+
+    console.error(
+      'Management dashboard error:',
+      error
+    );
+
+
+    loading.style.display =
+      'none';
+
+
+    /*
+     * Authentication/authorization
+     * failure → login page.
+     */
+
+    if (
+      error.message ===
+      'Management access required.'
+    ) {
+
+      await supabaseClient.auth.signOut({
+        scope: 'local'
+      });
+
+      localStorage.removeItem(
+        'suryodaya-auth'
+      );
+
+      window.location.replace(
+        'index.html'
+      );
+
+      return;
+    }
+
+
+    showMessage(
+      'Unable to load management dashboard: ' +
+      (
+        error.message ||
+        'Unknown error.'
+      ),
+      'error'
+    );
+
+  }
+
+}
 
 
     /* =======================================================
@@ -4504,26 +4517,72 @@
 
           try {
 
-            await supabaseClient
-              .auth
-              .signOut();
+            async function completelyLogout() {
 
-          }
+  try {
 
-          catch (error) {
+    /*
+     * Tell Supabase to terminate the
+     * current local session.
+     */
 
-            console.error(
-              'Logout error:',
-              error
-            );
+    await supabaseClient.auth.signOut({
+      scope: 'local'
+    });
 
-          }
+  } catch (error) {
+
+    console.warn(
+      'Supabase logout warning:',
+      error
+    );
+
+  }
 
 
-          redirectToLogin();
+  /*
+   * Remove authentication storage.
+   */
 
-        }
-      );
+  localStorage.removeItem(
+    'suryodaya-auth'
+  );
+
+  localStorage.removeItem(
+    'suryodaya-staff-auth'
+  );
+
+
+  /*
+   * Remove role/session markers.
+   */
+
+  sessionStorage.removeItem(
+    'suryodaya_authenticated_role'
+  );
+
+  sessionStorage.removeItem(
+    'suryodaya_fresh_staff_login'
+  );
+
+
+  /*
+   * Replace instead of normal navigation.
+   */
+
+  window.location.replace(
+    'index.html'
+  );
+
+}
+
+
+document
+  .getElementById('logout-button')
+  .addEventListener(
+    'click',
+    completelyLogout
+  );
 
 
 

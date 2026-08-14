@@ -1416,7 +1416,7 @@ const supabaseClient =
         autoRefreshToken: true,
         detectSessionInUrl: false,
         storage: window.localStorage,
-        storageKey: 'suryodaya-staff-auth'
+        storageKey: 'suryodaya-auth'
       }
     }
   );
@@ -1754,36 +1754,28 @@ const supabaseClient =
 
     }
 
+/* =======================================================
+   CHECK LOGIN + VERIFY STAFF ROLE
+   ======================================================= */
 
-    /* =======================================================
-       CHECK LOGIN
-       ======================================================= */
 async function checkLogin() {
 
   try {
 
     /*
-     * A dashboard visit is allowed only when it
-     * immediately follows a successful login.
+     * Dashboard must only open immediately after
+     * a successful STAFF login.
      */
     const freshLogin =
       sessionStorage.getItem(
         'suryodaya_fresh_staff_login'
       );
 
-    /*
-     * No fresh login marker means this is:
-     *
-     * - a page refresh
-     * - a direct dashboard URL
-     * - browser restoration
-     * - an old dashboard page
-     *
-     * Force authentication again.
-     */
     if (freshLogin !== 'true') {
 
-      await supabaseClient.auth.signOut();
+      await supabaseClient.auth.signOut({
+        scope: 'local'
+      });
 
       window.location.replace(
         'index.html'
@@ -1793,31 +1785,34 @@ async function checkLogin() {
     }
 
     /*
-     * Consume the marker.
+     * Consume the fresh-login marker.
      *
-     * It must NOT survive a refresh.
+     * Therefore refreshing dashboard.html
+     * will require login again.
      */
     sessionStorage.removeItem(
       'suryodaya_fresh_staff_login'
     );
 
     /*
-     * Now verify that Supabase actually has
-     * an authenticated session.
+     * Get current Supabase session.
      */
     const {
-      data,
-      error
-    } = await supabaseClient.auth.getSession();
+      data: sessionData,
+      error: sessionError
+    } =
+      await supabaseClient.auth.getSession();
 
-    if (error) {
+    if (sessionError) {
 
       console.error(
         'Session check error:',
-        error
+        sessionError
       );
 
-      await supabaseClient.auth.signOut();
+      await supabaseClient.auth.signOut({
+        scope: 'local'
+      });
 
       window.location.replace(
         'index.html'
@@ -1827,8 +1822,9 @@ async function checkLogin() {
     }
 
     if (
-      !data ||
-      !data.session
+      !sessionData ||
+      !sessionData.session ||
+      !sessionData.session.user
     ) {
 
       window.location.replace(
@@ -1839,7 +1835,74 @@ async function checkLogin() {
     }
 
     /*
-     * Authentication confirmed.
+     * =====================================================
+     * VERIFY USER ROLE
+     * =====================================================
+     */
+
+    const userId =
+      sessionData.session.user.id;
+
+    const {
+      data: roleData,
+      error: roleError
+    } =
+      await supabaseClient
+        .from('user_roles')
+        .select('role')
+        .eq(
+          'user_id',
+          userId
+        )
+        .maybeSingle();
+
+    if (roleError) {
+
+      console.error(
+        'Role verification error:',
+        roleError
+      );
+
+      await supabaseClient.auth.signOut({
+        scope: 'local'
+      });
+
+      window.location.replace(
+        'index.html'
+      );
+
+      return false;
+    }
+
+    /*
+     * THIS is the role === 'staff' check
+     */
+
+    if (
+      !roleData ||
+      roleData.role !== 'staff'
+    ) {
+
+      console.error(
+        'Unauthorized role:',
+        roleData
+          ? roleData.role
+          : 'none'
+      );
+
+      await supabaseClient.auth.signOut({
+        scope: 'local'
+      });
+
+      window.location.replace(
+        'index.html'
+      );
+
+      return false;
+    }
+
+    /*
+     * Staff authentication + role confirmed.
      */
     document.body.classList.remove(
       'auth-pending'
@@ -1855,12 +1918,18 @@ async function checkLogin() {
     );
 
     try {
-      await supabaseClient.auth.signOut();
+
+      await supabaseClient.auth.signOut({
+        scope: 'local'
+      });
+
     } catch (signOutError) {
+
       console.error(
         'Sign-out error:',
         signOutError
       );
+
     }
 
     window.location.replace(
@@ -2875,65 +2944,62 @@ function updateStats() {
        ======================================================= */
 
     logoutButton.addEventListener(
-      'click',
-      async function() {
+  'click',
+  async function () {
 
-        logoutButton.disabled =
-          true;
+    try {
 
+      /*
+       * Completely sign out from Supabase.
+       */
+      await supabaseClient.auth.signOut({
+        scope: 'local'
+      });
 
-        logoutButton.textContent =
-          'Logging out...';
+    } catch (error) {
 
+      console.error(
+        'Logout error:',
+        error
+      );
 
-        const {
-          error
-        } =
-          await supabaseClient
-            .auth
-            .signOut();
+    }
 
-
-        if (error) {
-
-          console.error(
-            'Logout error:',
-            error
-          );
-
-
-          logoutButton.disabled =
-            false;
-
-
-          logoutButton.textContent =
-            'Logout';
-
-
-          showMessage(
-            'Unable to logout. Please try again.',
-            'error'
-          );
-
-          return;
-
-        }
-
-
-        /*
-         * Clear browser session marker.
-         */
-
-        sessionStorage.removeItem(
-          'suryodaya_staff_authenticated'
-        );
-
-
-        window.location.href =
-          'index.html';
-
-      }
+    /*
+     * Remove ALL portal/session markers.
+     */
+    sessionStorage.removeItem(
+      'suryodaya_fresh_staff_login'
     );
+
+    sessionStorage.removeItem(
+      'suryodaya_fresh_management_login'
+    );
+
+    sessionStorage.removeItem(
+      'suryodaya_authenticated_role'
+    );
+
+    /*
+     * Remove authentication storage.
+     */
+    localStorage.removeItem(
+      'suryodaya-auth'
+    );
+
+    localStorage.removeItem(
+      'suryodaya-staff-auth'
+    );
+
+    /*
+     * Return to authentication page.
+     */
+    window.location.replace(
+      'index.html'
+    );
+
+  }
+);
 
 
     /* =======================================================

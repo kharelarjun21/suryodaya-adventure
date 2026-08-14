@@ -602,20 +602,9 @@
   <script>
 
     /* =======================================================
-       SUPABASE CONFIGURATION
+       SUPABASE CONFIGURATION & CREATE SUPABASE CLIENT
        ======================================================= */
-
-    const SUPABASE_URL =
-      'https://mvvdfwgjcyayopcsgwvy.supabase.co';
-
-    const SUPABASE_PUBLISHABLE_KEY =
-      'sb_publishable_XlgTh89ARMGgu9Fe4jS7EQ_lCgUdGg4';
-
-
-    /* =======================================================
-       CREATE SUPABASE CLIENT
-       ======================================================= */
-
+    
 const SUPABASE_URL =
   'https://mvvdfwgjcyayopcsgwvy.supabase.co';
 
@@ -692,17 +681,7 @@ async function clearPreviousAuthentication() {
 
 }
     
-async function initializeLoginPage() {
 
-  loginButton.disabled = true;
-
-  await clearPreviousAuthentication();
-
-  loginButton.disabled = false;
-
-}
-
-initializeLoginPage();
     /* =======================================================
        ELEMENTS
        ======================================================= */
@@ -725,7 +704,21 @@ initializeLoginPage();
     const showPasswordButton =
       document.getElementById('show-password');
 
+/* =======================================================
+   NOW INITIALIZE LOGIN PAGE
+   ======================================================= */
 
+async function initializeLoginPage() {
+
+  loginButton.disabled = true;
+
+  await clearPreviousAuthentication();
+
+  loginButton.disabled = false;
+
+}
+
+initializeLoginPage();
     /* =======================================================
        MESSAGE FUNCTIONS
        ======================================================= */

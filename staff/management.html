@@ -1832,18 +1832,18 @@
           <div class="stat-card">
 
             <div class="stat-label">
-              Current Month Entries
+              Current Month Footfall
             </div>
 
             <div
-              id="current-month-count"
-              class="stat-value"
+              id="current-month-footfall"
+              class="stat-value green"
             >
               0
             </div>
 
             <div class="stat-note">
-              Sales records this month
+              Visitors this month
             </div>
 
           </div>
@@ -3791,7 +3791,7 @@ const supabaseClient =
 
 
       document.getElementById(
-        'current-month-count'
+        'current-month-footfall'
       ).textContent =
         '0';
 
@@ -3961,6 +3961,18 @@ const supabaseClient =
         );
 
 
+      const currentMonthFootfall =
+        currentMonthRows.reduce(
+          (
+            total,
+            row
+          ) =>
+            total +
+            getFootfall(row),
+          0
+        );
+
+
       document.getElementById(
         'till-date-sales'
       ).textContent =
@@ -3984,9 +3996,9 @@ const supabaseClient =
 
 
       document.getElementById(
-        'current-month-count'
+        'current-month-footfall'
       ).textContent =
-        currentMonthRows.length.toLocaleString();
+        currentMonthFootfall.toLocaleString();
 
 
       document.getElementById(

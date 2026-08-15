@@ -365,7 +365,7 @@ async function saveInvoice(mode){
     $("no").value=result.record.invoice_number;
     update();
 
-    const doc=buildPDF(result.record,result.c);
+    const doc=await buildPDF(result.record,result.c);
     const filename=result.record.invoice_number+".pdf";
 
     // Always download the saved invoice as a PDF.

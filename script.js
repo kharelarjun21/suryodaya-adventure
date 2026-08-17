@@ -1,10 +1,3 @@
-/* ==========================================================================
-   Suryodaya Adventures — site script
-   Handles: mobile nav, active link highlighting, scroll reveals,
-   gallery filtering + lightbox, contact form validation, back-to-top.
-   No backend / no build step — pure vanilla JS for GitHub Pages.
-   ========================================================================== */
-
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------- Mobile navigation ---------- */
